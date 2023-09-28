@@ -5,7 +5,7 @@ import os
 
 # creación de objetos
 program = Program()
-app = Flask(__name__, template_folder=os.path.abspath("templates"))
+app = Flask(__name__, template_folder=os.path.abspath("templates"),static_folder=os.path.abspath("static"))
 
 
 class HomeController:

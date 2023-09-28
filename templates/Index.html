@@ -1,57 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Pestaña principal</title>
     <meta charset="UTF-8">
-    <title>Pensamiento Algorítmico</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        :root{
+            --blue: #1F57A2;
+            --white: #FFFFFF;
+            --gray: #CFCDC8;
+            --black: #000000;
+            --gold: #F5C451;
+            --sm: 14px;
+            --md: 16px;
+            --lg: 24px;
+        }
         body {
-            text-align: center;
+            background-color: var(--blue);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
         }
-
-        #titulo {
-            font-size: 24px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        #iniciar-sesion {
-            font-size: 18px;
-            margin-top: 10px;
-        }
-
-        #login-form, #login-formStudent {
-            display: inline-block;
-            text-align: left;
-            margin: 10px;
-        }
-
-        #login-form input {
-            display: block;
-            margin: 10px 0;
-            padding: 5px;
+        .login {
             width: 100%;
+            height: 100vh;
+            display: grid;
+            place-items: center;
         }
+        .form_container {
+            background-color: white;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            width: 400px;
+            border-radius: 16px;
+            
+        }
+        .logo {
+            width: 300px;
+            margin: 0 auto; 
+            margin-bottom: 24px;
+            border-radius: 8px;
+            
+        }
+        .title{
+           font-size: var(--lg); 
+           color: var(--blue);
+           margin-bottom: 12px;
+           text-align: center;
+        }
+        .form{
+            display: flex;
+            flex-direction: column;
+        }
+        .label{
+            margin-left: 16px;
+            color: var(--blue);
+            font-size: var(--sm);
+            font-weight: bold;
+            margin-bottom: 12px;
+            margin-top: 16px;
+        }
+        .input{
+            color: var(--white);
+            background-color: var(--blue);
+            border-radius: 12px;
+            border: none;
+            height: 24px;
+            font-size: var(--md);
+            padding: 8px;
+            margin-left: 16px;
+            margin-right: 16px;
+            outline: none;
+        }
+        .input::placeholder{
+            color: var(--white);
+        }
+        .primary-button {
+            font-size: var(--md);
+            background-color: var(--gold);
+            border-radius: 12px;
+            border: none;
+            height: 40px;
+            color: var(--white);
+            margin-top: 16px;
+            margin-left: 16px;
+            margin-right: 16px;
+            cursor: pointer;
+            
 
-        #login-form button, #login-formStudent button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            width: 100%; /* Asegura que ambos botones tengan el mismo ancho */
         }
+        .register-button{
+            background-color: var(--white);
+            color: var(--blue);
+            margin-bottom: 8px;
+        }
+    
+        
+
     </style>
 </head>
 <body>
-    <div id="titulo">Pensamiento Algorítmico</div>
-    <div id="iniciar-sesion">Iniciar Sesión</div>
-
-    <form id="login-form" action="/LoginEmailandPassword" method="POST">
-        <input type="text" name="loginEmail" placeholder="Correo Electrónico">
-        <input type="text" name="password" placeholder="Contraseña">
-        <button type="submit">Iniciar Sesión</button>
-    </form>
-
-    <form id="login-formStudent" action="/StudentRegistrationView">
-        <button type="submit">¿Eres Estudiante? ¡Regístrate!</button>
-    </form>
+    <div class="login">
+        <div class="form_container">
+            <img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo">
+            <h1 class="title">Iniciar sesión</h1>
+            <form action="/LoginEmailandPassword" method="POST" class="form form-login">
+                <label for="loginEmail" class="label">Correo Electrónico</label>
+                <input type="text" name="loginEmail" placeholder="Correo Electronico" class="input input-mail" id="loginEmail">
+                
+                <label for="password" class="label">Contraseña</label>
+                <input type="password" name="password" placeholder="Contraseña" id="password" class="input input-password">
+                
+                <button type="submit" class="primary-button login-button">Iniciar sesión</button>
+            </form>
+      
+            <form class="login-formStudent" action="/StudentRegistrationView">
+                <button type="submit" class="primary-button register-button">¿No tienes cuenta ?</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
