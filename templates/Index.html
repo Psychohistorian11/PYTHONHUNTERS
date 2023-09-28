@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pensamiento Algorítmico</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        #titulo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #iniciar-sesion {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        #login-form, #login-formStudent {
+            display: inline-block;
+            text-align: left;
+            margin: 10px;
+        }
+
+        #login-form input {
+            display: block;
+            margin: 10px 0;
+            padding: 5px;
+            width: 100%;
+        }
+
+        #login-form button, #login-formStudent button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            width: 100%; /* Asegura que ambos botones tengan el mismo ancho */
+        }
+    </style>
+</head>
+<body>
+    <div id="titulo">Pensamiento Algorítmico</div>
+    <div id="iniciar-sesion">Iniciar Sesión</div>
+
+    <form id="login-form" action="/LoginEmailandPassword" method="POST">
+        <input type="text" name="loginEmail" placeholder="Correo Electrónico">
+        <input type="text" name="password" placeholder="Contraseña">
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+
+    <form id="login-formStudent" action="/StudentRegistrationView">
+        <button type="submit">¿Eres Estudiante? ¡Regístrate!</button>
+    </form>
+</body>
+</html>

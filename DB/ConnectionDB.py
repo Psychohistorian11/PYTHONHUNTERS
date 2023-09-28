@@ -1,14 +1,27 @@
 from flask_mysqldb import MySQL
-from Controller.HomeController import app
+from flask import Flask
+import os
+
+app = Flask(__name__ ,template_folder=os.path.abspath("templates"))
+
+mysql = MySQL()
+app.config['MYSQL_HOST'] = 'db4free.net'
+app.config['MYSQL_USER'] = 'bit_busters'
+app.config['MYSQL_PASSWORD'] = 'password123'
+app.config['MYSQL_DB'] = 'pythonbd'
+mysql.init_app(app)
 
 
 class ConnectionDB:
 
-    app.config['MYSQL_HOST'] = 'localhost'
-    pass
+    def __init__(self, app):
+        self.app = app
+        mysql.init_app(app)
 
-    def __init__(self):
-        pass
+    def verify_accountDB(self, email, password):
+        cur = mysql.connection.cursor()
+        cur.execute() # dentro de ese parentesis irá la consulta a la base de datos
+        mysql.connection.commit() #Ejecutamos la consulta
 
-    def Enter_studentDB(self):
+    def Enter_studentDB(self, newStudent): #Ingresar nuevo estudiante a la  base de datos
         pass

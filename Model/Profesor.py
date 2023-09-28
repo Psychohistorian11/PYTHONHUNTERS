@@ -1,4 +1,4 @@
-from ModeL import User
+from Model import User
 
 
 class Teacher(User):

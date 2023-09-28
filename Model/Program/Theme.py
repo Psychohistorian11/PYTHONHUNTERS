@@ -1,4 +1,4 @@
-from ModeL.Program.Exercise import Exercise
+from Model.Program.Exercise import Exercise
 
 
 class Theme:
