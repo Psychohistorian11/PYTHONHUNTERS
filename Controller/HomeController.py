@@ -17,24 +17,40 @@ class HomeController:
         app.run(port=3000, debug=True)
 
     @app.route("/")
-    def Index():
-        return render_template("Index.html")
+    def Index(message=None):
+        return render_template("Index.html", message=message)
+
+    @app.route("/CreateExerciseView")
+    def CreateExercise(message=None):
+        return render_template("CreateExercise.html")
 
     @app.route("/LoginEmailandPassword", methods=["POST"])
-    def LoginE_and_P():
+    def LoginE_and_P(message=None):
         if request.method == "POST":
             email = request.form["loginEmail"]
             password = request.form["password"]
-            # ConnectionDB.verify_accountDB(email, password)
-
-            return redirect(url_for("Index"))
+            existence, isTeacher = ConnectionDB.verify_accountDB(email, password)
+            if existence and isTeacher:
+                return render_template("HomeMenuTeacher.html")
+            elif existence:
+                return render_template("HomeMenuStudent.html")
+            else:
+                message = "Usuario no existe"
+                return redirect(url_for("Index", message=message))
 
     @app.route("/StudentRegistrationView")
-    def StudentRegistrationView():
+    def StudentRegistrationView(message=None):
         return render_template("StudentRegistration.html")
 
+    @app.route("/RankingView")
+    def Ranking(message=None):
+        return render_template("Ranking.html")
+
+    @app.route("/QualifyView")
+    def Qualify(message=None):
+        return render_template("Qualify.html")
     @app.route("/StudentRegistration", methods=["POST"])
-    def StudentRegistration():
+    def StudentRegistration(message=None):
         if request.method == "POST":
             nameStudent = request.form["nameStudent"]
             lastNameStudent = request.form["lastNameStudent"]

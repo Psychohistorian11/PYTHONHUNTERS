@@ -102,6 +102,11 @@
     </style>
 </head>
 <body>
+    <div class="notification">
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+    </div>
     <div class="login">
         <div class="form_container">
             <img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo">
