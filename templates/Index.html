@@ -113,10 +113,10 @@
             <h1 class="title">Iniciar sesión</h1>
             <form action="/LoginEmailandPassword" method="POST" class="form form-login">
                 <label for="loginEmail" class="label">Correo Electrónico</label>
-                <input type="text" name="loginEmail" placeholder="Correo Electronico" class="input input-mail" id="loginEmail">
+                <input type="email" name="loginEmail" placeholder="Correo Electronico" class="input input-mail" id="loginEmail" required>
                 
                 <label for="password" class="label">Contraseña</label>
-                <input type="password" name="password" placeholder="Contraseña" id="password" class="input input-password">
+                <input type="password" name="password" placeholder="Contraseña" id="password" class="input input-password" required>
                 
                 <button type="submit" class="primary-button login-button">Iniciar sesión</button>
             </form>
