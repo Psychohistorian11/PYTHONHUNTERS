@@ -29,8 +29,11 @@ class HomeController:
         if request.method == "POST":
             email = request.form["loginEmail"]
             password = request.form["password"]
-            existence, isTeacher = ConnectionDB.verify_accountDB(email, password)
+            existence, isTeacher = ConnectionDB().verify_accountDB(email, password)
+            print(existence)
+            print(isTeacher)
             if existence and isTeacher:
+                print("es teacher")
                 return render_template("HomeMenuTeacher.html")
             elif existence:
                 return render_template("HomeMenuStudent.html")
