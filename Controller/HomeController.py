@@ -6,8 +6,10 @@ import os
 # creación de objetos
 program = Program()
 app = Flask(__name__, template_folder=os.path.abspath("templates"),static_folder=os.path.abspath("static"))
+DB = ConnectionDB
 
 class HomeController:
+
 
     def __init__(self):
         pass
@@ -29,7 +31,7 @@ class HomeController:
         if request.method == "POST":
             email = request.form["loginEmail"]
             password = request.form["password"]
-            existence, isTeacher = ConnectionDB.verify_accountDB(email, password)
+            existence, isTeacher = ConnectionDB().verify_accountDB(email, password)
             if existence and isTeacher:
                 return render_template("HomeMenuTeacher.html",Actividades=Actividades)
             elif existence:
