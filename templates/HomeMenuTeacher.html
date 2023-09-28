@@ -6,20 +6,16 @@
 
 </head>
 <body>
-    <div id="header">
-        <h1>Pensamiento Algorítmico</h1>
-    </div>
 
-    <div id="left-menu">
-        <div id="vertical-menu">
-            <p>Temas:</p>
             <ul>
-                <li><a href="#">Actividad 1</a></li>
-                <li><a href="#">Actividad 2</a></li>
-                <!-- Agrega más elementos si es necesario -->
+                <h2>Actividades </h2>
+                <ul>
+                            {% for todo in Actividades %}
+                            <li> {{ todo['todo']        }}</li>
+                            {% endfor %}
+                </ul>
             </ul>
-        </div>
-    </div>
+
 
     <div id="content">
         <form class="" action="/HomeMenuTeacher">

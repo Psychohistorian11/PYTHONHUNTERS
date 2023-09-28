@@ -7,7 +7,6 @@ import os
 program = Program()
 app = Flask(__name__, template_folder=os.path.abspath("templates"),static_folder=os.path.abspath("static"))
 
-
 class HomeController:
 
     def __init__(self):
@@ -26,12 +25,13 @@ class HomeController:
 
     @app.route("/LoginEmailandPassword", methods=["POST"])
     def LoginE_and_P(message=None):
+        Actividades = [{"todo": "hola", "done": False}]
         if request.method == "POST":
             email = request.form["loginEmail"]
             password = request.form["password"]
             existence, isTeacher = ConnectionDB.verify_accountDB(email, password)
             if existence and isTeacher:
-                return render_template("HomeMenuTeacher.html")
+                return render_template("HomeMenuTeacher.html",Actividades=Actividades)
             elif existence:
                 return render_template("HomeMenuStudent.html")
             else:

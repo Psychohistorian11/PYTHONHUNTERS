@@ -1,32 +1,47 @@
-from typing import Tuple
+import mysql.connector
 
-from flask_mysqldb import MySQL
-from flask import Flask
-import os
-
-app = Flask(__name__, template_folder=os.path.abspath("templates"))
-
-mysql = MySQL()
-app.config['MYSQL_HOST'] = 'db4free.net'
-app.config['MYSQL_USER'] = 'bit_busters'
-app.config['MYSQL_PASSWORD'] = 'password123'
-app.config['MYSQL_DB'] = 'pythonbd'
-mysql.init_app(app)
-
+config = {'user': 'bit_busters',
+          'password': 'password123',
+          'host': 'db4free.net',
+          'database': 'pythonbd',
+          'port': 3306,  # Puerto predeterminado de MySQL
+          'raise_on_warnings': True}  # Para que se generen excepciones en caso de advertencias
 
 class ConnectionDB:
 
     def __init__(self, app):
         self.app = app
-        mysql.init_app(app)
 
-    def verify_accountDB(self, email, password) -> tuple[bool, bool]:
-        existence: bool = True
-        isTeacher = True
-        cur = mysql.connection.cursor()
-        cur.execute()  # dentro de ese parentesis irá la consulta a la base de datos
-        mysql.connection.commit()  # Ejecutamos la consulta
-        return existence, isTeacher
+    def executeSQL(self, consulta_sql):
+        try:
+            # Crea una conexión a la base de datos
+            conn = mysql.connector.connect(**config)
+            if conn.is_connected():
+                # Crea un objeto cursor para ejecutar consultas
+                cursor = conn.cursor()
+                # Ejecuta la consulta
+                cursor.execute(consulta_sql)
+                # Recupera los resultados de la consulta
+                resultados = cursor.fetchall()
+                conn.close()
+                # Imprime los resultados
+                return resultados
+        except mysql.connector.Error as e:
+            print("Error al conectar a la base de datos:", e)
 
-    def Enter_studentDB(self, newStudent):  # Ingresar nuevo estudiante a la  base de datos
+    def verify_accountDB(self, email, password) -> tuple[bool,bool]:
+        resultados = self.executeSQL("select * from Profesor")
+        print(resultados)
+        # Verificar si se encontró al menos un usuario
+        quantity_teacher = 0
+        quantity_student = 4
+        existence_teacher = quantity_teacher == 1
+        existence_student = quantity_student == 1
+
+        existence = False
+        if existence_teacher or existence_student:
+            existence = True
+        return existence, existence_teacher
+
+    def Enter_studentDB(self, newStudent): #Ingresar nuevo estudiante a la  base de datos
         pass
