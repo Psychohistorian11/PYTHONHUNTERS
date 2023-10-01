@@ -11,7 +11,7 @@ class Access:
         return newStudent
 
     def enter_student(self, newStudent):
-        ConnectionDB.Enter_studentDB(newStudent)
+        ConnectionDB().enter_studentDB(newStudent)
 
     def enter_teacher(self):
         pass

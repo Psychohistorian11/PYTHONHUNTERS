@@ -2,9 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Pensamiento Algorítmico</title>
+    <style>
+        /* Estilos para el diseño deseado */
+        #content {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+        }
+
+        .menu-item {
+            margin-right: 20px; /* Espacio entre elementos */
+        }
+
+        #create-exercise {
+            margin-top: 20px; /* Espacio debajo de "Actividades" */
+        }
+    </style>
 </head>
 <body>
+    <h1>Pensamiento Algorítmico</h1>
+    <h2>Temas de Estudio</h2>
+    <ul>
+        {% for todo in Actividades %}
+        <li>
+            <span {%if todo[done] %} style="text-decoration: line-through" {%endif %}>{{ todo["task"] }}</span>
+            <a href="{{ url_for('edit', Menu=loop.index0)}}">Edit</a>
+            <a href="{{ url_for('delete', Menu=loop.index0)}}">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <form action="{{ url_for('add') }}" method="post">
+        <input type="text" name="todo">
+        <button type="submit">Add Todo</button>
+    </form>
+    <div id="content">
+        <div class="menu-item">
+            <form action="/HomeMenuTeacher">
+                <button type="submit">Actividades</button>
+            </form>
+        </div>
+        <div class="menu-item">
+            <form action="/RankingView">
+                <button type="submit">Ranking</button>
+            </form>
+        </div>
+        <div class="menu-item">
+            <form action="/QualifyView">
+                <button type="submit">Calificar</button>
+            </form>
+        </div>
+    </div>
+    <div class = "">
+            <h1 class="">Crear Ejercicio</h1>
+        <form id="" action="/CreateExercise">
+            <label >Nombre del Ejercicio:</label>
+            <input type="text"  name="nameExercise" >
+
+            <label>Disponibilidad:</label>
+            <select name="availability">
+              <option value="True">Sí</option>
+              <option value="False">No</option>
+            </select>
+
+            <label>Dificultad:</label>
+            <select name="difficulty">
+              <option value="Muy Fácil">Muy Fácil</option>
+              <option value="Fácil">Fácil</option>
+              <option value="Moderado">Moderado</option>
+              <option value="Difícil">Difícil</option>
+              <option value="Muy Difícil">Muy Difícil</option>
+            </select>
+
+            <label> Descripción:</label>
+            <input type="text" name="statement" >
+
+            <button type="submit" >Crear Ejercicio</button>
+        </form>
+        </div>
 
 </body>
 </html>

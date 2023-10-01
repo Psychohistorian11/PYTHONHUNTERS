@@ -27,7 +27,6 @@
         {% for todo in Actividades %}
         <li>
             <span {%if todo[done] %} style="text-decoration: line-through" {%endif %}>{{ todo["task"] }}</span>
-            <a href="{{ url_for('go', Menu=loop.index0)}}">⏩</a>
             <a href="{{ url_for('edit', Menu=loop.index0)}}">Edit</a>
             <a href="{{ url_for('delete', Menu=loop.index0)}}">Delete</a>
         </li>
@@ -53,6 +52,11 @@
                 <button type="submit">Calificar</button>
             </form>
         </div>
+    </div>
+    <div id="create-exercise">
+        <form action="/CreateExerciseView">
+            <button type="submit">Crear Ejercicio</button>
+        </form>
     </div>
 </body>
 </html>

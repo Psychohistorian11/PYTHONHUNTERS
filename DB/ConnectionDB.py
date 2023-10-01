@@ -7,6 +7,7 @@ config = {'user': 'bit_busters',
           'port': 3306,  # Puerto predeterminado de MySQL
           'raise_on_warnings': True}  # Para que se generen excepciones en caso de advertencias
 
+
 class ConnectionDB:
 
     def __init__(self):
@@ -29,7 +30,7 @@ class ConnectionDB:
         except mysql.connector.Error as e:
             print("Error al conectar a la base de datos:", e)
 
-    def verify_accountDB(self, email, password) -> tuple[bool,bool]:
+    def verify_accountDB(self, email, password) -> tuple[bool, bool]:
         """
 
         :rtype: object
@@ -38,7 +39,6 @@ class ConnectionDB:
         results = self.executeSQL(query, (email, password))
         # Verificar si se encontró al menos un usuario
         quantity_teacher = results[0][0]
-        print(f"cantida de profes: {quantity_teacher}")
         # Falta el del profe
         quantity_student = 4
         existence_teacher = quantity_teacher == 1
@@ -48,5 +48,16 @@ class ConnectionDB:
             existence = True
         return existence, existence_teacher
 
-    def Enter_studentDB(self, newStudent): #Ingresar nuevo estudiante a la  base de datos
+    def enter_studentDB(self, newStudent):  # Ingresar nuevo estudiante a la  base de datos, no retorna nada
         pass
+
+    def enter_ThemeDB(self, newTheme):  # Ingresar nuevo tema a la base de datos, no retorna nada
+        pass
+
+    def get_themesDB(self): #Este metodo me entrega todos los temas que se
+        # encuentran en la base de datos, necestio solo los nombres
+        listThemesFromDB = ["Hola gonorrea"]
+        return listThemesFromDB
+
+    def enter_ExerciseDB(self, newExercise):
+        pass #Ingresar nuevo Ejercicio
