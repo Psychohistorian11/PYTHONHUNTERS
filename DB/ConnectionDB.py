@@ -51,7 +51,7 @@ class ConnectionDB:
     def enter_studentDB(self, newStudent):  # Ingresar nuevo estudiante a la  base de datos, no retorna nada
         pass
 
-    def enter_ThemeDB(self, newTheme):  # Ingresar nuevo tema a la base de datos, no retorna nada
+    def enter_ThemeDB(self, newTheme, idCourse):  # Ingresar nuevo tema a la base de datos, no retorna nada
         pass
 
     def get_themesDB(self):  # Este metodo me entrega todos los temas que se
