@@ -11,53 +11,102 @@
             align-items: flex-start;
         }
 
+        .sidebar {
+            flex: 1;
+            padding: 20px;
+            background-color: #f0f0f0; /* Color de fondo de la barra lateral */
+        }
+
         .menu-item {
-            margin-right: 20px; /* Espacio entre elementos */
+            margin-bottom: 10px; /* Espacio entre elementos del menú */
+        }
+
+        .main-content {
+            flex: 2;
+            padding: 20px;
         }
 
         #create-exercise {
             margin-top: 20px; /* Espacio debajo de "Actividades" */
         }
+
+        /* Estilos para el menú horizontal */
+        .horizontal-menu {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .horizontal-menu .menu-item {
+            margin-right: 20px;
+        }
     </style>
 </head>
 <body>
     <h1>Pensamiento Algorítmico</h1>
-    <h2>Temas de Estudio</h2>
-    <ul>
-        {% for todo in Actividades %}
-        <li>
-            <span {%if todo[done] %} style="text-decoration: line-through" {%endif %}>{{ todo["task"] }}</span>
-            <a href="{{ url_for('edit', Menu=loop.index0)}}">Edit</a>
-            <a href="{{ url_for('delete', Menu=loop.index0)}}">Delete</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <form action="{{ url_for('add') }}" method="post">
-        <input type="text" name="todo">
-        <button type="submit">Add Todo</button>
-    </form>
     <div id="content">
-        <div class="menu-item">
-            <form action="/HomeMenuTeacher">
-                <button type="submit">Actividades</button>
+        <div class="sidebar">
+            <h2>Temas de Estudio</h2>
+            <ul>
+                {% for todo in Actividades %}
+                <li>
+                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
+                    <a href="{{ url_for('go', Menu=loop.index0, actividad=todo['task']) }}">⏩</a>
+                    <a href="{{ url_for('edit', Menu=loop.index0) }}">Edit</a>
+                    <a href="{{ url_for('delete', Menu=loop.index0) }}">Delete</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <form action="{{ url_for('add') }}" method="post">
+                <input type="text" name="todo">
+                <button type="submit">Add Todo</button>
             </form>
         </div>
-        <div class="menu-item">
-            <form action="/RankingView">
-                <button type="submit">Ranking</button>
-            </form>
+
+        <div class="main-content">
+            <div class="horizontal-menu">
+                <div class="menu-item">
+                    <form action="/HomeMenuTeacher">
+                        <button type="submit">Actividades</button>
+                    </form>
+                </div>
+                <div class="menu-item">
+                    <form action="/RankingView">
+                        <button type="submit">Ranking</button>
+                    </form>
+                </div>
+                <div class="menu-item">
+                    <form action="/QualifyView">
+                        <button type="submit">Calificar</button>
+                    </form>
+                </div>
+            </div>
+            <div id="create-exercise">
+                <form action="/CreateExerciseView" method="GET">
+                    <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
+                    <button type="submit">Crear Ejercicio</button>
+                </form>
+            </div>
+            <div>
+                <h2>Ejercicios</h2>
+                <div class="sidebar">
+                        <ul>
+
+                            {% for key,exercise in Exercises.items() %}
+                            <li>
+                                <span>{{ exercise[0] }}</span>
+                                <a href="{{ url_for('go', Menu=loop.index0, actividad=key) }}">⏩</a>
+                                <a href="{{ url_for('edit', Menu=loop.index0) }}">Edit</a>
+                                <a href="{{ url_for('delete', Menu=loop.index0) }}">Delete</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                </div>
+            </div>
         </div>
-        <div class="menu-item">
-            <form action="/QualifyView">
-                <button type="submit">Calificar</button>
-            </form>
-        </div>
-    </div>
-    <div id="create-exercise">
-        <form action="/CreateExerciseView">
-            <button type="submit">Crear Ejercicio</button>
-        </form>
     </div>
 </body>
 </html>
+
+
 

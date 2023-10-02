@@ -3,7 +3,7 @@ from DB.ConnectionDB import ConnectionDB
 
 
 class Access:
-    def __int__(self):
+    def __init__(self):
         pass
 
     def register_student(self, firstName, lastName, email, password, score):

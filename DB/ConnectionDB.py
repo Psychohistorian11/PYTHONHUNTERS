@@ -54,10 +54,23 @@ class ConnectionDB:
     def enter_ThemeDB(self, newTheme):  # Ingresar nuevo tema a la base de datos, no retorna nada
         pass
 
-    def get_themesDB(self): #Este metodo me entrega todos los temas que se
+    def get_themesDB(self):  # Este metodo me entrega todos los temas que se
         # encuentran en la base de datos, necestio solo los nombres
-        listThemesFromDB = ["Hola gonorrea"]
+        listThemesFromDB = ["Arreglos"]
         return listThemesFromDB
 
-    def enter_ExerciseDB(self, newExercise):
-        pass #Ingresar nuevo Ejercicio
+    def enter_exerciseDB(self, newExercise, IDnameTheme):
+        pass  # Ingresar nuevo Ejercicio
+
+    def get_exerciseDB(self, IDnameTheme):  # Este metodo me entrega un diccionario donde la clave puede
+        # ser autoincremento y el valor es una lista con los atributos del Ejercicio
+        #El parametro IDnameTheme es la clave foranea de la tabla ejercicio para encontrar
+        #los ejercicios correspondientes a una actividad
+
+        #Este diccionario es de prueba
+        listExerciseFromDB = {"Ejercicio1": ["Variables", True, "easy", "Cree"
+                                                                       "una vairiable y asignele un valor"
+                                                                       "bolenano"],
+                               "Ejercicio2": ["Ciclos", True, "easy", "haga un ciclito"],
+                               "Ejercicio3": ["Condicionales", False,"Very easy", "Qué es un condicional?"]}
+        return listExerciseFromDB

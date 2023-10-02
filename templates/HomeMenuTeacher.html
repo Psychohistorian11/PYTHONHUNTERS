@@ -11,8 +11,19 @@
             align-items: flex-start;
         }
 
+        .sidebar {
+            flex: 1;
+            padding: 20px;
+            background-color: #f0f0f0; /* Color de fondo de la barra lateral */
+        }
+
         .menu-item {
-            margin-right: 20px; /* Espacio entre elementos */
+            margin-bottom: 10px; /* Espacio entre elementos del menú */
+        }
+
+        .main-content {
+            flex: 2;
+            padding: 20px;
         }
 
         #create-exercise {
@@ -22,38 +33,43 @@
 </head>
 <body>
     <h1>Pensamiento Algorítmico</h1>
-    <h2>Temas de Estudio</h2>
-    <ul>
-        {% for todo in Actividades %}
-        <li>
-            <span {%if todo[done] %} style="text-decoration: line-through" {%endif %}>{{ todo["task"] }}</span>
-            <a href="{{ url_for('go', Menu=loop.index0)}}">⏩</a>
-            <a href="{{ url_for('edit', Menu=loop.index0)}}">Edit</a>
-            <a href="{{ url_for('delete', Menu=loop.index0)}}">Delete</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <form action="{{ url_for('add') }}" method="post">
-        <input type="text" name="todo">
-        <button type="submit">Add Todo</button>
-    </form>
     <div id="content">
-        <div class="menu-item">
-            <form action="/HomeMenuTeacher">
-                <button type="submit">Actividades</button>
+        <div class="sidebar">
+            <h2>Temas de Estudio</h2>
+            <ul>
+                {% for todo in Actividades %}
+                <li>
+                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
+                    <a href="{{ url_for('go', Menu=loop.index0, actividad=todo['task']) }}">⏩</a>
+                    <a href="{{ url_for('edit', Menu=loop.index0) }}">Edit</a>
+                    <a href="{{ url_for('delete', Menu=loop.index0) }}">Delete</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <form action="{{ url_for('add') }}" method="post">
+                <input type="text" name="todo">
+                <button type="submit">Add Todo</button>
             </form>
         </div>
-        <div class="menu-item">
-            <form action="/RankingView">
-                <button type="submit">Ranking</button>
-            </form>
-        </div>
-        <div class="menu-item">
-            <form action="/QualifyView">
-                <button type="submit">Calificar</button>
-            </form>
+        <div class="main-content">
+            <div class="menu-item">
+                <form action="/HomeMenuTeacher">
+                    <button type="submit">Actividades</button>
+                </form>
+            </div>
+            <div class="menu-item">
+                <form action="/RankingView">
+                    <button type="submit">Ranking</button>
+                </form>
+            </div>
+            <div class="menu-item">
+                <form action="/QualifyView">
+                    <button type="submit">Calificar</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>
 </html>
+
 

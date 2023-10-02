@@ -18,6 +18,49 @@
         #create-exercise {
             margin-top: 20px; /* Espacio debajo de "Actividades" */
         }
+
+        /* Estilos para el formulario de "Crear Ejercicio" */
+        .exercise-form {
+            background-color: #f0f0f0; /* Color de fondo del formulario */
+            padding: 20px;
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+            max-width: 400px; /* Ancho máximo del formulario */
+            margin: 20px auto 0; /* Espacio arriba y centrado horizontalmente */
+        }
+
+        .exercise-form h1 {
+            text-align: center; /* Centrar el encabezado del formulario */
+        }
+
+        .exercise-form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .exercise-form input[type="text"],
+        .exercise-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .exercise-form button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff; /* Color de fondo del botón */
+            color: #fff; /* Color de texto del botón */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .exercise-form button:hover {
+            background-color: #0056b3; /* Color de fondo al pasar el mouse */
+        }
     </style>
 </head>
 <body>
@@ -53,33 +96,35 @@
             </form>
         </div>
     </div>
-    <div class = "">
-            <h1 class="">Crear Ejercicio</h1>
-        <form id="" action="/CreateExercise">
-            <label >Nombre del Ejercicio:</label>
-            <input type="text"  name="nameExercise" >
 
-            <label>Disponibilidad:</label>
-            <select name="availability">
-              <option value="True">Sí</option>
-              <option value="False">No</option>
+    <div class="exercise-form">
+        <h1>Crear Ejercicio</h1>
+        <form id="exercise-form" action="/CreateExercise" method="POST">
+            <label for="nameExercise">Nombre del Ejercicio:</label>
+            <input type="text" name="nameExercise" id="nameExercise" required>
+
+            <label for="availability">Disponibilidad:</label>
+            <select name="availability" id="availability" required>
+                <option value="True">Sí</option>
+                <option value="False">No</option>
             </select>
 
-            <label>Dificultad:</label>
-            <select name="difficulty">
-              <option value="Muy Fácil">Muy Fácil</option>
-              <option value="Fácil">Fácil</option>
-              <option value="Moderado">Moderado</option>
-              <option value="Difícil">Difícil</option>
-              <option value="Muy Difícil">Muy Difícil</option>
+            <label for="difficulty">Dificultad:</label>
+            <select name="difficulty" id="difficulty" required>
+                <option value="Muy Fácil">Muy Fácil</option>
+                <option value="Fácil">Fácil</option>
+                <option value="Moderado">Moderado</option>
+                <option value="Difícil">Difícil</option>
+                <option value="Muy Difícil">Muy Difícil</option>
             </select>
 
-            <label> Descripción:</label>
-            <input type="text" name="statement" >
+            <label for="statement">Descripción:</label>
+            <input type="text" name="statement" id="statement" required>
 
-            <button type="submit" >Crear Ejercicio</button>
+            <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
+            <button type="submit">Crear Ejercicio</button>
         </form>
-        </div>
-
+    </div>
 </body>
 </html>
+

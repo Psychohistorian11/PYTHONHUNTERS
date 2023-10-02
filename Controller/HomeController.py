@@ -5,11 +5,13 @@ from Model.Program.Theme import Theme
 import os
 
 # creación de objetos
-program = Program()
-app = Flask(__name__, template_folder=os.path.abspath("templates"), static_folder=os.path.abspath("static"))
-DB = ConnectionDB
-Actividades = Theme().Themes
-Exercise = 0
+program = Program()  # program controla toda la logica del modelo
+ThemeObject = Theme()  # Simplemente contiene la información de los temas
+app = Flask(__name__, template_folder=os.path.abspath("templates"),
+            static_folder=os.path.abspath("static"))
+DB = ConnectionDB()  # DB controla la información que llega y sale de la base de datos al controlador
+Actividades = ThemeObject.Themes
+Exercises = ThemeObject.Exercises
 
 
 class HomeController:
@@ -25,23 +27,30 @@ class HomeController:
         return render_template("Index.html", message=message)
 
     @app.route("/CreateExerciseView")
-    def CreateExerciseView(message=None):
-        return render_template("CreateExercise.html")
+    def CreateExerciseView(self=None):
+        nameActivity = request.args.get('nameActivity')
+        return render_template("CreateExercise.html",
+                               Actividades=Actividades,
+                               nameActivity=nameActivity)
 
     @app.route("/CreateExercise", methods=["POST"])
-    def CreateExcercise(messague=None):
+    def CreateExcercise(self=None):
+        nameActivity = request.args.get('nameActivity')
         if request.method == "POST":
             nameExercise = request.form["nameExercise"]
             availability = request.form["availability"]
             difficulty = request.form["difficulty"]
             statement = request.form["statement"]
-            newExercise = Theme().create_exercise(nameExercise, availability, difficulty, statement)
-            ConnectionDB().enter_ExerciseDB(newExercise)
 
+            newExercise = ThemeObject.create_exercise(nameExercise, availability, difficulty, statement)
+            DB.enter_exerciseDB(newExercise, nameActivity)
+            return render_template("HomeMenu_forActivityTeacher.html",
+                                   Actividades=Actividades, Exercises=ThemeObject.Exercises)
 
     @app.route("/LoginEmailandPassword", methods=["POST"])
-    def LoginE_and_P(messague1=None):
-
+    def LoginE_and_P(self=None):
+        listThemesFromDB = DB.get_themesDB()
+        ThemeObject.update_themes(listThemesFromDB)
         if request.method == "POST":
             email = request.form["loginEmail"]
             password = request.form["password"]
@@ -56,11 +65,12 @@ class HomeController:
 
     # /----------LISTADO DE ACTIVIDADES------------------------
     @app.route("/Menu")
-    def Menu(messague=None):
-        return render_template("HomeMenuTeacher.html", Actividades=Actividades)
+    def Menu(self=None):
+        return render_template("HomeMenuTeacher.html",
+                               Actividades=Actividades)
 
     @app.route("/add", methods=["POST"])
-    def add(messague=None):
+    def add(self=None):
         todo = request.form["todo"]
         Actividades.append({"task": todo, "done": False})
         return redirect(url_for("Menu"))
@@ -71,14 +81,19 @@ class HomeController:
         if request.method == "POST":
             todo['task'] = request.form['todo']
             newTheme = todo['task']
-            Theme().enter_Theme(newTheme)
+            ThemeObject.enter_theme(newTheme)
             return redirect(url_for("Menu"))
         else:
             return render_template("edit.html", todo=todo, Menu=Menu)
 
-    @app.route("/go/<int:Menu>")
-    def go(Menu):
-        return render_template("HomeMenu_forActivityTeacher.html", Exercise=Exercise)
+    @app.route("/go/<int:Menu>/<string:actividad>")
+    def go(Menu, actividad):
+        listExercisesFromDB = DB.get_exerciseDB(actividad)
+        ThemeObject.update_exercise(listExercisesFromDB)
+        return render_template("HomeMenu_forActivityTeacher.html",
+                               Actividades=Actividades,
+                               Exercises=ThemeObject.Exercises,
+                               nameActivity=actividad)
 
     @app.route("/check/<int:Menu>")  # Metodo no Utilizado
     def check(Menu):
@@ -92,13 +107,18 @@ class HomeController:
 
     # *--------------------------------------------------------------------------
 
+    # *----------------------------LISTA DE EJERCICIOS---------------------------
+    @app.route("/MenuExercise")
+    # *--------------------------------------------------------------------------
+
     @app.route("/StudentRegistrationView")
     def StudentRegistrationView(message=None):
         return render_template("StudentRegistration.html")
 
     @app.route("/HomeMenuTeacher")
     def Activity(messague=None):
-        return render_template("HomeMenuTeacher.html")
+        return render_template("HomeMenuTeacher.html",
+                               Actividades=Actividades)
 
     @app.route("/RankingView")
     def Ranking(message=None):
@@ -117,5 +137,9 @@ class HomeController:
             passwordStudent = request.form["emailStudent"]
 
             # Creación e IngresoDB
-            newStudent = program.access.register_student(nameStudent, lastNameStudent, emailStudent, passwordStudent, 0)
+            newStudent = program.access.register_student(nameStudent,
+                                                         lastNameStudent,
+                                                         emailStudent,
+                                                         passwordStudent, 0)
             program.access.enter_student(newStudent)
+            return redirect(url_for("Index"))
