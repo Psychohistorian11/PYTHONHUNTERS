@@ -57,25 +57,37 @@ class HomeController:
     def LoginE_and_P(self=None):
         edd =0 
         listThemesFromDB = DB.get_themesDB(edd)
+<<<<<<< HEAD
         idCourse = 0
         listThemesFromDB = DB.get_themesDB(idCourse)
+=======
+>>>>>>> 327920835ec0e58a587e5f00aa048eb9e37a6284
         ThemeObject.update_themes(listThemesFromDB)
         if request.method == "POST":
             email = request.form["loginEmail"]
             password = request.form["password"]
             existence, isTeacher = ConnectionDB().verify_accountDB(email, password)
             if existence and isTeacher:
-                return redirect(url_for("SelectCourseView"))
+                return redirect(url_for("Menu"))
             elif existence:
                 return render_template("HomeMenuStudent.html")
             else:
                 message = "Usuario no existe"
                 return render_template("Index.html", message=message)
-
-    # /----------LISTADO DE ACTIVIDADES------------------------ /
     @app.route("/SelectCourseView")
     def SelectCourseView(self=None):
         return render_template("SelectCourseView.html", Courses=Courses)
+    #@app.route("go/string=current_course")
+    #def goCourse(Menu,current_course):
+        #pass
+
+    @app.route("/addCourse", methods=["POST"])
+    def addCourse(sell=None):
+        course = request.form["todo"]
+        Courses.append({'task': course})
+        return redirect(url_for("SelectCourseView"))
+    # /----------LISTADO DE ACTIVIDADES------------------------ /
+
     @app.route("/Menu")
     def Menu(self=None):
         return render_template("HomeMenuTeacher.html",
