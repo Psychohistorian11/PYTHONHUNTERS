@@ -63,7 +63,7 @@ class HomeController:
             password = request.form["password"]
             existence, isTeacher = ConnectionDB().verify_accountDB(email, password)
             if existence and isTeacher:
-                return redirect(url_for("selectCourseView"))
+                return redirect(url_for("Menu"))
             elif existence:
                 return render_template("HomeMenuStudent.html")
             else:
@@ -72,9 +72,9 @@ class HomeController:
     @app.route("/SelectCourseView")
     def SelectCourseView(self=None):
         return render_template("SelectCourseView.html", Courses=Courses)
-    @app.route("goCourse/<int_Menu>/string=current_course")
-    def goCourse(Menu,current_course):
-        pass
+    #@app.route("go/string=current_course")
+    #def goCourse(Menu,current_course):
+        #pass
 
     @app.route("/addCourse", methods=["POST"])
     def addCourse(sell=None):

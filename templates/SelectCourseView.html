@@ -13,9 +13,7 @@
                 {% for todo in Courses %}
                 <li>
                     <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
-                    <a href="{{ url_for('goCourse', Menu=loop.index0, current_course=todo['task']) }}">⏩</a>
-                    <a href="{{ url_for('edit', Menu=loop.index0) }}">Edit</a>
-                    <a href="{{ url_for('delete', Menu=loop.index0) }}">Delete</a>
+
                 </li>
                 {% endfor %}
             </ul>
