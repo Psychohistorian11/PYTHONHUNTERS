@@ -55,20 +55,15 @@ class HomeController:
 
     @app.route("/LoginEmailandPassword", methods=["POST"])
     def LoginE_and_P(self=None):
-<<<<<<< HEAD
         edd =0 
         listThemesFromDB = DB.get_themesDB(edd)
-=======
-        idCourse = 0
-        listThemesFromDB = DB.get_themesDB(idCourse)
->>>>>>> 88f123736f117beae2c5a4b1bca7043a1318e9ea
         ThemeObject.update_themes(listThemesFromDB)
         if request.method == "POST":
             email = request.form["loginEmail"]
             password = request.form["password"]
             existence, isTeacher = ConnectionDB().verify_accountDB(email, password)
             if existence and isTeacher:
-                return redirect(url_for("SelectCourseView"))
+                return redirect(url_for("selectCourseView"))
             elif existence:
                 return render_template("HomeMenuStudent.html")
             else:
