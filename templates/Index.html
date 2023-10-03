@@ -96,13 +96,18 @@
             color: var(--blue);
             margin-bottom: 8px;
         }
+        .notification{
+            background-color: var(--white);
+            color: var(--blue);
+
+        }
     
         
 
     </style>
 </head>
 <body>
-    <div class="notification"> >
+    <div class="notification"> 
         {% if message %}
         <p>{{ message }}</p>
         {% endif %}

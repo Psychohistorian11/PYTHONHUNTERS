@@ -49,7 +49,8 @@ class HomeController:
 
     @app.route("/LoginEmailandPassword", methods=["POST"])
     def LoginE_and_P(self=None):
-        listThemesFromDB = DB.get_themesDB()
+        edd =0 
+        listThemesFromDB = DB.get_themesDB(edd)
         ThemeObject.update_themes(listThemesFromDB)
         if request.method == "POST":
             email = request.form["loginEmail"]
