@@ -55,13 +55,10 @@ class HomeController:
 
     @app.route("/LoginEmailandPassword", methods=["POST"])
     def LoginE_and_P(self=None):
-<<<<<<< HEAD
         edd =0 
         listThemesFromDB = DB.get_themesDB(edd)
-=======
         idCourse = 0
         listThemesFromDB = DB.get_themesDB(idCourse)
->>>>>>> 88f123736f117beae2c5a4b1bca7043a1318e9ea
         ThemeObject.update_themes(listThemesFromDB)
         if request.method == "POST":
             email = request.form["loginEmail"]
@@ -77,7 +74,7 @@ class HomeController:
 
     # /----------LISTADO DE ACTIVIDADES------------------------ /
     @app.route("/SelectCourseView")
-    def selectCourseView(self=None):
+    def SelectCourseView(self=None):
         return render_template("SelectCourseView.html", Courses=Courses)
     @app.route("/Menu")
     def Menu(self=None):
