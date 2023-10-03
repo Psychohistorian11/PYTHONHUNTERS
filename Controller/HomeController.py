@@ -63,17 +63,26 @@ class HomeController:
             password = request.form["password"]
             existence, isTeacher = ConnectionDB().verify_accountDB(email, password)
             if existence and isTeacher:
-                return redirect(url_for("selectCourseView"))
+                return redirect(url_for("Menu"))
             elif existence:
                 return render_template("HomeMenuStudent.html")
             else:
                 message = "Usuario no existe"
                 return render_template("Index.html", message=message)
-
-    # /----------LISTADO DE ACTIVIDADES------------------------ /
     @app.route("/SelectCourseView")
-    def selectCourseView(self=None):
+    def SelectCourseView(self=None):
         return render_template("SelectCourseView.html", Courses=Courses)
+    #@app.route("go/string=current_course")
+    #def goCourse(Menu,current_course):
+        #pass
+
+    @app.route("/addCourse", methods=["POST"])
+    def addCourse(sell=None):
+        course = request.form["todo"]
+        Courses.append({'task': course})
+        return redirect(url_for("SelectCourseView"))
+    # /----------LISTADO DE ACTIVIDADES------------------------ /
+
     @app.route("/Menu")
     def Menu(self=None):
         return render_template("HomeMenuTeacher.html",
