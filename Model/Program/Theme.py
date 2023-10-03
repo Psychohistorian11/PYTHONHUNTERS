@@ -7,8 +7,8 @@ class Theme:
         self.Themes = [{"task": "Primera Actividad"}]
         self.Exercises = {"task": []}
 
-    def enter_theme(self, newTheme):
-        ConnectionDB().enter_ThemeDB(newTheme)
+    def enter_theme(self, newTheme, idCourse):
+        ConnectionDB().enter_ThemeDB(newTheme, idCourse)
 
     def update_themes(self, listThemesfromDB):
         for theme in listThemesfromDB:

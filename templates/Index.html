@@ -35,17 +35,17 @@
             grid-template-rows: auto 1fr auto;
             width: 400px;
             border-radius: 16px;
-            
+
         }
         .logo {
             width: 300px;
-            margin: 0 auto; 
+            margin: 0 auto;
             margin-bottom: 24px;
             border-radius: 8px;
-            
+
         }
         .title{
-           font-size: var(--lg); 
+           font-size: var(--lg);
            color: var(--blue);
            margin-bottom: 12px;
            text-align: center;
@@ -88,7 +88,7 @@
             margin-left: 16px;
             margin-right: 16px;
             cursor: pointer;
-            
+
 
         }
         .register-button{
@@ -96,13 +96,12 @@
             color: var(--blue);
             margin-bottom: 8px;
         }
-    
-        
+
 
     </style>
 </head>
 <body>
-    <div class="notification"> >
+    <div class="notification">
         {% if message %}
         <p>{{ message }}</p>
         {% endif %}
@@ -114,13 +113,13 @@
             <form action="/LoginEmailandPassword" method="POST" class="form form-login">
                 <label for="loginEmail" class="label">Correo Electrónico</label>
                 <input type="email" name="loginEmail" placeholder="Correo Electronico" class="input input-mail" id="loginEmail" required>
-                
+
                 <label for="password" class="label">Contraseña</label>
                 <input type="password" name="password" placeholder="Contraseña" id="password" class="input input-password" required>
-                
+
                 <button type="submit" class="primary-button login-button">Iniciar sesión</button>
             </form>
-      
+
             <form class="login-formStudent" action="/StudentRegistrationView">
                 <button type="submit" class="primary-button register-button">¿No tienes cuenta ?</button>
             </form>
