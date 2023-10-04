@@ -5,21 +5,22 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Python Hunters</h1>
+        <h1>Cursos</h1>
     <div id="content">
         <div class="sidebar">
-            <h2>Cursos</h2>
             <ul>
-                {% for todo in Courses %}
+                {% for course in Courses %}
                 <li>
-                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
-
+                    <span {% if course[done] %} style="text-decoration: line-through" {% endif %}>{{ course["task"] }}</span>
+                    <a href="{{ url_for('goCourse', Menu=loop.index0,CourseName=course['task']) }}">⏩</a>
+                    <a href="{{ url_for('editCourse', Menu=loop.index0) }}">Edit</a>
+                    <a href="{{ url_for('deleteCourse', Menu=loop.index0) }}">Delete</a>
                 </li>
                 {% endfor %}
             </ul>
             <form action="{{ url_for('addCourse') }}" method="post">
                 <input type="text" name="todo">
-                <button type="submit">Add Todo</button>
+                <button type="submit">Agregar Curso</button>
             </form>
         </div>
     </div>

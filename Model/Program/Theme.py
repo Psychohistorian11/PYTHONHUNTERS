@@ -10,6 +10,12 @@ class Theme:
     def enter_theme(self, newTheme, idCourse):
         ConnectionDB().enter_ThemeDB(newTheme, idCourse)
 
+    def edit_theme(self, theme):
+        ConnectionDB().edit_themeDB(theme)
+
+    def delete_theme(self, theme):
+        ConnectionDB().delete_themeDB(theme)
+
     def update_themes(self, listThemesfromDB):
         for theme in listThemesfromDB:
             self.Themes.append({'task': theme})

@@ -1,6 +1,14 @@
+from DB.ConnectionDB import ConnectionDB
+
 class Course:
     def __init__(self):
-        self.courses = [{"task": ""}]
+        self.courses = [{"task": "Grupo_63", "done": True}]
 
     def enter_course(self, nameCourse):
-        pass
+        ConnectionDB().enter_courseDB(nameCourse)
+
+    def edit_course(self, nameCourse):
+        ConnectionDB().edit_courseDB(nameCourse)
+
+    def delete_course(self, nameCourse):
+        ConnectionDB().delete_courseDB(nameCourse)
