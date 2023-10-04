@@ -94,6 +94,7 @@ class ConnectionDB:
                   where t.curso_idCurso = %s ;"""
         result = self.executeSQL(query, (idCourse,))
         themes = [name[0] for name in result]
+        print(themes)
         return themes
 
     def get_id_theme_by_nameDB(self, nameTheme):
@@ -124,4 +125,13 @@ class ConnectionDB:
                               "Ejercicio2": ["Ciclos", True, "easy", "haga un ciclito"],
                               "Ejercicio3": ["Condicionales", False, "Very easy", "Qué es un condicional?"]}
         return listExerciseFromDB
+
+    def enter_courseDB(self, nameCourse):
+        pass
+
+    def delete_courseDB(self, nameCourse):
+        pass
+
+    def edit_courseDB(self, nameCourse):
+        pass
 

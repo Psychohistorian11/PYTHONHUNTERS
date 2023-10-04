@@ -168,7 +168,7 @@ li{
                 <li>
                     <img src="{{ url_for('static', filename='code.png') }}" class="code">
                     <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
-                    <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task']) }}">
+                    <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task'], nameCourse=course_name) }}">
                         <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
                     </a>
                     <a href="{{ url_for('edit', Menu=loop.index0) }}">
@@ -202,8 +202,6 @@ li{
                 </form>
             </div>
         </div>
-    </div>
-    </div>
 </body>
 </html>
 
