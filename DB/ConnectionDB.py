@@ -88,6 +88,12 @@ class ConnectionDB:
                     """
         self.executeSQL(query, (idCourse, newTheme))
 
+    def edit_themeDB(self, theme):
+        pass
+
+    def delete_themeDB(self, theme):
+        pass
+
     def get_themesDB(self, idCourse):  # Este metodo me entrega todos los temas que se
         # encuentran en la base de datos, necestio solo los nombres
         query = """select t.nombre from Tematica t
@@ -101,6 +107,7 @@ class ConnectionDB:
         query_by_id_theme = """SELECT idTematica from Tematica where nombre = %s"""
         listidTheme = self.executeSQL(query_by_id_theme, (nameTheme,))
         idTheme = listidTheme[0][0]
+        print("esta es la lista" + idTheme)
         return idTheme
 
     def enter_exerciseDB(self, newExercise, nameTheme, idCourse):
@@ -124,7 +131,7 @@ class ConnectionDB:
                                                                         "bolenano"],
                               "Ejercicio2": ["Ciclos", True, "easy", "haga un ciclito"],
                               "Ejercicio3": ["Condicionales", False, "Very easy", "Qué es un condicional?"]}
-        return listExerciseFromDB
+        return lista_resultados
 
     def enter_courseDB(self, nameCourse):
         pass

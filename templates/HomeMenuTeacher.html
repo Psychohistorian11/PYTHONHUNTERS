@@ -168,19 +168,19 @@ li{
                 <li>
                     <img src="{{ url_for('static', filename='code.png') }}" class="code">
                     <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
-                    <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task'], nameCourse=course_name) }}">
+                    <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task'], nameCourse = course_name) }}">
                         <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
                     </a>
-                    <a href="{{ url_for('edit', Menu=loop.index0) }}">
+                    <a href="{{ url_for('edit', Menu=loop.index0, nameCourse=course_name) }}">
                         <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
                     </a>
                 
-                    <a href="{{ url_for('delete', Menu=loop.index0) }}">
+                    <a href="{{ url_for('delete', Menu=loop.index0, nameCourse=course_name) }}">
                         <img  src="{{ url_for('static', filename='delete.png') }}" href="{{ url_for('edit', Menu=loop.index0) }}" class=" mini-icon delete">
                     </a>
                 </li>
                 {% endfor %}
-            <form class="form-add" action="{{ url_for('add') }}" method="post">
+            <form class="form-add" action="{{ url_for('add', course_name=course_name) }}" method="post">
                 <input type="text" name="todo" class="input input-add-list">
                 <button type="submit" class="primary-button">Añadir Temática</button>
             </form>

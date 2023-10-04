@@ -38,9 +38,9 @@ class HomeController:
 
     @app.route("/CreateExercise", methods=["POST"])
     def CreateExcercise(self=None):
-        idCourse = 0
         nameActivity = request.args.get('nameActivity')
-        listExercisesFromDB = DB.get_exerciseDB(nameActivity, idCourse)
+        nameCourse = request.args.get('nameCourse')
+        listExercisesFromDB = DB.get_exerciseDB(nameActivity, nameCourse)
         ThemeObject.update_exercise(listExercisesFromDB)
         if request.method == "POST":
             nameExercise = request.form["nameExercise"]
@@ -49,7 +49,7 @@ class HomeController:
             statement = request.form["statement"]
 
             newExercise = ThemeObject.create_exercise(nameExercise, availability, difficulty, statement)
-            DB.enter_exerciseDB(newExercise, nameActivity, idCourse)
+            DB.enter_exerciseDB(newExercise, nameActivity, nameCourse)
             return render_template("HomeMenu_forActivityTeacher.html",
                                    Actividades=Actividades, Exercises=ThemeObject.Exercises)
 
@@ -75,6 +75,7 @@ class HomeController:
     def goCourse(Menu, CourseName):
         # listThemesFromDB = DB.get_themesDB(CourseName)
         # ThemeObject.update_themes(listThemesFromDB)
+        print(CourseName)
         return render_template("HomeMenuTeacher.html",
                                course_name=CourseName,
                                Actividades=Actividades)
@@ -83,6 +84,7 @@ class HomeController:
     def addCourse(sell=None):
         course = request.form["todo"]
         Courses.append({'task': course})
+        CourseObject.enter_course(course)
         return redirect(url_for("SelectCourseView"))
 
     @app.route("/editCourse/<int:Menu>", methods=["GET", "POST"])
@@ -92,7 +94,7 @@ class HomeController:
             course['task'] = request.form['course']
             newCourse = course['task']
             DB.edit_courseDB(newCourse)
-            CourseObject.enter_course(newCourse)
+            CourseObject.edit_course(newCourse)
             return redirect(url_for("SelectCourseView"))
         else:
             return render_template("editCourse.html", course=course, Menu=Menu)
@@ -101,7 +103,7 @@ class HomeController:
     def deleteCourse(Menu):
         nameCourse = Courses[Menu]['task']
         del Courses[Menu]
-        DB.delete_courseDB(nameCourse)
+        CourseObject.delete_course(nameCourse)
         return redirect(url_for("SelectCourseView"))
 
     # /----------LISTADO DE ACTIVIDADES------------------------ /
@@ -115,11 +117,14 @@ class HomeController:
     def sign_off(self=None):
         return render_template("Index.html")
 
-    @app.route("/add", methods=["POST"])
-    def add(self=None):
+    @app.route("/add/<string:course_name>", methods=["POST"])
+    def add(course_name):
         todo = request.form["todo"]
+        print(course_name)
         Actividades.append({"task": todo, "done": False})
-        return redirect(url_for("Menu"))
+        ThemeObject.enter_theme(todo, course_name)
+        return render_template("HomeMenuTeacher.html",
+                               Actividades=Actividades, course_name=course_name)
 
     @app.route("/edit/<int:Menu>", methods=["GET", "POST"])
     def edit(Menu):
@@ -127,16 +132,16 @@ class HomeController:
         if request.method == "POST":
             todo['task'] = request.form['todo']
             newTheme = todo['task']
-            ThemeObject.enter_theme(newTheme, 0)
+            ThemeObject.edit_theme(newTheme)
             return redirect(url_for("Menu"))
         else:
             return render_template("edit.html", todo=todo, Menu=Menu)
 
     @app.route("/go/<int:Menu>/<string:actividad>/<string:nameCourse>")
     def go(Menu, actividad, nameCourse):
-        print(actividad)
-        listExercisesFromDB = DB.get_exerciseDB(actividad, nameCourse)
-        ThemeObject.update_exercise(listExercisesFromDB)
+        print(nameCourse)
+        #listExercisesFromDB = DB.get_exerciseDB(actividad, nameCourse)
+        #ThemeObject.update_exercise(listExercisesFromDB)
         return render_template("HomeMenu_forActivityTeacher.html",
                                Actividades=Actividades,
                                Exercises=ThemeObject.Exercises,
@@ -150,7 +155,9 @@ class HomeController:
 
     @app.route("/delete/<int:Menu>")
     def delete(Menu):
+        nameTheme = Actividades[Menu]['task']
         del Actividades[Menu]
+        ThemeObject.delete_theme(nameTheme)
         return redirect(url_for("Menu"))
 
     @app.route("/StudentRegistrationView")

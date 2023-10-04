@@ -6,3 +6,9 @@ class Course:
 
     def enter_course(self, nameCourse):
         ConnectionDB().enter_courseDB(nameCourse)
+
+    def edit_course(self, nameCourse):
+        ConnectionDB().edit_courseDB(nameCourse)
+
+    def delete_course(self, nameCourse):
+        ConnectionDB().delete_courseDB(nameCourse)
