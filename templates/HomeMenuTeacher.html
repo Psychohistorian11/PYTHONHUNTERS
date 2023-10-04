@@ -23,18 +23,31 @@
             margin: 0;
             display: flex;
         }
+        .full-container{
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-bar{
+            width: 100%;
+            height: 80px;
+            background-color: var(--white);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
         .menu_teacher_left {
-            width: 400px;
             background-color: var(--white);
             height: 100%;
             display: flex;
             flex-direction: column;
             place-items:left;
             border-radius: 12px;
+            margin-top: 0;
+            margin-left: 4px;
+            margin-right: 16px;
         }
         
         .logo {
-            width: 300px;
+            width: 150px;
             margin: 0 ;
             margin-bottom: 12px;
             border-radius: 8px;
@@ -82,6 +95,7 @@
             margin-right: 16px;
             cursor: pointer;
         }
+    
 
 li{
     list-style: none;
@@ -108,7 +122,6 @@ li{
 .menu_teacher_right{
      display: flex;
     justify-content: center;
-     width: 100%;
 }
 .input{
             color: var(--blue);
@@ -139,7 +152,7 @@ li{
 
         }
         .primary-button {
-            font-size: var(--md);
+            font-size: var(--lg);
             background-color: var(--blue);
             border-radius: 12px;
             border: none;
@@ -157,53 +170,62 @@ li{
             display: flex;
             flex-direction: column;
         }
+        .container-down{
+            display: flex;
+            flex-direction: row;
+        }
 
     </style>
 </head>
 <body>
-<div class="menu_teacher_left">
-     <img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo">
-            <h2 class = "title">Temáticas : </h2>
-                {% for todo in Actividades %}
-                <li>
-                    <img src="{{ url_for('static', filename='code.png') }}" class="code">
-                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
-                    <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task']) }}">
-                        <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
-                    </a>
-                    <a href="{{ url_for('edit', Menu=loop.index0) }}">
-                        <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
-                    </a>
-                
-                    <a href="{{ url_for('delete', Menu=loop.index0) }}">
-                        <img  src="{{ url_for('static', filename='delete.png') }}" href="{{ url_for('edit', Menu=loop.index0) }}" class=" mini-icon delete">
-                    </a>
-                </li>
-                {% endfor %}
-            <form class="form-add" action="{{ url_for('add') }}" method="post">
-                <input type="text" name="todo" class="input input-add-list">
-                <button type="submit" class="primary-button">Añadir Temática</button>
-            </form>
-        </div>
-        <div class="menu_teacher_right">
-            <div class="menu-item">
-                <form action="/HomeMenuTeacher">
-                    <button  class= "primary-button-right" type="submit">Actividades</button>
-                </form>
-            </div>
-            <div class="menu-item">
-                <form action="/RankingView">
-                    <button  class= "primary-button-right" type="submit">Ranking</button>
-                </form>
-            </div>
-            <div class="menu-item">
-                <form action="/QualifyView">
-                    <button class= "primary-button-right" type="submit">Calificar</button>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="full-container"> 
+<div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo"></div>
+<div class="container-down">
+    <div class="menu_teacher_left">
+           <h2 class = "title">Temáticas : </h2>
+               {% for todo in Actividades %}
+               <li>
+                   <img src="{{ url_for('static', filename='code.png') }}" class="code">
+                   <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
+                   <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task']) }}">
+                       <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
+                   </a>
+                   <a href="{{ url_for('edit', Menu=loop.index0) }}">
+                       <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
+                   </a>
+               
+                   <a href="{{ url_for('delete', Menu=loop.index0) }}">
+                       <img  src="{{ url_for('static', filename='delete.png') }}" href="{{ url_for('edit', Menu=loop.index0) }}" class=" mini-icon delete">
+                   </a>
+               </li>
+               {% endfor %}
+           <form class="form-add" action="{{ url_for('add') }}" method="post">
+               <input type="text" name="todo" class="input input-add-list" maxlength="30" placeholder="Añadir Temática">
+               <button type="submit" class="primary-button" >+</button>
+           </form>
+       </div>
+       <div class="menu_teacher_right">
+           <div class="menu-item">
+               <form action="/HomeMenuTeacher">
+                   <button  class= "primary-button-right" type="submit">Actividades</button>
+               </form>
+           </div>
+           <div class="menu-item">
+               <form action="/RankingView">
+                   <button  class= "primary-button-right" type="submit">Ranking</button>
+               </form>
+           </div>
+           <div class="menu-item">
+               <form action="/QualifyView">
+                   <button class= "primary-button-right" type="submit">Calificar</button>
+               </form>
+           </div>
+       </div>
+   </div>
 </div>
+</div></div>
+
+
 
 </body>
 </html>
