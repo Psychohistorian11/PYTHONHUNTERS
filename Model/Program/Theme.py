@@ -4,8 +4,8 @@ from DB.ConnectionDB import ConnectionDB
 
 class Theme:
     def __init__(self):
-        self.Themes = [{"task": "Primera Actividad"}]
-        self.Exercises = {"task": []}
+        self.Themes = [{"task": "Variables"}]
+        self.Exercises = [{"task": []}]
 
     def enter_theme(self, newTheme, idCourse):
         ConnectionDB().enter_ThemeDB(newTheme, idCourse)
@@ -24,8 +24,11 @@ class Theme:
         new_exercise = Exercise(nameExercise, availability, difficulty, statement)
         return new_exercise
 
-    def update_exercise(self, listExercisesfromDB):
-        self.Exercises = listExercisesfromDB
+    def update_exercise(self, newExercise):
+        self.Exercises.append({'task': [newExercise.nameExercise,
+                                        newExercise.availability,
+                                        newExercise.difficulty,
+                                        newExercise.statement]})
 
     def create_links(self):
         pass
