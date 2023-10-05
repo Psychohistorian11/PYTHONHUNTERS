@@ -192,6 +192,7 @@ li{
     </style>
 </head>
 <body>
+<<<<<<< HEAD
 <div class="full-container"> 
 <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
     <a  href="METER CODIGO DE CERRAR SESION" class="log_out">
@@ -246,6 +247,49 @@ li{
 
 
 
+=======
+<div class="menu_teacher_left">
+     <img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo">
+            <h2 class = "title">Temáticas : </h2>
+                {% for todo in Actividades %}
+                <li>
+                    <img src="{{ url_for('static', filename='code.png') }}" class="code">
+                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
+                    <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task'], nameCourse = course_name) }}">
+                        <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
+                    </a>
+                    <a href="{{ url_for('edit', Menu=loop.index0, nameCourse=course_name) }}">
+                        <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
+                    </a>
+                
+                    <a href="{{ url_for('delete', Menu=loop.index0, nameCourse=course_name) }}">
+                        <img  src="{{ url_for('static', filename='delete.png') }}" href="{{ url_for('edit', Menu=loop.index0) }}" class=" mini-icon delete">
+                    </a>
+                </li>
+                {% endfor %}
+            <form class="form-add" action="{{ url_for('add', course_name=course_name) }}" method="post">
+                <input type="text" name="todo" class="input input-add-list">
+                <button type="submit" class="primary-button">Añadir Temática</button>
+            </form>
+        </div>
+        <div class="menu_teacher_right">
+            <div class="menu-item">
+                <form action="/HomeMenuTeacher">
+                    <button  class= "primary-button-right" type="submit">Actividades</button>
+                </form>
+            </div>
+            <div class="menu-item">
+                <form action="/RankingView">
+                    <button  class= "primary-button-right" type="submit">Ranking</button>
+                </form>
+            </div>
+            <div class="menu-item">
+                <form action="/QualifyView">
+                    <button class= "primary-button-right" type="submit">Calificar</button>
+                </form>
+            </div>
+        </div>
+>>>>>>> origin/Cristian
 </body>
 </html>
 
