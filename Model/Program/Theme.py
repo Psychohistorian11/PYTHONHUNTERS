@@ -4,8 +4,13 @@ from DB.ConnectionDB import ConnectionDB
 
 class Theme:
     def __init__(self):
-        self.Themes = [{"task": "Variables"}]
-        self.Exercises = [{"task": []}]
+        self.Themes = [{"task": "Variables"},
+                       {"task" : "Condicionales"},
+                       {"task" : "Arreglos"},
+                       {"task" : "Ciclos"},
+                       {"task" : "Matrices"},
+                       {"task" : "Examen final"}]
+        self.Exercises = [{"task": ["Hello World"]}]
 
     def enter_theme(self, newTheme, idCourse):
         ConnectionDB().enter_ThemeDB(newTheme, idCourse)
