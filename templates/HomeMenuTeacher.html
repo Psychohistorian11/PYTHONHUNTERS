@@ -23,6 +23,11 @@
             margin: 0;
             display: flex;
         }
+        .container-down {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: auto; 
+}
         .full-container{
             display: flex;
             flex-direction: column;
@@ -33,24 +38,29 @@
             background-color: var(--white);
             border-radius: 12px;
             margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 95% 5%;
+            grid-template-rows: auto; 
+            align-content: center;
         }
         .menu_teacher_left {
+            grid-column-start: 1;
             background-color: var(--white);
-            height: 100%;
             display: flex;
             flex-direction: column;
-            place-items:left;
             border-radius: 12px;
-            margin-top: 0;
             margin-left: 4px;
             margin-right: 16px;
+            align-items: stretch;
+
         }
         
-        .logo {
+        .logo-nav {
             width: 150px;
             margin: 0 ;
             margin-bottom: 12px;
             border-radius: 8px;
+            grid-column-start: 1;
 
         }
         .title{
@@ -120,10 +130,11 @@ li{
     margin-right: 12px;
 }
 .menu_teacher_right{
+    grid-column-start: 2;
      display: flex;
+     flex-direction: column;
     justify-content: center;
-    width: auto;
-}
+    width: auto;}
 .input{
             color: var(--blue);
             background-color: var(--gray);
@@ -141,18 +152,19 @@ li{
             font-size: var(--lg);
             background-color: var(--white);
             border-radius: 12px;
-            margin-top: 0;
-            margin-left: 4px;
-            margin-right: 4px;
+            margin-bottom: 12px;
+            margin-top: 12px;
+            margin-left: 8px;
+            margin-right: 8px;
             border: none;
-            height: 64px;
-            width: 252px;
+            height: 128px;
+            width: 96%;
             color: var(--blue); 
             cursor: pointer;
             
 
         }
-        .primary-button {
+        .primary-button-teacher{
             font-size: var(--lg);
             background-color: var(--blue);
             border-radius: 12px;
@@ -165,22 +177,28 @@ li{
             margin-top: 8px;
             cursor: pointer;
             
-
         }
-        .form-add{
-            display: flex;
-            flex-direction: column;
+        .form-add {
+    display: flex;
+    flex-direction: column;
         }
-        .container-down{
-            display: flex;
-            flex-direction: row;
+        .log_out{
+            width: 48px;
+            height: 48px;
+            grid-column-start: 2;
+            align-self: center;
         }
 
     </style>
 </head>
 <body>
 <div class="full-container"> 
-<div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo"></div>
+<div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
+    <a  href="METER CODIGO DE CERRAR SESION" class="log_out">
+        <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="mini-icon log_out">
+    </a>
+    
+</div>
 <div class="container-down">
     <div class="menu_teacher_left">
            <h2 class = "title">Temáticas : </h2>
@@ -196,13 +214,13 @@ li{
                    </a>
                
                    <a href="{{ url_for('delete', Menu=loop.index0) }}">
-                       <img  src="{{ url_for('static', filename='delete.png') }}" href="{{ url_for('edit', Menu=loop.index0) }}" class=" mini-icon delete">
+                       <img  src="{{ url_for('static', filename='delete.png') }}"  class=" mini-icon delete">
                    </a>
                </li>
                {% endfor %}
            <form class="form-add" action="{{ url_for('add') }}" method="post">
                <input type="text" name="todo" class="input input-add-list" maxlength="30" placeholder="Añadir Temática">
-               <button type="submit" class="primary-button" >+</button>
+               <button type="submit" class="primary-button-teacher" >+</button>
            </form>
        </div>
        <div class="menu_teacher_right">
