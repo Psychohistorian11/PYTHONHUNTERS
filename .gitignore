@@ -1,0 +1,48 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Carpeta __pycache__
+__pycache__/
+
+# Archivos .pyc
+*.pyc
+
+# Directorio virtualenv (dependiendo de tu entorno virtual)
+venv/
+
+# Directorio de archivos generados por IDEs
+.idea/
+.vscode/
+
+# Archivos de registro y de caché de Python
+*.log
+*.sqlite3
+
+# Archivos generados por herramientas de construcción
+*.pyo
+*.pyd
+__init__.py~
+
+# Carpetas y archivos de datos locales
+*.db
+*.sqlite
+*.csv
+
+# Carpeta de archivos de prueba y entorno de desarrollo
+tests/
+test_*.py
+
+# Archivos de registro generados por la aplicación
+logs/
+log-*
+
+# Entorno de desarrollo
+.env
+.env.local
+.env.*.local
+
+# Dependencias de desarrollo
+node_modules/
+
+
+
