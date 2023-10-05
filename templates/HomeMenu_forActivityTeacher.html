@@ -24,7 +24,7 @@
             </ul>
             <form action="{{ url_for('add',CourseName=CourseName) }}" method="post">
                 <input type="text" name="todo">
-                <button type="submit">Add Todo</button>
+                <button type="submit">Añadir Tematica</button>
             </form>
         </div>
 
@@ -45,6 +45,11 @@
                         <button type="submit">Calificar</button>
                     </form>
                 </div>
+                <div class="menu-item">
+                <form action="/sign_off">
+                    <button  class= "primary-button-right" type="submit">Cerrar Sesión</button>
+                </form>
+            </div>
             </div>
             <div id="create-exercise">
                 <form action="/CreateExerciseView" method="GET">
@@ -58,9 +63,9 @@
                 <div class="sidebar">
                         <ul>
 
-                            {% for key,exercise in Exercises.items() %}
+                            {% for exercise_dict in Exercises %}
                             <li>
-                                    <span><a href="{{ url_for('go', Menu=loop.index0, actividad=key, CourseName=CourseName) }}">{{ exercise[0] }}</a></span>
+                                    <span><a href="{{ url_for('go', Menu=loop.index0, actividad=exercise_dict['task'][0], CourseName=CourseName) }}">{{ exercise_dict['task'][0] }}</a></span>
 
                             </li>
                             {% endfor %}
