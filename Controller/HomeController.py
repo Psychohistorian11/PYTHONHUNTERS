@@ -32,16 +32,16 @@ class HomeController:
     @app.route("/CreateExerciseView")
     def CreateExerciseView(self=None):
         nameActivity = request.args.get('nameActivity')
+        CourseName = request.args.get('CourseName')
         return render_template("CreateExercise.html",
                                Actividades=Actividades,
-                               nameActivity=nameActivity)
+                               nameActivity=nameActivity,
+                               CourseName=CourseName)
 
     @app.route("/CreateExercise", methods=["POST"])
     def CreateExcercise(self=None):
-        idCourse = 0
-        nameActivity = request.args.get('nameActivity')
-        listExercisesFromDB = DB.get_exerciseDB(nameActivity, idCourse)
-        ThemeObject.update_exercise(listExercisesFromDB)
+        nameActivity = request.form['nameActivity']
+        nameCourse = request.form['CourseName']
         if request.method == "POST":
             nameExercise = request.form["nameExercise"]
             availability = request.form["availability"]
@@ -49,38 +49,65 @@ class HomeController:
             statement = request.form["statement"]
 
             newExercise = ThemeObject.create_exercise(nameExercise, availability, difficulty, statement)
-            DB.enter_exerciseDB(newExercise, nameActivity)
+            ThemeObject.update_exercise(newExercise)
+            #DB.enter_exerciseDB(newExercise, nameActivity, nameCourse)
+            #listExercisesFromDB = DB.get_exerciseDB(nameActivity, nameCourse)
+            #ThemeObject.update_exercise(listExercisesFromDB)
             return render_template("HomeMenu_forActivityTeacher.html",
-                                   Actividades=Actividades, Exercises=ThemeObject.Exercises)
+                                       Actividades=Actividades, Exercises=ThemeObject.Exercises)
 
     @app.route("/LoginEmailandPassword", methods=["POST"])
     def LoginE_and_P(self=None):
-        edd =0 
-        listThemesFromDB = DB.get_themesDB(edd)
-        ThemeObject.update_themes(listThemesFromDB)
         if request.method == "POST":
             email = request.form["loginEmail"]
             password = request.form["password"]
             existence, isTeacher = ConnectionDB().verify_accountDB(email, password)
             if existence and isTeacher:
-                return redirect(url_for("Menu"))
+                return redirect(url_for("SelectCourseView"))
             elif existence:
-                return render_template("HomeMenuStudent.html")
+                return render_template("HomeMenuStudent.html",Actividades=Actividades)
             else:
                 message = "Usuario no existe"
                 return render_template("Index.html", message=message)
+
     @app.route("/SelectCourseView")
     def SelectCourseView(self=None):
         return render_template("SelectCourseView.html", Courses=Courses)
-    #@app.route("go/string=current_course")
-    #def goCourse(Menu,current_course):
-        #pass
+
+    @app.route("/goCourse/<int:Menu>/<string:CourseName>")
+    def goCourse(Menu, CourseName):
+        # listThemesFromDB = DB.get_themesDB(CourseName)
+        # ThemeObject.update_themes(listThemesFromDB)
+        return render_template("HomeMenuTeacher.html",
+                               CourseName=CourseName,
+                               Actividades=Actividades
+                               )
 
     @app.route("/addCourse", methods=["POST"])
     def addCourse(sell=None):
         course = request.form["todo"]
         Courses.append({'task': course})
+        CourseObject.enter_course(course)
         return redirect(url_for("SelectCourseView"))
+
+    @app.route("/editCourse/<int:Menu>/<string:CourseName>", methods=["GET", "POST"])
+    def editCourse(Menu, CourseName):
+        course = Courses[Menu]
+        if request.method == "POST":
+            course['task'] = request.form['course']
+            newCourse = course['task']
+            CourseObject.edit_course(CourseName, newCourse)
+            return redirect(url_for("SelectCourseView"))
+        else:
+            return render_template("editCourse.html", course=course, Menu=Menu,CourseName=CourseName)
+
+    @app.route("/deleteCourse/<int:Menu>")
+    def deleteCourse(Menu):
+        nameCourse = Courses[Menu]['task']
+        del Courses[Menu]
+        CourseObject.delete_course(nameCourse)
+        return redirect(url_for("SelectCourseView"))
+
     # /----------LISTADO DE ACTIVIDADES------------------------ /
 
     @app.route("/Menu")
@@ -92,44 +119,49 @@ class HomeController:
     def sign_off(self=None):
         return render_template("Index.html")
 
-    @app.route("/add", methods=["POST"])
-    def add(self=None):
+    @app.route("/add/<string:CourseName>", methods=["POST"])
+    def add(CourseName):
         todo = request.form["todo"]
         Actividades.append({"task": todo, "done": False})
-        return redirect(url_for("Menu"))
+        print(f"add: {Actividades}")
+        #ThemeObject.enter_theme(odo CourseName)
+        return render_template("HomeMenuTeacher.html",
+                               Actividades=Actividades, CourseName=CourseName)
 
-    @app.route("/edit/<int:Menu>", methods=["GET", "POST"])
-    def edit(Menu):
+    @app.route("/edit/<int:Menu>/<string:actividad>/<string:CourseName>", methods=["GET", "POST"])
+    def edit(Menu, actividad, CourseName):
+        print(f"edit: {Actividades}")
         todo = Actividades[Menu]
         if request.method == "POST":
             todo['task'] = request.form['todo']
             newTheme = todo['task']
-            idCourse = 0
-            ThemeObject.enter_theme(newTheme,idCourse)
-            return redirect(url_for("Menu"))
+            #ThemeObject.edit_theme(newTheme, actividad, CourseName)
+            return render_template("HomeMenuTeacher.html", Actividades=Actividades, CourseName=CourseName)
         else:
-            return render_template("edit.html", todo=todo, Menu=Menu)
+            return render_template("edit.html", todo=todo, Menu=Menu, CourseName=CourseName, actividad=actividad)
 
-    @app.route("/go/<int:Menu>/<string:actividad>")
-    def go(Menu, actividad):
-        idCourse= 0
-        listExercisesFromDB = DB.get_exerciseDB(actividad,idCourse)
-        ThemeObject.update_exercise(listExercisesFromDB)
+    @app.route("/go/<int:Menu>/<string:actividad>/<string:CourseName>")
+    def go(Menu, actividad, CourseName):
+        print(CourseName)
+        #listExercisesFromDB = DB.get_exerciseDB(actividad, nameCourse)
+        #ThemeObject.update_exercise(listExercisesFromDB)
         return render_template("HomeMenu_forActivityTeacher.html",
                                Actividades=Actividades,
                                Exercises=ThemeObject.Exercises,
-                               nameActivity=actividad)
+                               nameActivity=actividad,
+                               CourseName=CourseName)
 
     @app.route("/check/<int:Menu>")  # Metodo no Utilizado
     def check(Menu):
         Actividades[Menu]['done'] = not Actividades[Menu]['done']
         return redirect(url_for("Menu"))
 
-    @app.route("/delete/<int:Menu>")
-    def delete(Menu):
+    @app.route("/delete/<int:Menu>/<string:CourseName>")
+    def delete(Menu,CourseName):
+        #nameTheme = Actividades[Menu]['task']
         del Actividades[Menu]
+        #ThemeObject.delete_theme(nameTheme, CourseName)
         return redirect(url_for("Menu"))
-
 
     @app.route("/StudentRegistrationView")
     def StudentRegistrationView(message=None):
@@ -140,11 +172,11 @@ class HomeController:
         return render_template("HomeMenuTeacher.html",
                                Actividades=Actividades)
 
-    @app.route("/RankingView")
+    @app.route("/RankingView")  # Segundo Sprint
     def Ranking(message=None):
         return render_template("Ranking.html")
 
-    @app.route("/QualifyView")
+    @app.route("/QualifyView")  # Segundo Sprint
     def Qualify(message=None):
         return render_template("Qualify.html")
 
@@ -154,7 +186,7 @@ class HomeController:
             nameStudent = request.form["nameStudent"]
             lastNameStudent = request.form["lastNameStudent"]
             emailStudent = request.form["emailStudent"]
-            passwordStudent = request.form["emailStudent"]
+            passwordStudent = request.form["passwordStudent"]
 
             # Creación e IngresoDB
             newStudent = program.access.register_student(nameStudent,

@@ -23,21 +23,44 @@
             margin: 0;
             display: flex;
         }
-        .menu_teacher_left {
-            width: 400px;
-            background-color: var(--white);
-            height: 100%;
+        .container-down {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: auto;
+}
+        .full-container{
             display: flex;
             flex-direction: column;
-            place-items:left;
-            border-radius: 12px;
         }
-        
-        .logo {
-            width: 300px;
+        .nav-bar{
+            width: 100vw;
+            height: 80px;
+            background-color: var(--white);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 95% 5%;
+            grid-template-rows: auto;
+            align-content: center;
+        }
+        .menu_teacher_left {
+            grid-column-start: 1;
+            background-color: var(--white);
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            margin-left: 4px;
+            margin-right: 16px;
+            align-items: stretch;
+
+        }
+
+        .logo-nav {
+            width: 150px;
             margin: 0 ;
             margin-bottom: 12px;
             border-radius: 8px;
+            grid-column-start: 1;
 
         }
         .title{
@@ -83,33 +106,43 @@
             cursor: pointer;
         }
 
+
 li{
     list-style: none;
     margin-left: 20px;
-    display: flex; 
-    align-items: left; 
-    margin-bottom: 16px; 
-    
-    
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
 }
 .mini-icon{
-    width: 32px; 
-    height: 32px; 
+    width: 32px;
+    height: 32px;
+    margin-top: 16px;
     margin-right: 0px;
     margin-left: 8px;
     margin-bottom: 8px;
     cursor: pointer;
 }
-.code{
-    width: 20px; 
-    height: 20px; 
+.book{
+    width: 28px;
+    height: 28px;
     margin-right: 12px;
+    justify-self: center;
 }
+.code{
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    justify-self: center;
+}
+
 .menu_teacher_right{
+    grid-column-start: 2;
      display: flex;
+     flex-direction: column;
     justify-content: center;
-     width: 100%;
-}
+    width: auto;}
 .input{
             color: var(--blue);
             background-color: var(--gray);
@@ -122,24 +155,25 @@ li{
             margin-right: 16px;
             outline: none;
         }
-        
+
         .primary-button-right {
             font-size: var(--lg);
             background-color: var(--white);
             border-radius: 12px;
-            margin-top: 0;
-            margin-left: 4px;
-            margin-right: 4px;
+            margin-bottom: 12px;
+            margin-top: 12px;
+            margin-left: 8px;
+            margin-right: 8px;
             border: none;
-            height: 64px;
-            width: 252px;
-            color: var(--blue); 
+            height: 128px;
+            width: 96%;
+            color: var(--blue);
             cursor: pointer;
-            
+
 
         }
-        .primary-button {
-            font-size: var(--md);
+        .primary-button-teacher{
+            font-size: var(--lg);
             background-color: var(--blue);
             border-radius: 12px;
             border: none;
@@ -150,62 +184,96 @@ li{
             margin-bottom: 16px;
             margin-top: 8px;
             cursor: pointer;
-            
 
         }
-        .form-add{
-            display: flex;
-            flex-direction: column;
+        .form-add {
+    display: flex;
+    flex-direction: column;
         }
+        .log_out{
+            width: 48px;
+            height: 48px;
+            grid-column-start: 2;
+            align-self: center;
+        }
+    
+    .log_out-button{
+        background: var(--white);
+        border: none;
+        display:flex;
+        justify-content: center;
+    }
+    .out{
+        display:flex;
+        justify-content: center;
+        align-items: center; 
+        margin-right: 12px;
+        
+    }
+    .exit{
+        width: 48px;
+        height: 48px;
+        justify-self: center;
+        cursor: pointer;
+    }
 
     </style>
 </head>
 <body>
-<div class="menu_teacher_left">
-     <img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo">
-            <h2 class = "title">Temáticas : </h2>
-                {% for todo in Actividades %}
-                <li>
-                    <img src="{{ url_for('static', filename='code.png') }}" class="code">
-                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
-                    <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task']) }}">
-                        <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
-                    </a>
-                    <a href="{{ url_for('edit', Menu=loop.index0) }}">
-                        <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
-                    </a>
-                
-                    <a href="{{ url_for('delete', Menu=loop.index0) }}">
-                        <img  src="{{ url_for('static', filename='delete.png') }}" href="{{ url_for('edit', Menu=loop.index0) }}" class=" mini-icon delete">
-                    </a>
-                </li>
-                {% endfor %}
-            <form class="form-add" action="{{ url_for('add') }}" method="post">
-                <input type="text" name="todo" class="input input-add-list">
-                <button type="submit" class="primary-button">Añadir Temática</button>
-            </form>
-        </div>
-        <div class="menu_teacher_right">
-            <div class="menu-item">
-                <form action="/HomeMenuTeacher">
-                    <button  class= "primary-button-right" type="submit">Actividades</button>
-                </form>
-            </div>
-            <div class="menu-item">
-                <form action="/RankingView">
-                    <button  class= "primary-button-right" type="submit">Ranking</button>
-                </form>
-            </div>
-            <div class="menu-item">
-                <form action="/QualifyView">
-                    <button class= "primary-button-right" type="submit">Calificar</button>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="full-container">
+<div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
+    <form class="out" action="/sign_off">
+        <a class="log_out">
+            <button type="submit" class="log_out-button">
+                <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="exit">
+            </button>
+        </a>
+        </form>
+
+</div>
+<div class="container-down">
+    <div class="menu_teacher_left">
+           <h2 class = "title">Temáticas : </h2>
+               {% for todo in Actividades %}
+               <li>
+                   <img src="{{ url_for('static', filename='book.png') }}" class="book">
+                   <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
+                   <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName) }}">
+                       <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
+                   </a>
+                   <a href="{{ url_for('edit', Menu=loop.index0,actividad=todo['task'], CourseName=CourseName) }}">
+                       <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
+                   </a>
+
+                   <a href="{{ url_for('delete', Menu=loop.index0, CourseName=CourseName)}}">
+                       <img  src="{{ url_for('static', filename='delete.png') }}"  class=" mini-icon delete">
+                   </a>
+               </li>
+               {% endfor %}
+           <form class="form-add" action="{{ url_for('add', CourseName=CourseName) }}" method="post">
+               <input type="text" name="todo" class="input input-add-list" maxlength="30" placeholder="Añadir Temática">
+               <button type="submit" class="primary-button-teacher" >+</button>
+           </form>
+       </div>
+       <div class="menu_teacher_right">
+           <div class="menu-item">
+               <form action="/HomeMenuTeacher">
+                   <button  class= "primary-button-right" type="submit">Actividades</button>
+               </form>
+           </div>
+           <div class="menu-item">
+               <form action="/RankingView">
+                   <button  class= "primary-button-right" type="submit">Ranking</button>
+               </form>
+           </div>
+           <div class="menu-item">
+               <form action="/QualifyView">
+                   <button class= "primary-button-right" type="submit">Calificar</button>
+               </form>
+           </div>
+       </div>
+   </div>
 </div>
 
 </body>
 </html>
-
-
