@@ -1,5 +1,0 @@
-flask
-<<<<<<< HEAD
-mysql.connector
-=======
-mysql-connector
