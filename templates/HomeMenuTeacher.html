@@ -111,24 +111,32 @@ li{
     list-style: none;
     margin-left: 20px;
     display: flex;
-    align-items: left;
+    align-items: center;
     margin-bottom: 16px;
-
 
 }
 .mini-icon{
     width: 32px;
     height: 32px;
+    margin-top: 16px;
     margin-right: 0px;
     margin-left: 8px;
     margin-bottom: 8px;
     cursor: pointer;
 }
+.book{
+    width: 28px;
+    height: 28px;
+    margin-right: 12px;
+    justify-self: center;
+}
 .code{
     width: 20px;
     height: 20px;
     margin-right: 12px;
+    justify-self: center;
 }
+
 .menu_teacher_right{
     grid-column-start: 2;
      display: flex;
@@ -188,15 +196,39 @@ li{
             grid-column-start: 2;
             align-self: center;
         }
+    
+    .log_out-button{
+        background: var(--white);
+        border: none;
+        display:flex;
+        justify-content: center;
+    }
+    .out{
+        display:flex;
+        justify-content: center;
+        align-items: center; 
+        margin-right: 12px;
+        
+    }
+    .exit{
+        width: 48px;
+        height: 48px;
+        justify-self: center;
+        cursor: pointer;
+    }
 
     </style>
 </head>
 <body>
 <div class="full-container">
 <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
-    <a  href="METER CODIGO DE CERRAR SESION" class="log_out">
-        <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="mini-icon log_out">
-    </a>
+    <form class="out" action="/sign_off">
+        <a class="log_out">
+            <button type="submit" class="log_out-button">
+                <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="exit">
+            </button>
+        </a>
+        </form>
 
 </div>
 <div class="container-down">
@@ -204,7 +236,7 @@ li{
            <h2 class = "title">Temáticas : </h2>
                {% for todo in Actividades %}
                <li>
-                   <img src="{{ url_for('static', filename='code.png') }}" class="code">
+                   <img src="{{ url_for('static', filename='book.png') }}" class="book">
                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
                    <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName) }}">
                        <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
