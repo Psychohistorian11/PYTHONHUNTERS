@@ -13,8 +13,6 @@ class ConnectionDB:
     def __init__(self):
         pass
 
-    import mysql.connector
-
     def executeSQL(self, consulta_sql, variables_adicionales=None):
         try:
             # Crea una conexión a la base de datos
@@ -23,10 +21,13 @@ class ConnectionDB:
                 # Crea un objeto cursor para ejecutar consultas
                 cursor = conn.cursor()
                 # Ejecuta la consulta
+
                 cursor.execute(consulta_sql, variables_adicionales)
 
                 # Si es una consulta INSERT, no hay resultados para recuperar
-                if consulta_sql.strip().upper().startswith("INSERT"):
+                if consulta_sql.strip().upper().startswith("INSERT") or consulta_sql.strip().upper().startswith(
+                        "UPDATE") or consulta_sql.strip().upper().startswith(
+                    "DELETE") or consulta_sql.strip().upper().startswith("CREATE"):
                     conn.commit()  # Guarda los cambios en la base de datos
                     conn.close()
                     return None  # No hay resultados para devolver
@@ -56,6 +57,7 @@ class ConnectionDB:
             existence = True
         return existence, existence_teacher
 
+    # NO FUNCIONA ESTE METODO
     def enter_studentDB(self, newStudent, idCourse):  # Ingresar nuevo estudiante a la  base de datos, no retorna nada
         query = """INSERT INTO `pythonbd`.`Estudiante`
         (`idEstudiante`,
@@ -81,9 +83,7 @@ class ConnectionDB:
                      newStudent.email, newStudent.password, newStudent.score)
         self.executeSQL(query, variables)
 
-    def enter_ThemeDB(self, newTheme, nameCourse):  # Ingresar nuevo tema a la base de datos, no retorna nada
-
-        idCourse = self.get_id_course_by_nameDB(nameCourse)
+    def enter_ThemeDB(self, newTheme, idCourse):  # Ingresar nuevo tema a la base de datos, no retorna nada
         query = """INSERT INTO `pythonbd`.`Tematica`
                     VALUES
                     (null,%s,%s);
@@ -91,31 +91,20 @@ class ConnectionDB:
                     """
         self.executeSQL(query, (idCourse, newTheme))
 
-    def edit_themeDB(self,newThemeName, actualName, nameCourse):
-        print(actualName)
-        print(newThemeName)
-        print(nameCourse)
+    def edit_themeDB(self, actualName, newThemeName, nameCourse):
         idTheme = self.get_id_theme_by_nameDB(actualName)
-        idCourse = self.get_id_theme_by_nameDB(nameCourse)
-
-        query = """UPDATE `pythonbd`.`Tematica`
-        SET
-        `nombre` = %s >
-        WHERE `idTematica` = %s AND `curso_idCurso` = %s;
-        """
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
+        query = """UPDATE Tematica SET nombre = %s WHERE (idTematica = %s) and (curso_idCurso = %s);"""
         variables = (newThemeName, idTheme, idCourse)
-
         self.executeSQL(query, variables)
 
     def delete_themeDB(self, theme, nameCourse):
         idTheme = self.get_id_theme_by_nameDB(theme)
-        idCourse = self.get_id_theme_by_nameDB(nameCourse)
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
 
         query = """DELETE FROM `pythonbd`.`Tematica`
-        WHERE `idTematica` = %s AND `curso_idCurso` = %s;
-        """
+        WHERE `idTematica` = %s AND `curso_idCurso` = %s;"""
         variables = (idTheme, idCourse)
-
         self.executeSQL(query, variables)
 
     def get_themesDB(self, idCourse):  # Este metodo me entrega todos los temas que se
@@ -128,14 +117,13 @@ class ConnectionDB:
         return themes
 
     def get_id_theme_by_nameDB(self, nameTheme):
-        query_by_id_theme = """SELECT idTematica from Tematica where nombre = %s"""
+        query_by_id_theme = """SELECT idTematica from Tematica t where t.nombre = %s;"""
         listidTheme = self.executeSQL(query_by_id_theme, (nameTheme,))
-        print(f"oe: {listidTheme}")
         idTheme = listidTheme[0][0]
         return idTheme
 
     def get_id_course_by_nameDB(self, nameCourse):
-        query_by_id_course = """SELECT idCurso from Curso where nombre = %s"""
+        query_by_id_course = """SELECT idCurso from Curso c where nombre = %s"""
         listidCourse = self.executeSQL(query_by_id_course, (nameCourse,))
         idCourse = listidCourse[0][0]
         return idCourse
@@ -185,9 +173,11 @@ class ConnectionDB:
         self.executeSQL(query, (nameCourse,))
 
     def delete_courseDB(self, nameCourse):
-        query = """"""
+        query = """delete from Curso where nombre = %s"""
+        self.executeSQL(query, (nameCourse,))
 
     def edit_courseDB(self, actualCourse, newCourseName):
-        pass
-
-
+        idCourse = self.get_id_course_by_nameDB(actualCourse)
+        query = """UPDATE Curso SET nombre = %s WHERE (idCurso = %s);"""
+        variables = (newCourseName, idCourse)
+        self.executeSQL(query, variables)

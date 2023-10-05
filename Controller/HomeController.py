@@ -125,12 +125,14 @@ class HomeController:
     def add(CourseName):
         todo = request.form["todo"]
         Actividades.append({"task": todo, "done": False})
+        print(f"add: {Actividades}")
         ThemeObject.enter_theme(todo, CourseName)
         return render_template("HomeMenuTeacher.html",
                                Actividades=Actividades, CourseName=CourseName)
 
     @app.route("/edit/<int:Menu>/<string:actividad>/<string:CourseName>", methods=["GET", "POST"])
     def edit(Menu, actividad, CourseName):
+        print(f"edit: {Actividades}")
         todo = Actividades[Menu]
         if request.method == "POST":
             todo['task'] = request.form['todo']
