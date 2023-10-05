@@ -16,13 +16,13 @@
                 {% for todo in Actividades %}
                 <li>
                     <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
-                    <a href="{{ url_for('go', Menu=loop.index0, actividad=todo['task'],nameCourse=nameCourse) }}">⏩</a>
-                    <a href="{{ url_for('edit', Menu=loop.index0) }}">Edit</a>
-                    <a href="{{ url_for('delete', Menu=loop.index0) }}">Delete</a>
+                    <a href="{{ url_for('go', Menu=loop.index0, actividad=todo['task'],CourseName=CourseName) }}">⏩</a>
+                    <a href="{{ url_for('edit', Menu=loop.index0,actividad=todo['task'], CourseName=CourseName) }}">Edit</a>
+                    <a href="{{ url_for('delete', Menu=loop.index0,CourseName=CourseName) }}">Delete</a>
                 </li>
                 {% endfor %}
             </ul>
-            <form action="{{ url_for('add') }}" method="post">
+            <form action="{{ url_for('add',CourseName=CourseName) }}" method="post">
                 <input type="text" name="todo">
                 <button type="submit">Add Todo</button>
             </form>
@@ -49,7 +49,7 @@
             <div id="create-exercise">
                 <form action="/CreateExerciseView" method="GET">
                     <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
-                    <input type="hidden" name="nameCourse" value="{{ nameCourse }}">
+                    <input type="hidden" name="CourseName" value="{{ CourseName }}">
                     <button type="submit">Crear Ejercicio</button>
                 </form>
             </div>
@@ -60,10 +60,8 @@
 
                             {% for key,exercise in Exercises.items() %}
                             <li>
-                                <span>{{ exercise[0] }}</span>
-                                <a href="{{ url_for('go', Menu=loop.index0, actividad=key) }}">⏩</a>
-                                <a href="{{ url_for('edit', Menu=loop.index0) }}">Edit</a>
-                                <a href="{{ url_for('delete', Menu=loop.index0) }}">Delete</a>
+                                    <span><a href="{{ url_for('go', Menu=loop.index0, actividad=key, CourseName=CourseName) }}">{{ exercise[0] }}</a></span>
+
                             </li>
                             {% endfor %}
                         </ul>

@@ -3,65 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Pensamiento Algorítmico</title>
-    <style>
-        /* Estilos para el diseño deseado */
-        #content {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-        }
-
-        .menu-item {
-            margin-right: 20px; /* Espacio entre elementos */
-        }
-
-        #create-exercise {
-            margin-top: 20px; /* Espacio debajo de "Actividades" */
-        }
-
-        /* Estilos para el formulario de "Crear Ejercicio" */
-        .exercise-form {
-            background-color: #f0f0f0; /* Color de fondo del formulario */
-            padding: 20px;
-            border-radius: 10px; /* Bordes redondeados */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
-            max-width: 400px; /* Ancho máximo del formulario */
-            margin: 20px auto 0; /* Espacio arriba y centrado horizontalmente */
-        }
-
-        .exercise-form h1 {
-            text-align: center; /* Centrar el encabezado del formulario */
-        }
-
-        .exercise-form label {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .exercise-form input[type="text"],
-        .exercise-form select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .exercise-form button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff; /* Color de fondo del botón */
-            color: #fff; /* Color de texto del botón */
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .exercise-form button:hover {
-            background-color: #0056b3; /* Color de fondo al pasar el mouse */
-        }
-    </style>
 </head>
 <body>
     <h1>Pensamiento Algorítmico</h1>
@@ -70,14 +11,12 @@
         {% for todo in Actividades %}
         <li>
             <span {%if todo[done] %} style="text-decoration: line-through" {%endif %}>{{ todo["task"] }}</span>
-            <a href="{{ url_for('edit', Menu=loop.index0)}}">Edit</a>
-            <a href="{{ url_for('delete', Menu=loop.index0)}}">Delete</a>
         </li>
         {% endfor %}
     </ul>
-    <form action="{{ url_for('add') }}" method="post">
+    <form action="{{ url_for('add', CourseName=CourseName) }}" method="post">
         <input type="text" name="todo">
-        <button type="submit">Add Todo</button>
+        <button type="submit">Añadir Tematica</button>
     </form>
     <div id="content">
         <div class="menu-item">
@@ -99,7 +38,7 @@
 
     <div class="exercise-form">
         <h1>Crear Ejercicio</h1>
-        <form id="exercise-form" action="/CreateExercise" method="POST">
+        <form id="exercise-form" action="/CreateExercise" method="post">
             <label for="nameExercise">Nombre del Ejercicio:</label>
             <input type="text" name="nameExercise" id="nameExercise" required>
 
@@ -122,6 +61,7 @@
             <input type="text" name="statement" id="statement" required>
 
             <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
+            <input type="hidden" name="CourseName" value="{{ CourseName }}">
             <button type="submit">Crear Ejercicio</button>
         </form>
     </div>
