@@ -13,8 +13,8 @@
                 <li>
                     <span {% if course[done] %} style="text-decoration: line-through" {% endif %}>{{ course["task"] }}</span>
                     <a href="{{ url_for('goCourse', Menu=loop.index0,CourseName=course['task']) }}">⏩</a>
-                    <a href="{{ url_for('editCourse', Menu=loop.index0) }}">Edit</a>
-                    <a href="{{ url_for('deleteCourse', Menu=loop.index0) }}">Delete</a>
+                    <a href="{{ url_for('editCourse', Menu=loop.index0,CourseName=course['task']) }}">Edit</a>
+                    <a href="{{ url_for('deleteCourse', Menu=loop.index0, CourseName=course['task']) }}">Delete</a>
                 </li>
                 {% endfor %}
             </ul>

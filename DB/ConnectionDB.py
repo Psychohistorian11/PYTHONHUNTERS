@@ -39,7 +39,7 @@ class ConnectionDB:
         except mysql.connector.Error as e:
             print("Error al conectar a la base de datos:", e)
 
-    def verify_accountDB(self, email, password) -> tuple[bool,bool]:
+    def verify_accountDB(self, email, password) -> tuple[bool, bool]:
         teacher_query = 'select count(*) from Profesor where correo = %s and contrasenia = %s'
         teacher_results = self.executeSQL(teacher_query, (email, password))
         quantity_teacher = teacher_results[0][0]
@@ -81,18 +81,42 @@ class ConnectionDB:
                      newStudent.email, newStudent.password, newStudent.score)
         self.executeSQL(query, variables)
 
-    def enter_ThemeDB(self, newTheme, idCourse):  # Ingresar nuevo tema a la base de datos, no retorna nada
+    def enter_ThemeDB(self, newTheme, nameCourse):  # Ingresar nuevo tema a la base de datos, no retorna nada
+
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
         query = """INSERT INTO `pythonbd`.`Tematica`
                     VALUES
                     (null,%s,%s);
+
                     """
         self.executeSQL(query, (idCourse, newTheme))
 
-    def edit_themeDB(self, theme):
-        pass
+    def edit_themeDB(self,newThemeName, actualName, nameCourse):
+        print(actualName)
+        print(newThemeName)
+        print(nameCourse)
+        idTheme = self.get_id_theme_by_nameDB(actualName)
+        idCourse = self.get_id_theme_by_nameDB(nameCourse)
 
-    def delete_themeDB(self, theme):
-        pass
+        query = """UPDATE `pythonbd`.`Tematica`
+        SET
+        `nombre` = %s >
+        WHERE `idTematica` = %s AND `curso_idCurso` = %s;
+        """
+        variables = (newThemeName, idTheme, idCourse)
+
+        self.executeSQL(query, variables)
+
+    def delete_themeDB(self, theme, nameCourse):
+        idTheme = self.get_id_theme_by_nameDB(theme)
+        idCourse = self.get_id_theme_by_nameDB(nameCourse)
+
+        query = """DELETE FROM `pythonbd`.`Tematica`
+        WHERE `idTematica` = %s AND `curso_idCurso` = %s;
+        """
+        variables = (idTheme, idCourse)
+
+        self.executeSQL(query, variables)
 
     def get_themesDB(self, idCourse):  # Este metodo me entrega todos los temas que se
         # encuentran en la base de datos, necestio solo los nombres
@@ -106,9 +130,15 @@ class ConnectionDB:
     def get_id_theme_by_nameDB(self, nameTheme):
         query_by_id_theme = """SELECT idTematica from Tematica where nombre = %s"""
         listidTheme = self.executeSQL(query_by_id_theme, (nameTheme,))
+        print(f"oe: {listidTheme}")
         idTheme = listidTheme[0][0]
-        print("esta es la lista" + idTheme)
         return idTheme
+
+    def get_id_course_by_nameDB(self, nameCourse):
+        query_by_id_course = """SELECT idCurso from Curso where nombre = %s"""
+        listidCourse = self.executeSQL(query_by_id_course, (nameCourse,))
+        idCourse = listidCourse[0][0]
+        return idCourse
 
     def enter_exerciseDB(self, newExercise, nameTheme, idCourse):
         idTheme = self.get_id_theme_by_nameDB(nameTheme)
@@ -122,23 +152,42 @@ class ConnectionDB:
         # ser autoincremento y el valor es una lista con los atributos del Ejercicio
         # El parametro IDnameTheme es la clave foranea de la tabla ejercicio para encontrar
         # los ejercicios correspondientes a una actividad
+
         idTheme = self.get_id_theme_by_nameDB(nameTheme)
-        query = """SELECT * FROM Ejercicio e JOIN Tematica t ON e.tematica_idTematica = t.idTematica WHERE t.idTematica = %s and t.curso_idCurso = %s;"""
-        lista_resultados = self.executeSQL(query, (idTheme,idCourse))
+        query = """SELECT e.idEjercicio,e.nombre,e.disponibilidad,e.dificultad,e.enunciado FROM Ejercicio e JOIN Tematica t ON e.tematica_idTematica = t.idTematica WHERE t.idTematica
+        = %s and t.curso_idCurso = %s;"""
+        lista_resultados = self.executeSQL(query, (idTheme, idCourse))
+        diccionario = {}
+        valor = None
+        for ejercicio in lista_resultados:
+            if ejercicio[2] == 0:
+                valor = False
+            elif ejercicio[2] == 1:
+                valor = True
+            diccionario[ejercicio[0]] = [ejercicio[1], valor, ejercicio[3], ejercicio[4]]
         # Este diccionario es de prueba
-        listExerciseFromDB = {"Ejercicio1": ["Variables", True, "easy", "Cree"
-                                                                        "una variable y asignele un valor"
-                                                                        "bolenano"],
-                              "Ejercicio2": ["Ciclos", True, "easy", "haga un ciclito"],
-                              "Ejercicio3": ["Condicionales", False, "Very easy", "Qué es un condicional?"]}
-        return lista_resultados
+        listExerciseFromDB = {"Ejercicio1": ["nombre1", True, "easy", "Cree"
+                                                                      "una variable y asignele un valor"
+                                                                      "bolenano"],
+                              "Ejercicio2": ["nombre2", True, "easy", "haga un ciclito"],
+                              "Ejercicio3": ["nombre3", False, "Very easy", "Qué es un condicional?"]}
+        return diccionario
+
+    def get_id_teacher_by_emailDB(self, teacherEmail):
+        query = """SELECT idProfesor from Profesor where correo = %s"""
+        listidTeacher = self.executeSQL(query, (teacherEmail,))
+        idTeacher = listidTeacher[0][0]
+        return idTeacher
 
     def enter_courseDB(self, nameCourse):
-        pass
+        # SOLO SQL
+        query = """insert into Curso values (null,1,%s)"""
+        self.executeSQL(query, (nameCourse,))
 
     def delete_courseDB(self, nameCourse):
+        query = """"""
+
+    def edit_courseDB(self, actualCourse, newCourseName):
         pass
 
-    def edit_courseDB(self, nameCourse):
-        pass
 

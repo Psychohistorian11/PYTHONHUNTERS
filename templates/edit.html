@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-        <form action="{{ url_for('edit', Menu=Menu )}}" method="post">
+        <form action="{{ url_for('edit', Menu=Menu,actividad=actividad, CourseName=CourseName) }}" method="post">
                 <input type="text" name="todo" value="{{todo['task']}}">
                 <button type="submit">Save</button>
         </form>
