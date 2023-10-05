@@ -13,8 +13,6 @@ class ConnectionDB:
     def __init__(self):
         pass
 
-    import mysql.connector
-
     def executeSQL(self, consulta_sql, variables_adicionales=None):
         try:
             # Crea una conexión a la base de datos
@@ -23,10 +21,13 @@ class ConnectionDB:
                 # Crea un objeto cursor para ejecutar consultas
                 cursor = conn.cursor()
                 # Ejecuta la consulta
+
                 cursor.execute(consulta_sql, variables_adicionales)
 
                 # Si es una consulta INSERT, no hay resultados para recuperar
-                if consulta_sql.strip().upper().startswith("INSERT"):
+                if consulta_sql.strip().upper().startswith("INSERT") or consulta_sql.strip().upper().startswith(
+                        "UPDATE") or consulta_sql.strip().upper().startswith(
+                        "DELETE") or consulta_sql.strip().upper().startswith("CREATE"):
                     conn.commit()  # Guarda los cambios en la base de datos
                     conn.close()
                     return None  # No hay resultados para devolver
@@ -56,7 +57,8 @@ class ConnectionDB:
             existence = True
         return existence, existence_teacher
 
-    def enter_studentDB(self, newStudent, idCourse):  # Ingresar nuevo estudiante a la  base de datos, no retorna nada
+    # ESTE METODO SOLO INSERTA ESTUDIANTES AL CURSO 1
+    def enter_studentDB(self, newStudent):  # Ingresar nuevo estudiante a la  base de datos, no retorna nada
         query = """INSERT INTO `pythonbd`.`Estudiante`
         (`idEstudiante`,
         `curso_idCurso`,
@@ -77,25 +79,37 @@ class ConnectionDB:
         if newStudent.score != 0:
             if newStudent.score is None:
                 newStudent.score = 0
-        variables = (idCourse, newStudent.firstName, newStudent.lastName,
+        variables = (1, newStudent.firstName, newStudent.lastName,
                      newStudent.email, newStudent.password, newStudent.score)
         self.executeSQL(query, variables)
 
-    def enter_ThemeDB(self, newTheme, idCourse):  # Ingresar nuevo tema a la base de datos, no retorna nada
+    def enter_ThemeDB(self, newTheme, nameCourse):  # Ingresar nuevo tema a la base de datos, no retorna nada
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
         query = """INSERT INTO `pythonbd`.`Tematica`
                     VALUES
                     (null,%s,%s);
                     """
         self.executeSQL(query, (idCourse, newTheme))
 
-    def edit_themeDB(self, theme):
-        pass
+    def edit_themeDB(self, actualName, newThemeName, nameCourse):
+        idTheme = self.get_id_theme_by_nameDB(actualName)
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
+        query = """UPDATE Tematica SET nombre = %s WHERE (idTematica = %s) and (curso_idCurso = %s);"""
+        variables = (newThemeName, idTheme, idCourse)
+        self.executeSQL(query, variables)
 
-    def delete_themeDB(self, theme):
-        pass
+    def delete_themeDB(self, theme, nameCourse):
+        idTheme = self.get_id_theme_by_nameDB(theme)
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
 
-    def get_themesDB(self, idCourse):  # Este metodo me entrega todos los temas que se
+        query = """DELETE FROM `pythonbd`.`Tematica`
+        WHERE `idTematica` = %s AND `curso_idCurso` = %s;"""
+        variables = (idTheme, idCourse)
+        self.executeSQL(query, variables)
+
+    def get_themesDB(self, nameCourse):  # Este metodo me entrega todos los temas que se
         # encuentran en la base de datos, necestio solo los nombres
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
         query = """select t.nombre from Tematica t
                   where t.curso_idCurso = %s ;"""
         result = self.executeSQL(query, (idCourse,))
@@ -104,13 +118,19 @@ class ConnectionDB:
         return themes
 
     def get_id_theme_by_nameDB(self, nameTheme):
-        query_by_id_theme = """SELECT idTematica from Tematica where nombre = %s"""
+        query_by_id_theme = """SELECT idTematica from Tematica t where t.nombre = %s;"""
         listidTheme = self.executeSQL(query_by_id_theme, (nameTheme,))
         idTheme = listidTheme[0][0]
-        print("esta es la lista" + idTheme)
         return idTheme
 
-    def enter_exerciseDB(self, newExercise, nameTheme, idCourse):
+    def get_id_course_by_nameDB(self, nameCourse):
+        query_by_id_course = """SELECT idCurso from Curso c where nombre = %s"""
+        listidCourse = self.executeSQL(query_by_id_course, (nameCourse,))
+        idCourse = listidCourse[0][0]
+        return idCourse
+
+    def enter_exerciseDB(self, newExercise, nameTheme, nameCourse):
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
         idTheme = self.get_id_theme_by_nameDB(nameTheme)
         query = """INSERT INTO `pythonbd`.`Ejercicio`
                   (`idEjercicio`,`tematica_idTematica`,`tematica_curso_idCurso`,`enunciado`) VALUES
@@ -118,27 +138,49 @@ class ConnectionDB:
         variables = (idTheme, idCourse, newExercise)
         self.executeSQL(query, variables)
 
-    def get_exerciseDB(self, nameTheme, idCourse):  # Este metodo me entrega un diccionario donde la clave puede
+    def get_exerciseDB(self, nameTheme, nameCourse):  # Este metodo me entrega un diccionario donde la clave puede
         # ser autoincremento y el valor es una lista con los atributos del Ejercicio
         # El parametro IDnameTheme es la clave foranea de la tabla ejercicio para encontrar
         # los ejercicios correspondientes a una actividad
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
         idTheme = self.get_id_theme_by_nameDB(nameTheme)
-        query = """SELECT * FROM Ejercicio e JOIN Tematica t ON e.tematica_idTematica = t.idTematica WHERE t.idTematica = %s and t.curso_idCurso = %s;"""
-        lista_resultados = self.executeSQL(query, (idTheme,idCourse))
+        query = """SELECT e.idEjercicio,e.nombre,e.disponibilidad,e.dificultad,e.enunciado FROM Ejercicio e JOIN Tematica t ON e.tematica_idTematica = t.idTematica WHERE t.idTematica
+        = %s and t.curso_idCurso = %s;"""
+        lista_resultados = self.executeSQL(query, (idTheme, idCourse))
+        diccionario = {}
+        valor = None
+        for ejercicio in lista_resultados:
+            if ejercicio[2] == 0:
+                valor = False
+            elif ejercicio[2] == 1:
+                valor = True
+            diccionario[ejercicio[0]] = [ejercicio[1], valor, ejercicio[3], ejercicio[4]]
         # Este diccionario es de prueba
-        listExerciseFromDB = {"Ejercicio1": ["Variables", True, "easy", "Cree"
-                                                                        "una variable y asignele un valor"
-                                                                        "bolenano"],
-                              "Ejercicio2": ["Ciclos", True, "easy", "haga un ciclito"],
-                              "Ejercicio3": ["Condicionales", False, "Very easy", "Qué es un condicional?"]}
-        return lista_resultados
+        listExerciseFromDB = {"Ejercicio1": ["nombre1", True, "easy", "Cree"
+                                                                      "una variable y asignele un valor"
+                                                                      "bolenano"],
+                              "Ejercicio2": ["nombre2", True, "easy", "haga un ciclito"],
+                              "Ejercicio3": ["nombre3", False, "Very easy", "Qué es un condicional?"]}
+        return diccionario
+
+    def get_id_teacher_by_emailDB(self, teacherEmail):
+        query = """SELECT idProfesor from Profesor where correo = %s"""
+        listidTeacher = self.executeSQL(query, (teacherEmail,))
+        idTeacher = listidTeacher[0][0]
+        return idTeacher
 
     def enter_courseDB(self, nameCourse):
-        pass
+        # SOLO SQL
+        query = """insert into Curso values (null,1,%s)"""
+        self.executeSQL(query, (nameCourse,))
 
     def delete_courseDB(self, nameCourse):
-        pass
+        query = """delete from Curso where nombre = %s"""
+        self.executeSQL(query, (nameCourse,))
 
-    def edit_courseDB(self, nameCourse):
-        pass
+    def edit_courseDB(self, actualCourse , newCourseName):
+        idCourse = self.get_id_course_by_nameDB(actualCourse)
+        query = """UPDATE Curso SET nombre = %s WHERE (idCurso = %s);"""
+        variables = (newCourseName, idCourse)
+        self.executeSQL(query, variables)
 
