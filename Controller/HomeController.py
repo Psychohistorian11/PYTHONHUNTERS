@@ -47,14 +47,17 @@ class HomeController:
             availability = request.form["availability"]
             difficulty = request.form["difficulty"]
             statement = request.form["statement"]
-
+    
             newExercise = ThemeObject.create_exercise(nameExercise, availability, difficulty, statement)
             ThemeObject.update_exercise(newExercise)
             #DB.enter_exerciseDB(newExercise, nameActivity, nameCourse)
             #listExercisesFromDB = DB.get_exerciseDB(nameActivity, nameCourse)
             #ThemeObject.update_exercise(listExercisesFromDB)
             return render_template("HomeMenu_forActivityTeacher.html",
-                                       Actividades=Actividades, Exercises=ThemeObject.Exercises)
+                                       Actividades=Actividades,
+                                   Exercises=ThemeObject.Exercises,
+                                   CourseName=nameCourse,
+                                   nameActivity=nameActivity)
 
     @app.route("/LoginEmailandPassword", methods=["POST"])
     def LoginE_and_P(self=None):
@@ -161,7 +164,9 @@ class HomeController:
         #nameTheme = Actividades[Menu]['task']
         del Actividades[Menu]
         #ThemeObject.delete_theme(nameTheme, CourseName)
-        return redirect(url_for("Menu"))
+        return render_template("HomeMenuTeacher.html",
+                               CourseName=CourseName,
+                               Actividades=Actividades)
 
     @app.route("/StudentRegistrationView")
     def StudentRegistrationView(message=None):
@@ -169,7 +174,9 @@ class HomeController:
 
     @app.route("/HomeMenuTeacher")
     def Activity(messague=None):
+        CourseName = request.args.get('CourseName')
         return render_template("HomeMenuTeacher.html",
+                               CourseName=CourseName,
                                Actividades=Actividades)
 
     @app.route("/RankingView")  # Segundo Sprint

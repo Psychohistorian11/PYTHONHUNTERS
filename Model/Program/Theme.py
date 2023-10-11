@@ -4,7 +4,7 @@ from DB.ConnectionDB import ConnectionDB
 
 class Theme:
     def __init__(self):
-        self.Themes = [{"task": "Variables"},
+        self.Themes = [{"task": "Variables",},
                        {"task" : "Condicionales"},
                        {"task" : "Arreglos"},
                        {"task" : "Ciclos"},
