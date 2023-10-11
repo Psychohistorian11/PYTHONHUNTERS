@@ -4,10 +4,10 @@
 This repository contains the work of the BitBusters team for the Fundamentos de diseño de Software  UdeM subject 🤓.
 
 ## Team members 👨‍👩‍👦‍👦
--   Isabella Montoya Castellanos👨‍💼
--   Cristian Franco Raigosa 👨‍💼
--   Juan Esteban Valdés 👨‍💼
--   Juan Fernando Alvarez 👨‍💼
+-  Isabella Montoya Castellanos👨‍💼 Project leader
+-  Juan Esteban Valdés 👨‍💼 Front-End Developer
+-  Cristian Franco Raigosa 👨‍💼 Back-End developer
+-  Juan Fernando Alvarez 👨‍💼 DBA
 
 ## Contact information 📞
 
