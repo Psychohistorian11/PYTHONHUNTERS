@@ -45,12 +45,14 @@ class ConnectionDB:
         teacher_results = self.executeSQL(teacher_query, (email, password))
         quantity_teacher = teacher_results[0][0]
 
-        student_query = 'select count(*) from Estudiante where correo = %s and contrasenia = %s'
-        student_results = self.executeSQL(student_query, (email, password))
-        quantity_student = student_results[0][0]
+        existence_teacher = quantity_teacher >= 1
+        existence_student = False
+        if not existence_teacher:
+            student_query = 'select count(*) from Estudiante where correo = %s and contrasenia = %s'
+            student_results = self.executeSQL(student_query, (email, password))
+            quantity_student = student_results[0][0]
 
-        existence_teacher = quantity_teacher == 1
-        existence_student = quantity_student == 1
+            existence_student = quantity_student >= 1
 
         existence = False
         if existence_teacher or existence_student:
