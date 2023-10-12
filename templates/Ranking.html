@@ -2,9 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Ranking de Estudiantes</title>
 </head>
 <body>
-
+    <h1>Ranking de Estudiantes</h1>
+    <table>
+        <tr>
+            <th>Nombre y Apellido</th>
+            <th>    Puntaje</th>
+        </tr>
+        {% for estudiante, puntaje in ranking_students.items() %}
+            <tr>
+                <td>{{ estudiante }}</td>
+                <td>{{ puntaje }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

@@ -186,3 +186,7 @@ class ConnectionDB:
         variables = (newCourseName, idCourse)
         self.executeSQL(query, variables)
 
+    def update_ranking(self):
+        dic = {}
+        return dic
+

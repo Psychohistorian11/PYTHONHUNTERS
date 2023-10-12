@@ -54,7 +54,7 @@ class HomeController:
             #listExercisesFromDB = DB.get_exerciseDB(nameActivity, nameCourse)
             #ThemeObject.update_exercise(listExercisesFromDB)
             return render_template("HomeMenu_forActivityTeacher.html",
-                                       Actividades=Actividades,
+                                   Actividades=Actividades,
                                    Exercises=ThemeObject.Exercises,
                                    CourseName=nameCourse,
                                    nameActivity=nameActivity)
@@ -181,7 +181,14 @@ class HomeController:
 
     @app.route("/RankingView")  # Segundo Sprint
     def Ranking(message=None):
-        return render_template("Ranking.html")
+        ranking_students = {
+            "Estudiante 1": 95,
+            "Estudiante 2": 87,
+            "Estudiante 3": 78,
+        }
+        ranking_students2 = DB.update_ranking()
+        return render_template("Ranking.html",
+                               ranking_students=ranking_students)
 
     @app.route("/QualifyView")  # Segundo Sprint
     def Qualify(message=None):
