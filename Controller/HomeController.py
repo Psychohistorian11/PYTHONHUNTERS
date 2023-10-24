@@ -102,7 +102,7 @@ class HomeController:
             CourseObject.edit_course(CourseName, newCourse)
             return redirect(url_for("SelectCourseView"))
         else:
-            return render_template("editCourse.html", course=course, Menu=Menu,CourseName=CourseName)
+            return render_template("editCourse.html", course=course, Menu=Menu, CourseName=CourseName)
 
     @app.route("/deleteCourse/<int:Menu>")
     def deleteCourse(Menu):
@@ -133,7 +133,6 @@ class HomeController:
 
     @app.route("/edit/<int:Menu>/<string:actividad>/<string:CourseName>", methods=["GET", "POST"])
     def edit(Menu, actividad, CourseName):
-        print(f"edit: {Actividades}")
         todo = Actividades[Menu]
         if request.method == "POST":
             todo['task'] = request.form['todo']
@@ -145,7 +144,6 @@ class HomeController:
 
     @app.route("/go/<int:Menu>/<string:actividad>/<string:CourseName>")
     def go(Menu, actividad, CourseName):
-        print(CourseName)
         #listExercisesFromDB = DB.get_exerciseDB(actividad, nameCourse)
         #ThemeObject.update_exercise(listExercisesFromDB)
         return render_template("HomeMenu_forActivityTeacher.html",
@@ -154,19 +152,42 @@ class HomeController:
                                nameActivity=actividad,
                                CourseName=CourseName)
 
-    @app.route("/check/<int:Menu>")  # Metodo no Utilizado
-    def check(Menu):
-        Actividades[Menu]['done'] = not Actividades[Menu]['done']
-        return redirect(url_for("Menu"))
-
     @app.route("/delete/<int:Menu>/<string:CourseName>")
-    def delete(Menu,CourseName):
+    def delete(Menu, CourseName):
         #nameTheme = Actividades[Menu]['task']
         del Actividades[Menu]
         #ThemeObject.delete_theme(nameTheme, CourseName)
         return render_template("HomeMenuTeacher.html",
                                CourseName=CourseName,
                                Actividades=Actividades)
+
+    @app.route("/editExercise/<int:Menu>/<string:exercise>/<string:CourseName>/<string:nameActivity>", methods=["GET", "POST"])
+    def editExercise(Menu, exercise, CourseName, nameActivity):
+        exercise_ = Exercises[Menu]
+        if request.method == "POST":
+            exercise_['task'][0] = request.form['nameExercise']
+            exercise_['task'][1] = request.form['availability']
+            exercise_['task'][2] = request.form['difficulty']
+            exercise_['task'][3] = request.form['statement']
+            return render_template("HomeMenu_forActivityTeacher.html",
+                                   Actividades=Actividades,
+                                   Exercises=ThemeObject.Exercises,
+                                   CourseName=CourseName,
+                                   nameActivity=nameActivity)
+        else:
+            return render_template("editExercise.html", exercise_=exercise_,
+                                                                          Menu=Menu,
+                                                                          CourseName=CourseName,
+                                                                          exercise=exercise, nameActivity=nameActivity)
+
+    @app.route("/deleteExercise/<int:Menu>/<string:CourseName>/<string:nameActivity>")
+    def deleteExercise(Menu, CourseName, nameActivity):
+        del Exercises[Menu]
+        return render_template("HomeMenu_forActivityTeacher.html",
+                               Actividades=Actividades,
+                               Exercises=ThemeObject.Exercises,
+                               CourseName=CourseName,
+                               nameActivity=nameActivity)
 
     @app.route("/StudentRegistrationView")
     def StudentRegistrationView(message=None):

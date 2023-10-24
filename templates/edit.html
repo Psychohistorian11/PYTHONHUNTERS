@@ -88,7 +88,7 @@
         <img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo">
         <h1 class="title">Editar Temática</h1>
     <a class="a espacio-cuadrado">
-        <form action="{{ url_for('edit', Menu=Menu,actividad=actividad, CourseName=CourseName)}}" method="post" class="form form-edit-course">
+        <form action="{{ url_for('edit', Menu=Menu, actividad=actividad, CourseName=CourseName)}}" method="post" class="form form-edit-course">
                 <input type="text" name="todo" class="input input-course" value="{{todo['task']}}" required>
                 <button type="submit" class="primary-button login-button">Save</button>
         </form>

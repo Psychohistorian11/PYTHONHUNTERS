@@ -331,7 +331,9 @@ li{
                             {% for exercise_dict in Exercises %}
                             <li>
                                 <img src="{{ url_for('static', filename='code.png') }}" class="code">
-                                    <span><a href="{{ url_for('go', Menu=loop.index0, actividad=exercise_dict['task'][0], CourseName=CourseName) }}">{{ exercise_dict['task'][0] }}</a></span>
+                                    <span>{{ exercise_dict['task'][0] }}</span>
+                                <a href="{{ url_for('editExercise', Menu=loop.index0,exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity) }}"> edit --  </a>
+                                <a href="{{ url_for('deleteExercise', Menu=loop.index0, CourseName=CourseName, nameActivity=nameActivity)}}">delete</a>
     
                             </li>
                             {% endfor %}

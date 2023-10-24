@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Ejercicio</title>
+</head>
+<body>
+<div class="form_container">
+            <h1 class="title">Editar Ejercicio</h1>
+    <a class="a espacio-cuadrado">
+
+        <form action="{{ url_for('editExercise', Menu=Menu , exercise=exercise, CourseName=CourseName, nameActivity=nameActivity)}}" method="post" class="form form-edit-course">
+
+            <label class="label" for="nameExercise">Nombre del Ejercicio:</label>
+            <input class= "input" type="text" name="nameExercise" id="nameExercise" placeholder="Nombre Ejercicio" value="{{exercise_['task'][0]}}" required>
+
+            <label class="label" for="availability">Disponibilidad:</label>
+            <select class="input" name="availability" id="availability" required>
+                <option value="True">Sí</option>
+                <option value="False">No</option>
+            </select>
+
+            <label class="label" for="difficulty">Dificultad:</label>
+            <select class= "input"name="difficulty" id="difficulty" required>
+                <option value="Muy Fácil">Muy Fácil</option>
+                <option value="Fácil">Fácil</option>
+                <option value="Moderado">Moderado</option>
+                <option value="Difícil">Difícil</option>
+                <option value="Muy Difícil">Muy Difícil</option>
+            </select>
+
+            <label  class="label" for="statement">Descripción:</label>
+            <textarea rows="10" cols="30" class= "input input-big"type="text" name="statement" id="statement" placeholder="Ingresa la Descripción" value="{{exercise_['task'][3]}}"></textarea>
+            <input type="hidden" class="input" name="exercise" value ="{{ exercise }}">
+            <input type="hidden" class= "input" name="nameActivity" value="{{ nameActivity }}">
+            <input type="hidden" class= "input" name="CourseName" value="{{ CourseName }}">
+                <button type="submit" class="primary-button login-button">Guardar cambios</button>
+        </form>
+    </a>
+</div>
+</body>
+</html>
