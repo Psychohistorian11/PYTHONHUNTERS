@@ -190,3 +190,11 @@ class ConnectionDB:
         dic = {}
         return dic
 
+    def course_exists_by_code(self, idCourse):
+        nameCourse = True
+        return nameCourse
+
+    def get_CourseName_by_email_and_password_of_student(self, email, password):
+        CourseName = "Grupo_63"
+        return CourseName
+

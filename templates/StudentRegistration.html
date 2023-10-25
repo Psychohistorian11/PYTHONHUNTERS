@@ -91,10 +91,25 @@
             background-color: var(--gold);
             color: var(--white);
             margin-bottom: 16px;
+
+        .notification{
+            color: var(--blue);
+            background-color: white;
+            font-size: var(--lg);
+            display: flex;
+            justify-content: center;
+            border-radius: 16px;
+            margin: 12px 12px 0 4px;
+            justify-self: center;
         }
     </style>
 </head>
 <body>
+    <div class="notification">
+        {% if messageCourse %}
+        <p>{{ messageCourse }}</p>
+        {% endif %}
+    </div>
     <div class = "register">
         <div class = "form_container"> 
             <h1 class="title">Registro</h1>
@@ -110,6 +125,9 @@
 
             <label for="password"  class="label">Contraseña:</label>
             <input type="password" class="input input-password" placeholder="Contraseña" id="password" name="passwordStudent" required>
+
+            <label for="password"  class="label">Código del curso:</label>
+            <input type="text" class="codeCourse" placeholder="Codigo del curso dispuesto por tu profesor" id="codeCourse" name="codeCourse" required>
 
             <button type="submit" class="primary-button register-button">Registrarse</button>
         </form>

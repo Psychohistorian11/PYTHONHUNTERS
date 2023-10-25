@@ -16,6 +16,7 @@
             --sm: 14px;
             --md: 16px;
             --lg: 24px;
+            --g: 36px;
         }
         body {
             background-color: var(--blue);
@@ -114,6 +115,7 @@ li{
     align-items: center;
     margin-bottom: 16px;
 
+
 }
 .mini-icon{
     width: 32px;
@@ -136,11 +138,10 @@ li{
     margin-right: 12px;
     justify-self: center;
 }
-
 .menu_teacher_right{
     grid-column-start: 2;
      display: flex;
-     flex-direction: column;
+     flex-direction: row;
     justify-content: center;
     width: auto;}
 .input{
@@ -160,17 +161,29 @@ li{
             font-size: var(--lg);
             background-color: var(--white);
             border-radius: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            margin-top: 4px;
+            margin-left: 8px;
+            margin-right: 8px;
+            border: none;
+            height: 80px;
+            width: 244px;
+            color: var(--blue);
+            cursor: pointer;
+        }
+        .primary-button-exercise{
+            font-size: var(--g);
+            background-color: var(--gold);
+            border-radius: 12px;
+            margin-bottom: 8px;
             margin-top: 12px;
             margin-left: 8px;
             margin-right: 8px;
             border: none;
             height: 128px;
-            width: 96%;
+            width: 760px;
             color: var(--blue);
             cursor: pointer;
-
-
         }
         .primary-button-teacher{
             font-size: var(--lg);
@@ -187,6 +200,7 @@ li{
 
         }
         .form-add {
+        justify-self: flex-end;
     display: flex;
     flex-direction: column;
         }
@@ -210,64 +224,114 @@ li{
         margin-right: 12px;
 
     }
+    .buttons-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+
+    }
+    .container-little-buttons{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    a{text-decoration: none;
+    color: var(--black);
+    font-size: var(--lg);}
+
+    .menu-exercises{
+        height: auto;
+        width: 760px;
+        margin: 8px 0 0 8px;
+    }
     .exit{
         width: 48px;
         height: 48px;
         justify-self: center;
         cursor: pointer;
     }
+
     </style>
 </head>
 <body>
-<div class="full-container">
-<div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
+    <div class="full-container">
+        <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
+            <form class="out" action="/sign_off">
+            <a class="log_out">
+                <button type="submit" class="log_out-button">
+                    <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="exit">
+                </button>
+
+            </a>
+            </form>
+        </div>
+        <div class="container-down">
+            <div class="menu_teacher_left">
+                <h2 class = "title">Temáticas : </h2>
+                {% for todo in Actividades %}
+                <li>
+                <img src="{{ url_for('static', filename='book.png') }}" class="book">
+                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
+
+                <a  href="{{ url_for('goThemeStudent', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName) }}">
+                    <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
+                </a>
+                </li>
+                {% endfor %}
+                </ul>
+            </div>
+
+            <div class="menu_teacher_right">
+                <div class="buttons-container">
+                    <div class="container-little-buttons">
+                        <div class="menu-item">
+                            <form action="/HomeMenuStudent">
+                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                                <button  class= "primary-button-right" type="submit">Actividades</button>
+                            </form>
+                        </div>
+                        <div class="menu-item">
+                            <form action="/RankingViewStudent">
+                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                                <button  class= "primary-button-right" type="submit">Ranking</button>
+                            </form>
+                        </div>
+                        <div class="menu-item">
+                            <form action="/DeliveriesStudent">
+                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                                <button  class= "primary-button-right" type="submit">Entregas</button>
+                            </form>
+                        </div>
+                    </div>
 
 
-    <form class="out" action="/sign_off">
-        <a class="log_out">
-            <button type="submit" class="log_out-button">
-                <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="exit">
-            </button>
-        </a>
-        </form>
+                    <div class="menu_teacher_left menu-exercises">
+                        <h2 class = "title">Ejercicios : </h2>
+                        <ul>
+                            {% for exercise_dict in Exercises %}
+                            <li>
+                                <img src="{{ url_for('static', filename='code.png') }}" class="code">
+                                    <span>{{ exercise_dict['task'][0] }}</span>
+                                <a href="{{ url_for('goExercise', Menu=loop.index0, exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity) }}"> go  </a>
 
-</div>
-<div class="container-down">
-    <div class="menu_teacher_left">
-           <h2 class = "title">Temáticas : </h2>
-               {% for todo in Actividades %}
-               <li>
-                   <img src="{{ url_for('static', filename='book.png') }}" class="book">
-                   <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
-                   <a  href="{{ url_for('goThemeStudent', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName) }}">
-                       <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
-                   </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
 
 
-               </li>
-               {% endfor %}
-       </div>
-       <div class="menu_teacher_right">
-           <div class="menu-item">
-               <form action="/HomeMenuStudent">
-                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                   <button  class= "primary-button-right" type="submit">Tematicas</button>
-               </form>
-           </div>
-           <div class="menu-item">
-               <form action="/RankingViewStudent">
-                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                   <button  class= "primary-button-right" type="submit">Ranking</button>
-               </form>
-               <div class="menu-item">
-                   <form action="/DeliveriesStudent">
-                       <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                       <button  class= "primary-button-right" type="submit">Entregas</button>
-                   </form>
-               </div>
-       </div>
-   </div>
-</div>
-</div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
 </body>
 </html>
