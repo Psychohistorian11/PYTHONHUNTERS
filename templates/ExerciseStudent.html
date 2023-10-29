@@ -253,6 +253,19 @@ li{
         justify-self: center;
         cursor: pointer;
     }
+        .menu_teacher_left1 {
+    grid-column-start: 1;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    margin-left: 0px;
+    margin-right: 350px;
+    align-items: stretch;
+    width: 280%;
+    height: 300%;
+}
+
 
     </style>
 </head>
@@ -306,31 +319,26 @@ li{
                             </form>
                         </div>
                     </div>
+                        <div class="container-down">
+                            <div class="menu_teacher_left1">
+                                <h2 class="title">{{ excerciseObject[0] }}</h2>
+                                     <p>{{ excerciseObject[3] }}</p>
+                                <!-- Aquí se muestra el nombre y la descripción del ejercicio -->
 
+                                <form action="/submit_solution">
+                                    <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                                    <input type="hidden" name="ExerciseName" value="{{ excerciseObject[0] }}">
+                                    <textarea class="input" name="code" placeholder="Escribe tu código aquí" rows="10"></textarea>
+                                    <button class="primary-button" type="submit">Enviar Solución</button>
+                                </form>
+                            </div>
 
-                    <div class="menu_teacher_left menu-exercises">
-                        <h2 class = "title">Ejercicios : </h2>
-                        <ul>
-                            {% for exercise_dict in Exercises %}
-                            <li>
-                                <img src="{{ url_for('static', filename='code.png') }}" class="code">
-                                    <span>{{ exercise_dict['task'][0] }}</span>
-                                <a href="{{ url_for('goExercise', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity) }}"> go  </a>
-
-                            </li>
-                            {% endfor %}
-                        </ul>
+                        </div>
                     </div>
-
                 </div>
-
-
             </div>
+
         </div>
-
-
-
-
     </div>
 
 </body>

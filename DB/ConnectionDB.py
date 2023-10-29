@@ -198,3 +198,6 @@ class ConnectionDB:
         CourseName = "Grupo_63"
         return CourseName
 
+    def get_object_exercise_by_nameExercise_CourseName(self,nameExercise, CourseName, nameActivity):
+        exercise = ["Crear Variables", True, "muy fácil", "Cree una variable y asignele un valor entero"]
+        return exercise

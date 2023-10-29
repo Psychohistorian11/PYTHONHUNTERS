@@ -131,7 +131,7 @@ class HomeController:
     def generateCode(message=None):
         CourseName = request.args.get('CourseName')
         # idCourse = DB.get_id_course_by_nameDB(CourseName)
-        idCourse = 10
+        idCourse = 1234
         return render_template("HomeMenuTeacher.html",
                                Actividades=Actividades, CourseName=CourseName, idCourse=idCourse)
 
@@ -298,7 +298,14 @@ class HomeController:
                                nameActivity=actividad,
                                CourseName=CourseName)
 
-    @app.route("/goExercise/<int:Menu>/<string:exercise>/<string:CourseName>/<string:nameActivity>")
-    def goExercise(Menu, exercise, CourseName, nameActivity):
-        return render_template("HomeMenu_forActivityStudent.html")
+    @app.route("/goExercise/<int:Menu>/<string:nameExercise>/<string:CourseName>/<string:nameActivity>")
+    def goExercise(Menu, nameExercise, CourseName, nameActivity):
+        # themes = DB.get_themesDB(CourseName)
+        excerciseObject = DB.get_object_exercise_by_nameExercise_CourseName(nameExercise, CourseName, nameActivity)
+        themes = Actividades
+        return render_template("ExerciseStudent.html",
+                               Actividades=themes,
+                               excerciseObject=excerciseObject,
+                               CourseName=CourseName,
+                               nameActivity=nameActivity)
 

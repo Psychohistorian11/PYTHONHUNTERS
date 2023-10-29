@@ -262,29 +262,15 @@ li{
         </a>
         </form>
 
-<script>
-    function openModal(idCourse) {
-        var modal = document.getElementById("myModal");
-        var courseIdSpan = document.getElementById("courseId");
-        courseIdSpan.innerHTML = idCourse;
-        modal.style.display = "block";
-    }
-    function closeModal() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "none";
-    }
-</script>
-        <div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <p>ID del curso: <span id="courseId"></span></p>
-    </div>
-</div>
-
     <form action="/generateCode">
     <input type="hidden" name="CourseName" value="{{ CourseName }}">
-    <button type="button" class="log_out-button" onclick="openModal('{{ idCourse }}')">generar código</button>
+    <button type="submit" class="log_out-button">generar código</button>
 </form>
+        <div class="notification">
+        {% if idCourse %}
+        <p>ID del curso: {{ idCourse }}</p>
+        {% endif %}
+    </div>
 
 
 </div>
