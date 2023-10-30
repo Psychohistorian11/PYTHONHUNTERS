@@ -9,42 +9,44 @@ config = {'user': 'bit_busters',
 
 
 class ConnectionDB:
+    conn = None
+    def _init_(self):
+       pass # Mantén la conexión abierta en la instancia
 
-    def __init__(self):
-        pass
+    def connect(self):
+        if not self.conn:
+            self.conn = mysql.connector.connect(**config)
+
+    def disconnect(self):
+        if self.conn:
+            self.conn.close()
+            self.conn = None
 
     def executeSQL(self, consulta_sql, variables_adicionales=None):
         try:
-            # Crea una conexión a la base de datos
-            conn = mysql.connector.connect(**config)
-            if conn.is_connected():
-                # Crea un objeto cursor para ejecutar consultas
-                cursor = conn.cursor()
-                # Ejecuta la consulta
+            self.connect()  # Abre la conexión si no está abierta
 
+            if self.conn.is_connected():
+                cursor = self.conn.cursor()
                 cursor.execute(consulta_sql, variables_adicionales)
 
-                # Si es una consulta INSERT, no hay resultados para recuperar
                 if consulta_sql.strip().upper().startswith("INSERT") or consulta_sql.strip().upper().startswith(
                         "UPDATE") or consulta_sql.strip().upper().startswith(
                         "DELETE") or consulta_sql.strip().upper().startswith("CREATE"):
-                    conn.commit()  # Guarda los cambios en la base de datos
-                    conn.close()
-                    return None  # No hay resultados para devolver
+                    self.conn.commit()
+                    return None
 
-                # Si es otra consulta (SELECT, etc.), recupera los resultados
                 resultados = cursor.fetchall()
-                conn.close()
-                # Imprime los resultados
                 return resultados
         except mysql.connector.Error as e:
             print("Error al conectar a la base de datos:", e)
 
-    def verify_accountDB(self, email, password) -> tuple[bool,bool]:
+    def verify_accountDB(self, email, password) -> tuple[bool, bool]:
         teacher_query = 'select count(*) from Profesor where correo = %s and contrasenia = %s'
         teacher_results = self.executeSQL(teacher_query, (email, password))
-        quantity_teacher = teacher_results[0][0]
-
+        quantity_teacher = 0
+        if teacher_results is not None:
+            quantity_teacher = teacher_results[0][0]
         existence_teacher = quantity_teacher >= 1
         existence_student = False
         if not existence_teacher:
@@ -81,12 +83,16 @@ class ConnectionDB:
         if newStudent.score != 0:
             if newStudent.score is None:
                 newStudent.score = 0
-        variables = (1, newStudent.firstName, newStudent.lastName,
+        variables = (newStudent.codeCourse, newStudent.firstName, newStudent.lastName,
                      newStudent.email, newStudent.password, newStudent.score)
         self.executeSQL(query, variables)
 
+    def exist_themeDB(self, newTheme, nameCourse):
+        pass
+
     def enter_ThemeDB(self, newTheme, nameCourse):  # Ingresar nuevo tema a la base de datos, no retorna nada
         idCourse = self.get_id_course_by_nameDB(nameCourse)
+        print("este es el id del curso", idCourse)
         query = """INSERT INTO `pythonbd`.`Tematica`
                     VALUES
                     (null,%s,%s);
@@ -116,7 +122,6 @@ class ConnectionDB:
                   where t.curso_idCurso = %s ;"""
         result = self.executeSQL(query, (idCourse,))
         themes = [name[0] for name in result]
-        print(themes)
         return themes
 
     def get_id_theme_by_nameDB(self, nameTheme):
@@ -128,7 +133,9 @@ class ConnectionDB:
     def get_id_course_by_nameDB(self, nameCourse):
         query_by_id_course = """SELECT idCurso from Curso c where nombre = %s"""
         listidCourse = self.executeSQL(query_by_id_course, (nameCourse,))
-        idCourse = listidCourse[0][0]
+        idCourse = 0
+        if listidCourse:
+            idCourse = listidCourse[0][0]
         return idCourse
 
     def enter_exerciseDB(self, newExercise, nameTheme, nameCourse):
@@ -171,6 +178,15 @@ class ConnectionDB:
         idTeacher = listidTeacher[0][0]
         return idTeacher
 
+    def exist_courseDB(self, nameCourse):
+        query = """SELECT COUNT(*) FROM Curso WHERE nombre = %s;"""
+        variables = (nameCourse,)
+        result = self.executeSQL(query, variables)
+        exist = True
+        if result:
+            exist = result[0][0] >= 1
+        return exist
+
     def enter_courseDB(self, nameCourse):
         # SOLO SQL
         query = """insert into Curso values (null,1,%s)"""
@@ -180,24 +196,41 @@ class ConnectionDB:
         query = """delete from Curso where nombre = %s"""
         self.executeSQL(query, (nameCourse,))
 
-    def edit_courseDB(self, actualCourse , newCourseName):
+    def edit_courseDB(self, actualCourse, newCourseName):
         idCourse = self.get_id_course_by_nameDB(actualCourse)
         query = """UPDATE Curso SET nombre = %s WHERE (idCurso = %s);"""
         variables = (newCourseName, idCourse)
         self.executeSQL(query, variables)
+
+    def get_coursesDB(self, emailTeacher):
+        idTeacher = self.get_id_teacher_by_emailDB(emailTeacher)
+        query = """select c.nombre from Curso c
+                  where c.profesor_idProfesor = %s ;"""
+        result = self.executeSQL(query, (idTeacher,))
+        courses = [name[0] for name in result]
+        return courses
 
     def update_ranking(self):
         dic = {}
         return dic
 
     def course_exists_by_code(self, idCourse):
-        nameCourse = True
-        return nameCourse
+        query = """SELECT COUNT(*) FROM Curso where idCurso = %s;"""
+        results = self.executeSQL(query, (idCourse,))
+        quantity = 0
+        if results is not None:
+            quantity = results[0][0]
+        exist = quantity >= 1
+        return exist
 
     def get_CourseName_by_email_and_password_of_student(self, email, password):
-        CourseName = "Grupo_63"
+        teacher_query = """SELECT c.nombre FROM Estudiante e JOIN Curso c ON e.curso_idCurso = c.idCurso 
+        WHERE e.correo = %s AND e.contrasenia = %s;"""
+        variables = (email, password)
+        results = self.executeSQL(teacher_query, variables)
+        CourseName = results[0][0]
         return CourseName
 
-    def get_object_exercise_by_nameExercise_CourseName(self,nameExercise, CourseName, nameActivity):
+    def get_object_exercise_by_nameExercise_CourseName(self, nameExercise, CourseName, nameActivity):
         exercise = ["Crear Variables", True, "muy fácil", "Cree una variable y asignele un valor entero"]
         return exercise

@@ -262,8 +262,12 @@ li{
     margin-left: 0px;
     margin-right: 350px;
     align-items: stretch;
-    width: 280%;
-    height: 300%;
+    width: 250%;
+    height: 200%;
+}
+        textarea {
+    width: 90%; /* Ancho del 100% del contenedor */
+    height: 300px;
 }
 
 
@@ -321,18 +325,26 @@ li{
                     </div>
                         <div class="container-down">
                             <div class="menu_teacher_left1">
-                                <h2 class="title">{{ excerciseObject[0] }}</h2>
-                                     <p>{{ excerciseObject[3] }}</p>
+                                <h2 class="title">{{ exerciseObject[0] }}</h2>
+                                            <p>{{ exerciseObject[3] }}</p>
                                 <!-- Aquí se muestra el nombre y la descripción del ejercicio -->
-
-                                <form action="/submit_solution">
+                            <div>
+                                <form action="/submitOrExecute" >
                                     <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                                    <input type="hidden" name="ExerciseName" value="{{ excerciseObject[0] }}">
-                                    <textarea class="input" name="code" placeholder="Escribe tu código aquí" rows="10"></textarea>
-                                    <button class="primary-button" type="submit">Enviar Solución</button>
+                                    <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
+                                    <input type="hidden" name="exerciseName" value="{{ exerciseObject[0] }}">
+                                    <textarea class="input" name="code" placeholder="Escribe tu código aquí"></textarea>
+                                    <button class="primary-button" type="submit" name="action" value="Ejecutar">Ejecutar</button>
+                                    <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
                                 </form>
                             </div>
-
+                                <div class="menu_teacher_left">
+                                    <h2 class = "title">Resultado : </h2>
+                                                    {% if compiledCode %}
+                                                    <p>{{ compiledCode }}</p>
+                                                    {% endif %}
+                                    </ul>
+                                </div>
                         </div>
                     </div>
                 </div>

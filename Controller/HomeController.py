@@ -4,6 +4,8 @@ from Model.Program.Program import Program
 from Model.Program.Theme import Theme
 from Model.Course import Course
 import os
+import sys
+from io import StringIO
 
 # creación de objetos
 program = Program()  # program controla toda la logica del modelo
@@ -66,13 +68,14 @@ class HomeController:
             password = request.form["password"]
             existence, isTeacher = DB.verify_accountDB(email, password)
             if existence and isTeacher:
-                return redirect(url_for("SelectCourseView"))
+                return redirect(url_for("SelectCourseView", email=email))
             elif existence:
                 CourseName = DB.get_CourseName_by_email_and_password_of_student(email, password)
-                #themes = DB.get_themesDB(CourseName)
-                themes = Actividades #se borra cuando este la DB
+                ThemeObject.clear_themes()
+                themes = DB.get_themesDB(CourseName)
+                ThemeObject.update_themes(themes)
                 return render_template("HomeMenuStudent.html",
-                                       Actividades=themes,
+                                       Actividades=Actividades,
                                        CourseName=CourseName)
             else:
                 message = "Usuario no existe"
@@ -80,23 +83,30 @@ class HomeController:
 
     @app.route("/SelectCourseView")
     def SelectCourseView(self=None):
-        return render_template("SelectCourseView.html", Courses=Courses)
+        email = request.args.get("email")
+        CoursesList = DB.get_coursesDB(email)
+        listOfDc = [{}]
+        for course in CoursesList:
+            newDic = {"task": course}
+            listOfDc.append(newDic)
+        return render_template("SelectCourseView.html", Courses=listOfDc, email=email)
 
     @app.route("/goCourse/<int:Menu>/<string:CourseName>")
     def goCourse(Menu, CourseName):
-        # listThemesFromDB = DB.get_themesDB(CourseName)
-        # ThemeObject.update_themes(listThemesFromDB)
+        Themes = DB.get_themesDB(CourseName)
+        print(Themes)
+        ThemeObject.update_themes(Themes)
         return render_template("HomeMenuTeacher.html",
                                CourseName=CourseName,
                                Actividades=Actividades
                                )
 
-    @app.route("/addCourse", methods=["POST"])
-    def addCourse(sell=None):
+    @app.route("/addCourse/<string:email>", methods=["POST"])
+    def addCourse(email):
         course = request.form["todo"]
         Courses.append({'task': course})
         CourseObject.enter_course(course)
-        return redirect(url_for("SelectCourseView"))
+        return redirect(url_for("SelectCourseView", email=email))
 
     @app.route("/editCourse/<int:Menu>/<string:CourseName>", methods=["GET", "POST"])
     def editCourse(Menu, CourseName):
@@ -212,14 +222,14 @@ class HomeController:
     @app.route("/RankingView")  # Segundo Sprint
     def Ranking(message=None):
         CourseName = request.args.get('CourseName')
-        #themes = DB.get_themesDB(CourseName)
+        # themes = DB.get_themesDB(CourseName)
         themes = Actividades
         ranking_students = {
             "Estudiante 1": 95,
             "Estudiante 2": 87,
             "Estudiante 3": 78,
-        } # se borra cuando este lista la DB
-        #ranking_students = DB.update_ranking()
+        }  # se borra cuando este lista la DB
+        # ranking_students = DB.update_ranking()
         return render_template("Ranking.html",
                                ranking_students=ranking_students,
                                CourseName=CourseName,
@@ -234,11 +244,12 @@ class HomeController:
     @app.route("/HomeMenuStudent")
     def HomeMenuStudent(self=None):
         CourseName = request.args.get('CourseName')
-        #themes = DB.get_themesDB(CourseName)
-        themes = Actividades #Se borra cuando este lista la DB
+        # themes = DB.get_themesDB(CourseName)
+        themes = Actividades  # Se borra cuando este lista la DB
         return render_template("HomeMenuStudent.html",
                                Actividades=themes,
                                CourseName=CourseName)
+
     @app.route("/StudentRegistrationView")
     def StudentRegistrationView(message=None):
         return render_template("StudentRegistration.html")
@@ -265,7 +276,6 @@ class HomeController:
                 messageCourse = "No existe un curso con el codigo que digitaste"
                 return render_template("StudentRegistration.html", messageCourse=messageCourse)
 
-
     @app.route("/RankingViewStudent")
     def RankingViewStudent(self=None):
         CourseName = request.args.get('CourseName')
@@ -275,15 +285,15 @@ class HomeController:
             "Estudiante 1": 95,
             "Estudiante 2": 87,
             "Estudiante 3": 78,
-        } # esta se borra cuando este lista la DB
-        #ranking_students = DB.update_ranking()
+        }  # esta se borra cuando este lista la DB
+        # ranking_students = DB.update_ranking()
         return render_template("RankingStudent.html",
                                ranking_students=ranking_students,
                                CourseName=CourseName,
                                Actividades=themes)
 
     @app.route("/DeliveriesStudent")
-    def DeliveriesStudent(self=None): # ejercicios entregados por el estudiante
+    def DeliveriesStudent(self=None):  # ejercicios entregados por el estudiante
         pass
 
     @app.route("/goThemeStudent/<int:Menu>/<string:actividad>/<string:CourseName>")
@@ -301,11 +311,57 @@ class HomeController:
     @app.route("/goExercise/<int:Menu>/<string:nameExercise>/<string:CourseName>/<string:nameActivity>")
     def goExercise(Menu, nameExercise, CourseName, nameActivity):
         # themes = DB.get_themesDB(CourseName)
-        excerciseObject = DB.get_object_exercise_by_nameExercise_CourseName(nameExercise, CourseName, nameActivity)
+        exerciseObject = DB.get_object_exercise_by_nameExercise_CourseName(nameExercise, CourseName, nameActivity)
         themes = Actividades
         return render_template("ExerciseStudent.html",
                                Actividades=themes,
-                               excerciseObject=excerciseObject,
+                               exerciseObject=exerciseObject,
                                CourseName=CourseName,
                                nameActivity=nameActivity)
 
+    @app.route("/submitOrExecute")
+    def submitOrExecute(self=None):
+        code = request.args.get("code")
+        exerciseObject = request.args.get("exerciseName")
+        nameActivity = request.args.get("nameActivity")
+        CourseName = request.args.get("CourseName")
+        action = request.args.get("action")
+        isEjecutar = action == "Ejecutar"
+        if isEjecutar:
+            return redirect(url_for("execute", code=code,
+                                    exerciseObject=exerciseObject,
+                                    nameActivity=nameActivity,
+                                    CourseName=CourseName))
+        else:
+            return redirect(url_for("submitSolution"))
+
+    @app.route("/execute")
+    def execute(self=None):
+        exerciseObject = request.args.get("exerciseObject")
+        nameActivity = request.args.get("nameActivity")
+        CourseName = request.args.get("CourseName")
+        code = request.args.get("code")
+
+        # Redirige la salida estándar a un StringIO
+        stdout_backup = sys.stdout
+        sys.stdout = StringIO()
+
+        # Ejecuta el código proporcionado
+        exec(code)
+
+        # Captura la salida estándar
+        result = sys.stdout.getvalue()
+
+        # Restaura la salida estándar original
+        sys.stdout.close()
+        sys.stdout = stdout_backup
+        return render_template("ExerciseStudent.html",
+                               Actividades=Actividades,
+                               exerciseObject=exerciseObject,
+                               CourseName=CourseName,
+                               nameActivity=nameActivity,
+                               compiledCode=result)
+
+    @app.route("/submitExercise")
+    def submitExercise(self=None):
+        pass

@@ -153,7 +153,7 @@ li{
                     </a>
                     
 
-                    <a href="{{ url_for('editCourse', Menu=loop.index0,CourseName=course['task']) }}">
+                    <a href="{{ url_for('editCourse', Menu=loop.index0,CourseName=course['task'],email=email) }}">
                         <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
                     </a>
 
@@ -163,7 +163,7 @@ li{
                 </li>
                 {% endfor %}
             </ul>
-            <form action="{{ url_for('addCourse') }}" method="post">
+            <form action="{{ url_for('addCourse', email=email) }}" method="post">
                 <input class="input" placeholder="Ingresar Curso" type="text" name="todo">
                 <button class="primary-button" type="submit">Agregar Curso</button>
             </form>
