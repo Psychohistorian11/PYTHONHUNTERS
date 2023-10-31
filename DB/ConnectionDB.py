@@ -1,3 +1,5 @@
+import time
+
 import mysql.connector
 
 from Model.Program import Exercise
@@ -40,6 +42,7 @@ class ConnectionDB:
                     return None
 
                 resultados = cursor.fetchall()
+                self.disconnect()
                 return resultados
         except mysql.connector.Error as e:
             print("Error al conectar a la base de datos:", e)
@@ -127,9 +130,10 @@ class ConnectionDB:
     def get_themesDB(self, nameCourse):  # Este metodo me entrega todos los temas que se
         # encuentran en la base de datos, necesito solo los nombres
         idCourse = self.get_id_course_by_nameDB(nameCourse)
+        print("este es el idCourse:",idCourse)
         query = """select t.nombre from Tematica t
                   where t.curso_idCurso = %s ;"""
-        result = self.executeSQL(query, (idCourse,))
+        result = self.executeSQL(query,     (idCourse,))
         themes = [name[0] for name in result]
         print("lista de temas de db: ", themes)
         return themes
