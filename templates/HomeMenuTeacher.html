@@ -26,7 +26,7 @@
         .container-down {
     display: grid;
     grid-template-columns: 40% 60%;
-    grid-template-rows: auto; 
+    grid-template-rows: auto;
 }
         .full-container{
             display: flex;
@@ -40,7 +40,7 @@
             margin-bottom: 16px;
             display: grid;
             grid-template-columns: 95% 5%;
-            grid-template-rows: auto; 
+            grid-template-rows: auto;
             align-content: center;
         }
         .menu_teacher_left {
@@ -54,7 +54,7 @@
             align-items: stretch;
 
         }
-        
+
         .logo-nav {
             width: 150px;
             margin: 0 ;
@@ -107,28 +107,37 @@
         }
     
 
+
 li{
     list-style: none;
     margin-left: 20px;
-    display: flex; 
-    align-items: left; 
-    margin-bottom: 16px; 
-    
-    
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
 }
 .mini-icon{
-    width: 32px; 
-    height: 32px; 
+    width: 32px;
+    height: 32px;
+    margin-top: 16px;
     margin-right: 0px;
     margin-left: 8px;
     margin-bottom: 8px;
     cursor: pointer;
 }
-.code{
-    width: 20px; 
-    height: 20px; 
+.book{
+    width: 28px;
+    height: 28px;
     margin-right: 12px;
+    justify-self: center;
 }
+.code{
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    justify-self: center;
+}
+
 .menu_teacher_right{
     grid-column-start: 2;
      display: flex;
@@ -147,7 +156,7 @@ li{
             margin-right: 16px;
             outline: none;
         }
-        
+
         .primary-button-right {
             font-size: var(--lg);
             background-color: var(--white);
@@ -159,9 +168,9 @@ li{
             border: none;
             height: 128px;
             width: 96%;
-            color: var(--blue); 
+            color: var(--blue);
             cursor: pointer;
-            
+
 
         }
         .primary-button-teacher{
@@ -176,7 +185,6 @@ li{
             margin-bottom: 16px;
             margin-top: 8px;
             cursor: pointer;
-            
         }
         .form-add {
     display: flex;
@@ -188,65 +196,131 @@ li{
             grid-column-start: 2;
             align-self: center;
         }
+    
+    .log_out-button{
+        background: var(--white);
+        border: none;
+        display:flex;
+        justify-content: center;
+    }
+    .out{
+        display:flex;
+        justify-content: center;
+        align-items: center; 
+        margin-right: 12px;
+        
+    }
+    .exit{
+        width: 48px;
+        height: 48px;
+        justify-self: center;
+        cursor: pointer;
+    }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background-color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
 
     </style>
 </head>
 <body>
-<div class="full-container"> 
+<div class="full-container">
 <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
-    <a  href="METER CODIGO DE CERRAR SESION" class="log_out">
-        <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="mini-icon log_out">
-    </a>
-    
+
+
+    <form class="out" action="/sign_off">
+        <a class="log_out">
+            <button type="submit" class="log_out-button">
+                <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="exit">
+            </button>
+        </a>
+        </form>
+
+    <form action="/generateCode">
+    <input type="hidden" name="CourseName" value="{{ CourseName }}">
+    <button type="submit" class="log_out-button">generar código</button>
+</form>
+        <div class="notification">
+        {% if idCourse %}
+        <p>ID del curso: {{ idCourse }}</p>
+        {% endif %}
+    </div>
+
+
 </div>
 <div class="container-down">
     <div class="menu_teacher_left">
            <h2 class = "title">Temáticas : </h2>
                {% for todo in Actividades %}
                <li>
-                   <img src="{{ url_for('static', filename='code.png') }}" class="code">
+                   <img src="{{ url_for('static', filename='book.png') }}" class="book">
                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
-                   <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task']) }}">
+                   <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName) }}">
                        <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
                    </a>
-                   <a href="{{ url_for('edit', Menu=loop.index0) }}">
+                   <a href="{{ url_for('edit', Menu=loop.index0,actividad=todo['task'], CourseName=CourseName) }}">
                        <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
                    </a>
-               
-                   <a href="{{ url_for('delete', Menu=loop.index0) }}">
+
+                   <a href="{{ url_for('delete', Menu=loop.index0, CourseName=CourseName)}}">
                        <img  src="{{ url_for('static', filename='delete.png') }}"  class=" mini-icon delete">
                    </a>
                </li>
                {% endfor %}
-           <form class="form-add" action="{{ url_for('add') }}" method="post">
-               <input type="text" name="todo" class="input input-add-list" maxlength="30" placeholder="Añadir Temática">
+           <form class="form-add" action="{{ url_for('add', CourseName=CourseName) }}" method="post">
+               <input type="text" name="todo" class="input input-add-list" maxlength="30" placeholder="Añadir Temática" required>
+
                <button type="submit" class="primary-button-teacher" >+</button>
            </form>
        </div>
        <div class="menu_teacher_right">
            <div class="menu-item">
                <form action="/HomeMenuTeacher">
-                   <button  class= "primary-button-right" type="submit">Actividades</button>
+                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                   <button  class= "primary-button-right" type="submit">Tematicas</button>
                </form>
            </div>
            <div class="menu-item">
                <form action="/RankingView">
+                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
                    <button  class= "primary-button-right" type="submit">Ranking</button>
                </form>
            </div>
            <div class="menu-item">
                <form action="/QualifyView">
+                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
                    <button class= "primary-button-right" type="submit">Calificar</button>
                </form>
            </div>
        </div>
    </div>
 </div>
-</div></div>
-
-
 
 </body>
 </html>
-
-

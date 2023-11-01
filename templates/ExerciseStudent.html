@@ -210,7 +210,7 @@ li{
             grid-column-start: 2;
             align-self: center;
         }
-    
+
     .log_out-button{
         background: var(--white);
         border: none;
@@ -220,9 +220,9 @@ li{
     .out{
         display:flex;
         justify-content: center;
-        align-items: center; 
+        align-items: center;
         margin-right: 12px;
-        
+
     }
     .buttons-container{
         display: flex;
@@ -253,7 +253,24 @@ li{
         justify-self: center;
         cursor: pointer;
     }
-    
+        .menu_teacher_left1 {
+    grid-column-start: 1;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    margin-left: 0px;
+    margin-right: 350px;
+    align-items: stretch;
+    width: 200%;
+    height: 130%;
+}
+        textarea {
+    width: 90%;
+    height: 300px;
+}
+
+
     </style>
 </head>
 <body>
@@ -276,80 +293,68 @@ li{
                 <img src="{{ url_for('static', filename='book.png') }}" class="book">
                     <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
 
-                <a  href="{{ url_for('go', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName) }}">
+                <a  href="{{ url_for('goThemeStudent', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName) }}">
                     <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
-                </a>
-                <a href="{{ url_for('edit', Menu=loop.index0,actividad=todo['task'], CourseName=CourseName) }}">
-                    <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
-                </a>
-
-                <a href="{{ url_for('delete', Menu=loop.index0, CourseName=CourseName)}}">
-                    <img  src="{{ url_for('static', filename='delete.png') }}"  class=" mini-icon delete">
                 </a>
                 </li>
                 {% endfor %}
                 </ul>
-                <form class="form-add" action="{{ url_for('add', CourseName=CourseName) }}" method="post">
-                    <input type="text" name="todo" class="input input-add-list" maxlength="30" placeholder="Añadir Temática" required>
-                    <button type="submit" class="primary-button-teacher" >+</button>
-                </form>
             </div>
 
             <div class="menu_teacher_right">
                 <div class="buttons-container">
-                    <div class="container-little-buttons"> 
+                    <div class="container-little-buttons">
                         <div class="menu-item">
-                            <form action="/HomeMenuTeacher">
+                            <form action="/HomeMenuStudent">
                                 <input type="hidden" name="CourseName" value="{{ CourseName }}">
                                 <button  class= "primary-button-right" type="submit">Tematicas</button>
                             </form>
                         </div>
                         <div class="menu-item">
-                            <form action="/RankingView">
+                            <form action="/RankingViewStudent">
                                 <input type="hidden" name="CourseName" value="{{ CourseName }}">
                                 <button  class= "primary-button-right" type="submit">Ranking</button>
                             </form>
                         </div>
                         <div class="menu-item">
-                            <form action="/QualifyView">
+                            <form action="/DeliveriesStudent">
                                 <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                                <button class= "primary-button-right" type="submit">Calificar</button>
+                                <button  class= "primary-button-right" type="submit">Entregas</button>
                             </form>
                         </div>
                     </div>
-                    <div class="menu-item">
-                        <form action="/CreateExerciseView" method="GET">
-                            <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
-                            <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                            <button  class= "primary-button-exercise" type="submit">Crear Ejercicio</button>
-                        </form>
-                    </div>
-                    
-                    <div class="menu_teacher_left menu-exercises">
-                        <h2 class = "title">Ejercicios : </h2>
-                        <ul>
-                            {% for exercise_dict in Exercises %}
-                            <li>
-                                <img src="{{ url_for('static', filename='code.png') }}" class="code">
-                                    <span>{{ exercise_dict['task'][0] }}</span>
-                                <a href="{{ url_for('editExercise', Menu=loop.index0,exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity) }}"> edit --  </a>
-                                <a href="{{ url_for('deleteExercise', Menu=loop.index0, CourseName=CourseName, nameActivity=nameActivity)}}">delete</a>
-    
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    
-                </div>
-                
-                
-            </div>
-        </div>
-            
-            
-              
-               
-    </div>
+                        <div class="container-down">
+                            <div class="menu_teacher_left1">
+                                <h2 class="title">{{ exerciseObject[0] }}</h2>
+                                            <p>{{ exerciseObject[3] }}</p>
+                                <!-- Aquí se muestra el nombre y la descripción del ejercicio -->
+                            <div>
+                                <form action="/submitOrExecute" >
+                                    <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                                    <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
+                                    <input type="hidden" name="exerciseName" value="{{ exerciseObject }}">
+                                    <textarea class="input" name="code" placeholder="Escribe tu código aquí" >{{code}}</textarea>
+                                    <button class="primary-button" type="submit" name="action" value="Ejecutar">Ejecutar</button>
+                                    <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
+                                </form>
+                            <div class="menu_teacher_left">
+                                <h2 class="title">Resultado:</h2>
+                                {% if compiledCode %}
+                                <pre style="text-align: left; white-space: pre-wrap;">
+                                    {% for line in compiledCode.split('\n') %}
+                                        {{ line }}
+                                    {% endfor %}
+                                </pre>
+                                {% endif %}
+                            </div>
 
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
