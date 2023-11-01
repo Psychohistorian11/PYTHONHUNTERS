@@ -8,19 +8,16 @@ class Theme:
     def __init__(self):
         self.Themes = []
 
-        self.Exercises = [{"task": ["Hello World2",
-                                    True,
-                                    "muy facil",
-                                    "Escriba en la consola Hello World"]}]
+        self.Exercises = []
 
     def enter_theme(self, newTheme, idCourse):
-        ConnectionDB().enter_ThemeDB(newTheme, idCourse)
+        DB.enter_ThemeDB(newTheme, idCourse)
 
-    def edit_theme(self, theme, newtheme, name_course):
-        ConnectionDB().edit_themeDB(theme, newtheme, name_course)
+    def edit_theme(self, theme, newTheme, name_course):
+        DB.edit_themeDB(theme, newTheme, name_course)
 
     def delete_theme(self, theme, name_course):
-        ConnectionDB().delete_themeDB(theme, name_course)
+        DB.delete_themeDB(theme, name_course)
 
     def update_themes(self, CourseName):
         themes_from_db = DB.get_themesDB(CourseName)
@@ -33,13 +30,20 @@ class Theme:
     def clear_themes(self):
         self.Themes = []
 
+    def enter_exercise(self, exercise, nameTheme, nameCourse):
+        DB.enter_exerciseDB(exercise, nameTheme, nameCourse)
+
     def update_exercise(self, listOfExercise):
+        print(listOfExercise)
         for exercise in listOfExercise:
             self.Exercises.append({'task': [exercise.nameExercise,
                                             exercise.availability,
                                             exercise.difficulty,
                                             exercise.statement]})
 
+    def get_exercise(self, nameTheme, nameCourse):
+        listExercisesFromDB = DB.get_exerciseDB(nameTheme, nameCourse)
+        return listExercisesFromDB
 
     def edit_exercise(self):
         pass

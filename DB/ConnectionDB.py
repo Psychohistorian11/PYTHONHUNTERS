@@ -1,8 +1,7 @@
 import time
 
 import mysql.connector
-
-from Model.Program import Exercise
+from Model.Program.Exercise import Exercise
 
 config = {'user': 'bit_busters',
           'password': 'password123',
@@ -15,34 +14,25 @@ config = {'user': 'bit_busters',
 class ConnectionDB:
     conn = None  # Mantén la conexión abierta en la instancia
 
-    def _init_(self):
+    def init(self):
         pass
-
-    def connect(self):
-        if not self.conn:
-            self.conn = mysql.connector.connect(**config)
-
-    def disconnect(self):
-        if self.conn:
-            self.conn.close()
-            self.conn = None
 
     def executeSQL(self, consulta_sql, variables_adicionales=None):
         try:
-            self.connect()  # Abre la conexión si no está abierta
+            conn = mysql.connector.connect(**config) # Abre la conexión si no está abierta
 
-            if self.conn.is_connected():
-                cursor = self.conn.cursor()
+            if conn.is_connected():
+                cursor = conn.cursor()
                 cursor.execute(consulta_sql, variables_adicionales)
 
                 if consulta_sql.strip().upper().startswith("INSERT") or consulta_sql.strip().upper().startswith(
                         "UPDATE") or consulta_sql.strip().upper().startswith(
                     "DELETE") or consulta_sql.strip().upper().startswith("CREATE"):
-                    self.conn.commit()
+                    conn.commit()
                     return None
 
                 resultados = cursor.fetchall()
-                self.disconnect()
+                conn.close()
                 return resultados
         except mysql.connector.Error as e:
             print("Error al conectar a la base de datos:", e)
@@ -104,7 +94,6 @@ class ConnectionDB:
 
     def enter_ThemeDB(self, newTheme, nameCourse):  # Ingresar nuevo tema a la base de datos, no retorna nada
         idCourse = self.get_id_course_by_nameDB(nameCourse)
-        print("este es el id del curso", idCourse)
         query = """INSERT INTO `pythonbd`.`Tematica`
                     VALUES
                     (null,%s,%s);
@@ -187,21 +176,14 @@ class ConnectionDB:
         query = """SELECT e.idEjercicio,e.nombre,e.disponibilidad,e.dificultad,e.enunciado FROM Ejercicio e JOIN Tematica t ON e.tematica_idTematica = t.idTematica WHERE t.idTematica
         = %s and t.curso_idCurso = %s;"""
         lista_resultados = self.executeSQL(query, (idTheme, idCourse))
-        diccionario = {}
-        valor = None
+        lista_ejercicio = []
+        valor = False
         for ejercicio in lista_resultados:
-            if ejercicio[2] == 0:
-                valor = False
-            elif ejercicio[2] == 1:
+            if ejercicio[2] == 1:
                 valor = True
-            diccionario[ejercicio[0]] = [ejercicio[1], valor, ejercicio[3], ejercicio[4]]
-        # Este diccionario es de prueba
-        listExerciseFromDB = {"Ejercicio1": ["nombre1", True, "easy", "Cree"
-                                                                      "una variable y asignele un valor"
-                                                                      "bolenano"],
-                              "Ejercicio2": ["nombre2", True, "easy", "haga un ciclito"],
-                              "Ejercicio3": ["nombre3", False, "Very easy", "Qué es un condicional?"]}
-        return diccionario
+            e = Exercise(ejercicio[1], valor, ejercicio[3], ejercicio[4])
+            lista_ejercicio.append(e)
+        return lista_ejercicio
 
     def get_id_teacher_by_emailDB(self, teacherEmail):
         query = """SELECT idProfesor from Profesor where correo = %s"""
@@ -282,7 +264,18 @@ class ConnectionDB:
             CourseName = results[0][0]
         return CourseName
 
-    def get_object_exercise_by_nameExercise_CourseName(self, nameExercise, CourseName, nameActivity):
-        exercise = ["Crear Variables", True, "muy fácil", "Cree una variable y asignele un valor entero"]
-
+    # En realidad retorna una lista con la info del ejercicio
+    def get_object_exercise_by_nameExercise_CourseName(self, nameExercise, courseName, themeName):
+        idCourse = self.get_id_course_by_nameDB(courseName)
+        idTheme = self.get_id_theme_by_nameDB(themeName, idCourse)
+        query = """SELECT * FROM Ejercicio WHERE nombre = %s
+                AND tematica_curso_idCurso = %s AND tematica_idTematica = %s;"""
+        variables = (nameExercise, idCourse, idTheme)
+        result = self.executeSQL(query, variables)
+        primera_fila = result[0]
+        available = False
+        if primera_fila[5] == 1:
+            available = True
+        exercise = [primera_fila[3], available,
+                    primera_fila[6], primera_fila[4]]
         return exercise

@@ -7,8 +7,8 @@ class Course:
     def __init__(self):
         self.courses = []
 
-    def enter_course(self, nameCourse, email):
-        DB.enter_courseDB(nameCourse, email)
+    def enter_course(self, email, nameCourse):
+        DB.enter_courseDB(email, nameCourse)
 
     def edit_course(self, nameCourse, newCourse):
         DB.edit_courseDB(nameCourse, newCourse)
