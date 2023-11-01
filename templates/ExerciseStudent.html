@@ -262,11 +262,11 @@ li{
     margin-left: 0px;
     margin-right: 350px;
     align-items: stretch;
-    width: 250%;
-    height: 200%;
+    width: 200%;
+    height: 130%;
 }
         textarea {
-    width: 90%; /* Ancho del 100% del contenedor */
+    width: 90%;
     height: 300px;
 }
 
@@ -333,25 +333,28 @@ li{
                                     <input type="hidden" name="CourseName" value="{{ CourseName }}">
                                     <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
                                     <input type="hidden" name="exerciseName" value="{{ exerciseObject }}">
-                                    <textarea class="input" name="code" placeholder="Escribe tu código aquí"></textarea>
+                                    <textarea class="input" name="code" placeholder="Escribe tu código aquí" >{{code}}</textarea>
                                     <button class="primary-button" type="submit" name="action" value="Ejecutar">Ejecutar</button>
                                     <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
                                 </form>
+                            <div class="menu_teacher_left">
+                                <h2 class="title">Resultado:</h2>
+                                {% if compiledCode %}
+                                <pre style="text-align: left; white-space: pre-wrap;">
+                                    {% for line in compiledCode.split('\n') %}
+                                        {{ line }}
+                                    {% endfor %}
+                                </pre>
+                                {% endif %}
                             </div>
-                                <div class="menu_teacher_left">
-                                    <h2 class = "title">Resultado : </h2>
-                                                    {% if compiledCode %}
-                                                    <p>{{ compiledCode }}</p>
-                                                    {% endif %}
-                                    </ul>
-                                </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
-
+  </div>
+</div>
 </body>
 </html>

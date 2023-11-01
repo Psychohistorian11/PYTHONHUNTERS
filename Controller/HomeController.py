@@ -308,7 +308,7 @@ class HomeController:
                                Actividades=ThemeObject.Themes,
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
-                               nameActivity=nameActivity)
+                               nameActivity=nameActivity, code="")
 
     @app.route("/submitOrExecute")
     def submitOrExecute(self=None):
@@ -326,7 +326,7 @@ class HomeController:
         else:
             return redirect(url_for("submitSolution"))
 
-    @app.route("/execute")
+    @app.route("/execute", methods=["GET", "POST"])
     def execute(self=None):
         exerciseObjectInString = request.args.get("exerciseObject")
         exerciseObject = eval(exerciseObjectInString)
@@ -334,25 +334,28 @@ class HomeController:
         CourseName = request.args.get("CourseName")
         code = request.args.get("code")
 
-        # Redirige la salida estándar a un StringIO
-        stdout_backup = sys.stdout
-        sys.stdout = StringIO()
+        try:
+            stdout_backup = sys.stdout
+            sys.stdout = StringIO()
 
-        # Ejecuta el código proporcionado
-        exec(code)
+            exec(code)
 
-        # Captura la salida estándar
-        result = sys.stdout.getvalue()
+            result = sys.stdout.getvalue()
 
-        # Restaura la salida estándar original
-        sys.stdout.close()
-        sys.stdout = stdout_backup
+        except Exception as e:
+            result = str(e)
+
+        finally:
+
+            sys.stdout.close()
+            sys.stdout = stdout_backup
+
         return render_template("ExerciseStudent.html",
                                Actividades=ThemeObject.Themes,
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
                                nameActivity=nameActivity,
-                               compiledCode=result)
+                               compiledCode=result, code=code)
 
     @app.route("/submitExercise")
     def submitExercise(self=None):
