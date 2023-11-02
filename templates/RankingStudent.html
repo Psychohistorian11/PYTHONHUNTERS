@@ -340,7 +340,7 @@ li{
                <li>
                    <img src="{{ url_for('static', filename='book.png') }}" class="book">
                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
-                   <a  href="{{ url_for('goThemeStudent', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName) }}">
+                   <a  href="{{ url_for('goThemeStudent', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName, email=email) }}">
                        <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
                    </a>
 
@@ -353,18 +353,21 @@ li{
             <div class="menu-item">
                 <form action="/HomeMenuStudent">
                     <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                    <input type="hidden" name="email" value="{{ email }}">
                     <button  class= "primary-button-right" type="submit">Tematicas</button>
                 </form>
             </div>
             <div class="menu-item">
                 <form action="/RankingViewStudent">
                     <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                    <input type="hidden" name="email" value="{{ email }}">
                     <button  class= "primary-button-right" type="submit">Ranking</button>
                 </form>
             </div>
             <div class="menu-item">
              <form action="/DeliveriesStudent">
                  <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                 <input type="hidden" name="email" value="{{ email }}">
                  <button  class= "primary-button-right" type="submit">Entregas</button>
              </form>
             </div>
@@ -384,6 +387,7 @@ li{
         {% endfor %}
     </table>
     </div>
+</div>
 </div>
 </div>
 </body>

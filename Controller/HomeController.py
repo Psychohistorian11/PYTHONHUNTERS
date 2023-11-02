@@ -127,7 +127,7 @@ class HomeController:
     @app.route("/Menu")
     def Menu(self=None):
         return render_template("HomeMenuTeacher.html",
-                               Actividades=Actividades)
+                               Actividades=ThemeObject.Themes)
 
     @app.route("/sign_off")
     def sign_off(self=None):
@@ -145,8 +145,9 @@ class HomeController:
         todo = request.form["todo"]
         Actividades.append({"task": todo, "done": False})
         ThemeObject.enter_theme(todo, CourseName)
+        ThemeObject.update_themes(CourseName)
         return render_template("HomeMenuTeacher.html",
-                               Actividades=Actividades, CourseName=CourseName)
+                               Actividades=ThemeObject.Themes, CourseName=CourseName)
 
     @app.route("/edit/<int:Menu>/<string:actividad>/<string:CourseName>", methods=["GET", "POST"])
     def edit(Menu, actividad, CourseName):
@@ -221,8 +222,6 @@ class HomeController:
     @app.route("/RankingView")  # Segundo Sprint
     def Ranking(message=None):
         CourseName = request.args.get('CourseName')
-        # themes = DB.get_themesDB(CourseName)
-        themes = Actividades
         ranking_students = {
             "Estudiante 1": 95,
             "Estudiante 2": 87,
@@ -232,7 +231,7 @@ class HomeController:
         return render_template("Ranking.html",
                                ranking_students=ranking_students,
                                CourseName=CourseName,
-                               Actividades=themes)
+                               Actividades=ThemeObject.Themes)
 
     @app.route("/SelectStudentQualify/<int:Menu>/<string:exercise>/<string:CourseName>/<string:nameActivity>")  # Segundo Sprint
     def SelectStudentQualify(Menu, exercise, CourseName, nameActivity):
@@ -297,10 +296,11 @@ class HomeController:
     @app.route("/HomeMenuStudent")
     def HomeMenuStudent(self=None):
         CourseName = request.args.get('CourseName')
+        email = request.args.get('email')
         ThemeObject.update_themes(CourseName)
         return render_template("HomeMenuStudent.html",
                                Actividades=ThemeObject.Themes,
-                               CourseName=CourseName)
+                               CourseName=CourseName, email=email)
 
     @app.route("/StudentRegistrationView")
     def StudentRegistrationView(message=None):
@@ -331,8 +331,7 @@ class HomeController:
     @app.route("/RankingViewStudent")
     def RankingViewStudent(self=None):
         CourseName = request.args.get('CourseName')
-        # themes = DB.get_themesDB(CourseName)
-        themes = Actividades  # Se borra cuando este lista la DB
+        email = request.args.get('email')
         ranking_students = {
             "Estudiante 1": 95,
             "Estudiante 2": 87,
@@ -342,7 +341,7 @@ class HomeController:
         return render_template("RankingStudent.html",
                                ranking_students=ranking_students,
                                CourseName=CourseName,
-                               Actividades=themes)
+                               Actividades=ThemeObject.Themes, email=email)
 
     @app.route("/DeliveriesStudent")
     def DeliveriesStudent(self=None):  # ejercicios entregados por el estudiante
