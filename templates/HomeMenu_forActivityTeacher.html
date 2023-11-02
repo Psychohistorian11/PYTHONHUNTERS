@@ -354,14 +354,10 @@ li{
                             <li>
                                 <img src="{{ url_for('static', filename='code.png') }}" class="code">
                                     <span>{{ exercise_dict['task'][0] }}</span>
-<<<<<<< HEAD
 
-                                <a href="{{ url_for('SelectStudentQualify', Menu=loop.index0, exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity )}}">revisar -- </a>
 
-                                <a href="{{ url_for('editExercise', Menu=loop.index0,exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity) }}"> editar --  </a>
+                                <a href="{{ url_for('SelectStudentQualify', Menu=loop.index0, exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity )}}">revisar </a>
 
-                                <a href="{{ url_for('deleteExercise', Menu=loop.index0, CourseName=CourseName, nameActivity=nameActivity)}}">Borrar</a>
-=======
                                 <a href="{{ url_for('editExercise', Menu=loop.index0,exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity) }}">
                                     <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
                                 </a>
@@ -369,7 +365,7 @@ li{
                                     <img  src="{{ url_for('static', filename='delete.png') }}"  class=" mini-icon delete">
                                 </a>
 
->>>>>>> e9028a7eacd6638d9c7e11df2a4dec03c150288b
+
     
                             </li>
                             {% endfor %}
