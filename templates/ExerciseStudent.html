@@ -293,7 +293,7 @@ li{
                 <img src="{{ url_for('static', filename='book.png') }}" class="book">
                     <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
 
-                <a  href="{{ url_for('goThemeStudent', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName) }}">
+                <a  href="{{ url_for('goThemeStudent', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName, email=email) }}">
                     <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
                 </a>
                 </li>
@@ -333,22 +333,25 @@ li{
                                     <input type="hidden" name="CourseName" value="{{ CourseName }}">
                                     <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
                                     <input type="hidden" name="exerciseName" value="{{ exerciseObject }}">
-                                    <textarea class="input" name="code" placeholder="Escribe tu código aquí" >{{code}}</textarea>
+                                    <input type="hidden" name="email" value="{{ email }}">
+                                    <textarea rows="10" cols="30" class="input" name="code" placeholder="Escribe tu código aquí" >{{code}}</textarea>
                                     <button class="primary-button" type="submit" name="action" value="Ejecutar">Ejecutar</button>
+
+                                    <div class="menu_teacher_left">
+                                        <h2 class="title">Resultado:</h2>
+                                            {% if compiledCode %}
+                                            <pre style="text-align: left; white-space: pre-wrap;">
+                                                {% for line in compiledCode.split('\n') %}
+                                                {{ line }}
+                                                {% endfor %}
+                                            </pre>
+                                            {% endif %}
+                                    </div>
+                                    <h2> !Puedes explicar tu codigo aquí! </h2>
+                                    <input class= "input"type="text" name="detail">
                                     <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
                                 </form>
-                            <div class="menu_teacher_left">
-                                <h2 class="title">Resultado:</h2>
-                                {% if compiledCode %}
-                                <pre style="text-align: left; white-space: pre-wrap;">
-                                    {% for line in compiledCode.split('\n') %}
-                                        {{ line }}
-                                    {% endfor %}
-                                </pre>
-                                {% endif %}
                             </div>
-
-                    </div>
                 </div>
             </div>
 

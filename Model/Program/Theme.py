@@ -30,8 +30,8 @@ class Theme:
     def clear_themes(self):
         self.Themes = []
 
-    def enter_exercise(self, exercise, nameTheme, nameCourse):
-        DB.enter_exerciseDB(exercise, nameTheme, nameCourse)
+    def enter_exercise(self, nameExercise, emailStudent, nameTheme, nameCourse, code, detail):
+        DB.submit_exercise(nameExercise, emailStudent, nameTheme, nameCourse, code, detail)
 
     def update_exercise(self, listOfExercise):
         print(listOfExercise)

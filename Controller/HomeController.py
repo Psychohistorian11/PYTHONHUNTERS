@@ -76,7 +76,7 @@ class HomeController:
                 ThemeObject.update_themes(CourseName)
                 return render_template("HomeMenuStudent.html",
                                        Actividades=ThemeObject.Themes,
-                                       CourseName=CourseName)
+                                       CourseName=CourseName, email=email)
             else:
                 message = "Usuario no existe"
                 return render_template("Index.html", message=message)
@@ -289,8 +289,8 @@ class HomeController:
     def DeliveriesStudent(self=None):  # ejercicios entregados por el estudiante
         pass
 
-    @app.route("/goThemeStudent/<int:Menu>/<string:actividad>/<string:CourseName>")
-    def goThemeStudent(Menu, actividad, CourseName):
+    @app.route("/goThemeStudent/<int:Menu>/<string:actividad>/<string:CourseName>/<string:email>")
+    def goThemeStudent(Menu, actividad, CourseName, email):
         listExercisesFromDB = DB.get_exerciseDB(actividad, CourseName)
         ThemeObject.update_exercise(listExercisesFromDB)                     ### cuando ese lista la DB
         ThemeObject.update_themes(CourseName)
@@ -298,17 +298,19 @@ class HomeController:
                                Actividades=ThemeObject.Themes,
                                Exercises=ThemeObject.Exercises,
                                nameActivity=actividad,
-                               CourseName=CourseName)
+                               CourseName=CourseName,
+                               email=email)
 
-    @app.route("/goExercise/<int:Menu>/<string:nameExercise>/<string:CourseName>/<string:nameActivity>")
-    def goExercise(Menu, nameExercise, CourseName, nameActivity):
+    @app.route("/goExercise/<int:Menu>/<string:nameExercise>/<string:CourseName>/<string:nameActivity>/<string:email>")
+    def goExercise(Menu, nameExercise, CourseName, nameActivity, email):
         ThemeObject.update_themes(CourseName)
         exerciseObject = DB.get_object_exercise_by_nameExercise_CourseName(nameExercise, CourseName, nameActivity)
         return render_template("ExerciseStudent.html",
                                Actividades=ThemeObject.Themes,
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
-                               nameActivity=nameActivity, code="")
+                               nameActivity=nameActivity, code="",
+                               email=email)
 
     @app.route("/submitOrExecute")
     def submitOrExecute(self=None):
@@ -316,15 +318,22 @@ class HomeController:
         exerciseObject = request.args.get("exerciseName")
         nameActivity = request.args.get("nameActivity")
         CourseName = request.args.get("CourseName")
+        email = request.args.get("email")
+        detail = request.args.get("detail")
         action = request.args.get("action")
         isEjecutar = action == "Ejecutar"
         if isEjecutar:
             return redirect(url_for("execute", code=code,
                                     exerciseObject=exerciseObject,
                                     nameActivity=nameActivity,
-                                    CourseName=CourseName))
+                                    CourseName=CourseName,
+                                    email=email))
         else:
-            return redirect(url_for("submitSolution"))
+            return redirect(url_for("submitExercise",
+                                    nameActivity=nameActivity,
+                                    CourseName=CourseName,
+                                    exerciseName=exerciseObject,
+                                    email=email, code=code, detail=detail))
 
     @app.route("/execute", methods=["GET", "POST"])
     def execute(self=None):
@@ -333,6 +342,7 @@ class HomeController:
         nameActivity = request.args.get("nameActivity")
         CourseName = request.args.get("CourseName")
         code = request.args.get("code")
+        email = request.args.get("email")
 
         try:
             stdout_backup = sys.stdout
@@ -355,8 +365,31 @@ class HomeController:
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
                                nameActivity=nameActivity,
-                               compiledCode=result, code=code)
+                               compiledCode=result, code=code, email=email)
 
-    @app.route("/submitExercise")
+    @app.route("/submitExercise", methods=["GET", "POST"])
     def submitExercise(self=None):
-        pass
+        exerciseObjectInString = request.args.get("exerciseName")
+        exerciseObject = eval(exerciseObjectInString)
+        nameActivity = request.args.get("nameActivity")
+        CourseName = request.args.get("CourseName")
+        email = request.args.get("email")
+        detail = request.args.get("detail")
+        code = request.args.get("code")
+        ThemeObject.update_themes(CourseName)
+
+        ThemeObject.enter_exercise(exerciseObject[0],
+                                   email,
+                                   nameActivity,
+                                   CourseName,
+                                   code,
+                                   detail)
+
+        return render_template("ExerciseStudent.html",
+                               Actividades=ThemeObject.Themes,
+                               exerciseObject=exerciseObject,
+                               CourseName=CourseName,
+                               nameActivity=nameActivity, code=code, email= email)
+
+
+

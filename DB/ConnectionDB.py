@@ -279,3 +279,43 @@ class ConnectionDB:
         exercise = [primera_fila[3], available,
                     primera_fila[6], primera_fila[4]]
         return exercise
+
+    def get_id_exercise_by_nameDB(self, exerciseName, idTheme, idCourse):
+        query = """SELECT idEjercicio from Ejercicio e where nombre = %s and
+         tematica_idTematica = %s and tematica_curso_idCurso=%s;"""
+        variables = (exerciseName, idTheme, idCourse)
+        result = self.executeSQL(query, variables)
+        idExercise = 0
+        if result:
+            idExercise = result[0][0]
+        return idExercise
+
+    def get_id_student_by_emailDB(self, emailStudent):
+        query = """SELECT idEstudiante from Estudiante e where correo = %s"""
+        listidStudent = self.executeSQL(query, (emailStudent,))
+        idStudent = 0
+        if listidStudent:
+            idStudent = listidStudent[0][0]
+        return idStudent
+
+    def submit_exercise(self, nameExercise, emailStudent, nameTheme, nameCourse, code, detail):
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
+        idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
+        idExercise = self.get_id_exercise_by_nameDB(nameExercise, idTheme, idCourse)
+        idStudent = self.get_id_student_by_emailDB(emailStudent)
+        variables = (idStudent, idExercise, idCourse, code, detail)
+        print("mail: ", emailStudent)
+        print("idStudent: ",idStudent)
+        print("code: ", code)
+        print("detail: ", detail)
+        query = """INSERT INTO Entrega VALUES 
+                                (null,%s,%s,%s,%s,%s,null,null);"""
+        if detail == "":
+            # No le mando detalle, sino null
+            variables = (idStudent, idExercise, idCourse, code)
+            query = """INSERT INTO Entrega VALUES 
+            (null,%s,%s,%s,%s,null,null,null);"""
+
+        self.executeSQL(query, variables)
+
+
