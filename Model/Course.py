@@ -12,8 +12,6 @@ class Course:
 
     def edit_course(self, nameCourse, newCourse):
         DB.edit_courseDB(nameCourse, newCourse)
-        DB.disconnect()
-        DB.connect()
 
     def delete_course(self, nameCourse):
         DB.delete_courseDB(nameCourse)

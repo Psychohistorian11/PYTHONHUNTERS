@@ -20,6 +20,7 @@ class Theme:
         DB.delete_themeDB(theme, name_course)
 
     def update_themes(self, CourseName):
+        self.Themes = []
         themes_from_db = DB.get_themesDB(CourseName)
         self.Themes = [{'task': course} for course in themes_from_db]
 
@@ -30,11 +31,14 @@ class Theme:
     def clear_themes(self):
         self.Themes = []
 
-    def enter_exercise(self, nameExercise, emailStudent, nameTheme, nameCourse, code, detail):
+    def enter_exercise(self, newExercise, emailStudent, nameTheme):
+        DB.enter_exerciseDB(newExercise, emailStudent, nameTheme)
+
+    def submit_exercise(self, nameExercise, emailStudent, nameTheme, nameCourse, code, detail):
         DB.submit_exercise(nameExercise, emailStudent, nameTheme, nameCourse, code, detail)
 
     def update_exercise(self, listOfExercise):
-        print(listOfExercise)
+        self.Exercises = []
         for exercise in listOfExercise:
             self.Exercises.append({'task': [exercise.nameExercise,
                                             exercise.availability,
@@ -45,8 +49,17 @@ class Theme:
         listExercisesFromDB = DB.get_exerciseDB(nameTheme, nameCourse)
         return listExercisesFromDB
 
-    def edit_exercise(self):
-        pass
+    def edit_exercise(self, newExercise, oldNameExercise, nameTheme, nameCourse):
+        DB.edit_exerciseDB(newExercise, oldNameExercise, nameTheme, nameCourse)
 
-    def create_links(self):
-        pass
+    def delete_exercise(self, nameExercise, nameTheme, nameCourse):
+        DB.delete_exerciseDB(nameExercise, nameTheme, nameCourse)
+
+    def get_student_and_delivery(self, exercise, CourseName, nameActivity):
+        return DB.get_student_and_deliveryDB(exercise, CourseName, nameActivity)
+
+    def deliverNote(self, nameActivity, nameExercise, CourseName, email,
+                        detail, code, note, feedback):
+        DB.deliverNoteDB(nameActivity, nameExercise, CourseName, email,
+                        detail, code, note, feedback)
+

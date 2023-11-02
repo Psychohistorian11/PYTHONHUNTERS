@@ -1,14 +1,25 @@
 import time
 
 import mysql.connector
-from Model.Program.Exercise import Exercise
 
-config = {'user': 'bit_busters',
+from Model.Delivery import Delivery
+from Model.Program.Exercise import Exercise
+from Model.Student import Student
+
+
+"""config = {'user': 'bit_busters',
           'password': 'password123',
           'host': 'db4free.net',
           'database': 'pythonbd',
           'port': 3306,  # Puerto predeterminado de MySQL
-          'raise_on_warnings': True}  # Para que se generen excepciones en caso de advertencias
+          'raise_on_warnings': True}  # Para que se generen excepciones en caso de advertencias"""
+
+config = {'user': 'root',
+          'host': '127.0.0.1',
+          'password': 'Palabrasambiguas',
+          'database': 'pythonbd',
+          'port': 3306,  # Puerto predeterminado de MySQL
+          'raise_on_warnings': True}  # Para que se generen excepciones en caso de advertencia
 
 
 class ConnectionDB:
@@ -119,12 +130,12 @@ class ConnectionDB:
     def get_themesDB(self, nameCourse):  # Este metodo me entrega todos los temas que se
         # encuentran en la base de datos, necesito solo los nombres
         idCourse = self.get_id_course_by_nameDB(nameCourse)
-        print("este es el idCourse:",idCourse)
+        #print("este es el idCourse:",idCourse)
         query = """select t.nombre from Tematica t
                   where t.curso_idCurso = %s ;"""
         result = self.executeSQL(query,     (idCourse,))
         themes = [name[0] for name in result]
-        print("lista de temas de db: ", themes)
+        #print("lista de temas de db: ", themes)
         return themes
 
     def get_id_theme_by_nameDB(self, nameTheme, idCourse):
@@ -304,10 +315,10 @@ class ConnectionDB:
         idExercise = self.get_id_exercise_by_nameDB(nameExercise, idTheme, idCourse)
         idStudent = self.get_id_student_by_emailDB(emailStudent)
         variables = (idStudent, idExercise, idCourse, code, detail)
-        print("mail: ", emailStudent)
-        print("idStudent: ",idStudent)
-        print("code: ", code)
-        print("detail: ", detail)
+        #print("mail: ", emailStudent)
+        #print("idStudent: ",idStudent)
+        #print("code: ", code)
+        #print("detail: ", detail)
         query = """INSERT INTO Entrega VALUES 
                                 (null,%s,%s,%s,%s,%s,null,null);"""
         if detail == "":
@@ -317,5 +328,43 @@ class ConnectionDB:
             (null,%s,%s,%s,%s,null,null,null);"""
 
         self.executeSQL(query, variables)
+
+    def edit_exerciseDB(self, newExercise, oldNameExercise, nameTheme, nameCourse):
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
+        idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
+        idExercise = self.get_id_exercise_by_nameDB(oldNameExercise, idTheme, idCourse)
+        query = """UPDATE Ejercicio SET nombre = %s, 
+        enunciado = %s, disponibilidad = %s, dificultad = %s
+        WHERE idEjercicio = %s AND tematica_idTematica = %s 
+        AND tematica_curso_idCurso = %s;"""
+        available = 0
+        if newExercise.availability:
+            available = 1
+        variables = (newExercise.nameExercise, newExercise.statement,
+                     available, newExercise.difficulty,
+                     idExercise, idTheme, idCourse)
+        self.executeSQL(query, variables)
+
+    def delete_exerciseDB(self, nameExercise, nameTheme, nameCourse):
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
+        idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
+        idExercise = self.get_id_exercise_by_nameDB(nameExercise, idTheme, idCourse)
+        query = """DELETE FROM Ejercicio
+        WHERE idEjercicio = %s AND tematica_idTematica = %s AND tematica_curso_idCurso = %s;"""
+        variables = (idExercise, idTheme, idCourse)
+        self.executeSQL(query, variables)
+
+    def get_student_and_deliveryDB(self, exercise, CourseName, nameActivity):
+        listOfStudentAndDelivery = []
+        StudentNew = Student("cris", "franco", "cristian@gmail.com", "1234", 0, 1)
+        DeliveryNew = Delivery("Sumar Variables", """print(10)""", "profe un grande", "", "")
+        lis = [StudentNew,DeliveryNew]
+        listOfStudentAndDelivery.append(lis)
+        return listOfStudentAndDelivery
+
+    def deliverNoteDB(self, nameActivity, nameExercise, CourseName, email,
+                        detail, code, note, feedback):
+        pass
+
 
 

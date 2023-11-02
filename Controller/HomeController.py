@@ -2,6 +2,7 @@ import time
 
 from flask import Flask, render_template, request, redirect, url_for
 from DB.ConnectionDB import ConnectionDB
+from Model.Program.Exercise import Exercise
 from Model.Program.Program import Program
 from Model.Program.Theme import Theme
 from Model.Course import Course
@@ -115,7 +116,7 @@ class HomeController:
         else:
             return render_template("editCourse.html", course=course, Menu=Menu, CourseName=CourseName, email=email)
 
-    @app.route("/deleteCourse/<int:Menu>/<string:CourseName>/<string:email>", methods=["GET","POST"])
+    @app.route("/deleteCourse/<int:Menu>/<string:CourseName>/<string:email>", methods=["GET", "POST"])
     def deleteCourse(Menu, CourseName, email):
         del CourseObject.courses[Menu]
         CourseObject.delete_course(CourseName)
@@ -179,14 +180,17 @@ class HomeController:
     @app.route("/editExercise/<int:Menu>/<string:exercise>/<string:CourseName>/<string:nameActivity>",
                methods=["GET", "POST"])
     def editExercise(Menu, exercise, CourseName, nameActivity):
-        exercise_ = Exercises[Menu]
+        exercise_ = ThemeObject.Exercises[Menu]
         if request.method == "POST":
             exercise_['task'][0] = request.form['nameExercise']
             exercise_['task'][1] = request.form['availability']
             exercise_['task'][2] = request.form['difficulty']
             exercise_['task'][3] = request.form['statement']
+            newExerciseEdit = Exercise(exercise_['task'][0], exercise_['task'][1], exercise_['task'][2],
+                                       exercise_['task'][3])
+            ThemeObject.edit_exercise(newExerciseEdit, exercise, nameActivity, CourseName)
             return render_template("HomeMenu_forActivityTeacher.html",
-                                   Actividades=Actividades,
+                                   Actividades=ThemeObject.Themes,
                                    Exercises=ThemeObject.Exercises,
                                    CourseName=CourseName,
                                    nameActivity=nameActivity)
@@ -198,9 +202,10 @@ class HomeController:
 
     @app.route("/deleteExercise/<int:Menu>/<string:CourseName>/<string:nameActivity>")
     def deleteExercise(Menu, CourseName, nameActivity):
-        del Exercises[Menu]
+        ThemeObject.delete_exercise(ThemeObject.Exercises[Menu], nameActivity, CourseName)
+        del ThemeObject.Exercises[Menu]
         return render_template("HomeMenu_forActivityTeacher.html",
-                               Actividades=Actividades,
+                               Actividades=ThemeObject.Themes,
                                Exercises=ThemeObject.Exercises,
                                CourseName=CourseName,
                                nameActivity=nameActivity)
@@ -229,9 +234,63 @@ class HomeController:
                                CourseName=CourseName,
                                Actividades=themes)
 
-    @app.route("/QualifyView")  # Segundo Sprint
-    def Qualify(message=None):
-        return render_template("Qualify.html")
+    @app.route("/SelectStudentQualify/<int:Menu>/<string:exercise>/<string:CourseName>/<string:nameActivity>")  # Segundo Sprint
+    def SelectStudentQualify(Menu, exercise, CourseName, nameActivity):
+        print(Menu)
+        listOfStudentAndDelivery = ThemeObject.get_student_and_delivery(exercise, CourseName, nameActivity)
+        return render_template("SelectStudentQualify.html", Menu=Menu,
+                               listOfStudentAndDelivery=listOfStudentAndDelivery,
+                               Actividades=ThemeObject.Themes, CourseName=CourseName, nameActivity=nameActivity)
+
+    @app.route("/seeDelivery/<int:Menu>/<string:code>/<string:detail>/<string:CourseName>/<string:nameActivity>/<string:email"
+               ">/<string:nameExercise>")
+    def seeDelivery(Menu,code, detail, CourseName, nameActivity, email, nameExercise):
+        print("se:",Menu)
+        return render_template("seeDelivery.html", Menu=Menu,
+                               Actividades=ThemeObject.Themes,
+                               CourseName=CourseName,
+                               nameActivity=nameActivity, code=code, detail=detail, email=email,
+                               nameExercise=nameExercise)
+
+    @app.route("/executeTeacher")
+    def executeTeacher(self=None):
+        code = request.args.get("code")
+        detail = request.args.get("detail")
+        CourseName = request.args.get("CourseName")
+
+        try:
+            stdout_backup = sys.stdout
+            sys.stdout = StringIO()
+
+            exec(code)
+
+            result = sys.stdout.getvalue()
+
+        except Exception as e:
+            result = str(e)
+
+        finally:
+
+            sys.stdout.close()
+            sys.stdout = stdout_backup
+
+        return render_template("seeDelivery.html",
+                               Actividades=ThemeObject.Themes,
+                               CourseName=CourseName, code=code, detail=detail, compiledCode=result)
+
+    @app.route("/deliverNote/<int:Menu>/<string:CourseName>/<string:nameActivity>/<string:nameExercise>/"
+               "<string:code>/<string:email>/<string:detail>", methods=["POST"])
+    def deliverNote(Menu, CourseName, nameActivity, nameExercise, code, email, detail):
+        print(Menu)
+        note = request.form['note']
+        feedback = request.form['feedback']
+        ThemeObject.deliverNote(nameActivity, nameExercise, CourseName, email, detail,
+                                code, note, feedback)
+        listOfStudentAndDelivery = ThemeObject.get_student_and_delivery(nameExercise, CourseName, nameActivity)
+        return render_template("SelectStudentQualify.html", Menu=Menu,
+                               listOfStudentAndDelivery=listOfStudentAndDelivery,
+                               Actividades=ThemeObject.Themes, CourseName=CourseName,
+                               nameActivity=nameActivity)
 
     # ///////////////////////////////////////////////////////////////////////////////////////#
     # --------------------- METODOS DEL ESTUDIANTE -----------------------------------------#
@@ -292,7 +351,7 @@ class HomeController:
     @app.route("/goThemeStudent/<int:Menu>/<string:actividad>/<string:CourseName>/<string:email>")
     def goThemeStudent(Menu, actividad, CourseName, email):
         listExercisesFromDB = DB.get_exerciseDB(actividad, CourseName)
-        ThemeObject.update_exercise(listExercisesFromDB)                     ### cuando ese lista la DB
+        ThemeObject.update_exercise(listExercisesFromDB)  ### cuando ese lista la DB
         ThemeObject.update_themes(CourseName)
         return render_template("HomeMenu_forActivityStudent.html",
                                Actividades=ThemeObject.Themes,
@@ -378,18 +437,15 @@ class HomeController:
         code = request.args.get("code")
         ThemeObject.update_themes(CourseName)
 
-        ThemeObject.enter_exercise(exerciseObject[0],
-                                   email,
-                                   nameActivity,
-                                   CourseName,
-                                   code,
-                                   detail)
+        ThemeObject.submit_exercise(exerciseObject[0],
+                                    email,
+                                    nameActivity,
+                                    CourseName,
+                                    code,
+                                    detail)
 
         return render_template("ExerciseStudent.html",
                                Actividades=ThemeObject.Themes,
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
-                               nameActivity=nameActivity, code=code, email= email)
-
-
-
+                               nameActivity=nameActivity, code=code, email=email)
