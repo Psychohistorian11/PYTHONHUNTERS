@@ -54,8 +54,8 @@
             flex-direction: column;
         }
         .input{
-            color: var(--white);
-            background-color: var(--blue);
+            color: var(--black);
+            background-color: var(--gray);
             border-radius: 12px;
             border: none;
             height: 24px;
@@ -68,7 +68,7 @@
 
         .primary-button {
             font-size: var(--md);
-            background-color: var(--gold);
+            background-color: var(--blue);
             border-radius: 12px;
             border: none;
             height: 40px;
@@ -92,7 +92,7 @@
 
         <form action="{{ url_for('editCourse', Menu=Menu , CourseName=CourseName, email=email)}}" method="post" class="form form-edit-course">
                 <input type="text" name="course" placeholder="{{CourseName}}" class="input input-course" value="{{CourseName}}" required style="color: #999;">
-                <button type="submit" class="primary-button login-button">Save</button>
+                <button type="submit" class="primary-button login-button">Guardar</button>
         </form>
     </a>
 </div>

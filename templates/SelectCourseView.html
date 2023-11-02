@@ -62,11 +62,11 @@
             margin-top: 16px;
         }
         .input{
-            color: var(--white);
-            background-color: var(--blue);
+            color: var(--black);
+            background-color: var(--gray);
             border-radius: 12px;
             border: none;
-            height: 32px;
+            height: 24px;
             font-size: var(--md);
             padding: 8px;
             margin-left: 16px;
@@ -74,11 +74,11 @@
             outline: none;
         }
         .input::placeholder{
-            color: var(--white);
+            color: var(--black);
         }
         .primary-button {
             font-size: var(--md);
-            background-color: var(--gold);
+            background-color: var(--blue);
             border-radius: 12px;
             border: none;
             height: 40px;
@@ -165,7 +165,7 @@ li{
             </ul>
             <form action="{{ url_for('addCourse', email=email) }}" method="post">
                 <input class="input" placeholder="Ingresar Curso" type="text" name="todo">
-                <button class="primary-button" type="submit">Agregar Curso</button>
+                <button class="primary-button" type="submit">Agregar</button>
             </form>
     </div>
         

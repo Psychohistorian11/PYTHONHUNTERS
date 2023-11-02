@@ -54,8 +54,8 @@
             flex-direction: column;
         }
         .input{
-            color: var(--white);
-            background-color: var(--blue);
+            color: var(--black);
+            background-color: var(--gray);
             border-radius: 12px;
             border: none;
             height: 24px;
@@ -68,7 +68,7 @@
 
         .primary-button {
             font-size: var(--md);
-            background-color: var(--gold);
+            background-color: var(--blue);
             border-radius: 12px;
             border: none;
             height: 40px;
@@ -90,7 +90,7 @@
     <a class="a espacio-cuadrado">
         <form action="{{ url_for('edit', Menu=Menu, actividad=actividad, CourseName=CourseName)}}" method="post" class="form form-edit-course">
                 <input type="text" name="todo" class="input input-course" value="{{todo['task']}}" required>
-                <button type="submit" class="primary-button login-button">Save</button>
+                <button type="submit" class="primary-button login-button">Guardar</button>
         </form>
     </a>
 </div>
