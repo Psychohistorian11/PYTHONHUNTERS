@@ -325,7 +325,7 @@ li{
                                 <img src="{{ url_for('static', filename='code.png') }}" class="code">
                                     <span>{{ exercise_dict['task'][0] }}</span>
 
-                                <a href="{{ url_for('goExercise', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity) }}">
+                                <a href="{{ url_for('goExercise', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity, email=email) }}">
                                     <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
                                  </a>
 

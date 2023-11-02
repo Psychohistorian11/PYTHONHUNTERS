@@ -417,51 +417,38 @@ li{
                             <div class="editor-code">
                                 <h2 class="title">{{ exerciseObject[0] }}</h2>
                                             <p class="subtitle">{{ exerciseObject[3] }}</p>
-                                <!-- Aquí se muestra el nombre y la descripción del ejercicio -->
+
                             <div>
                                 <form action="/submitOrExecute" >
                                     <input type="hidden" name="CourseName" value="{{ CourseName }}">
                                     <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
                                     <input type="hidden" name="exerciseName" value="{{ exerciseObject }}">
-<<<<<<< HEAD
                                     <input type="hidden" name="email" value="{{ email }}">
-                                    <textarea rows="10" cols="30" class="input" name="code" placeholder="Escribe tu código aquí" >{{code}}</textarea>
-                                    <button class="primary-button" type="submit" name="action" value="Ejecutar">Ejecutar</button>
-
-                                    <div class="menu_teacher_left">
-                                        <h2 class="title">Resultado:</h2>
-                                            {% if compiledCode %}
-                                            <pre style="text-align: left; white-space: pre-wrap;">
-                                                {% for line in compiledCode.split('\n') %}
-                                                {{ line }}
-                                                {% endfor %}
-                                            </pre>
-                                            {% endif %}
-                                    </div>
-                                    <h2> !Puedes explicar tu codigo aquí! </h2>
-                                    <input class= "input"type="text" name="detail">
-=======
                                     <textarea  name="code" placeholder="Escribe tu código aquí" >{{code}}</textarea>
                                     <div class="buttons-exe">
                                         <button class="primary-button" type="submit" name="action" value="Ejecutar">Ejecutar</button>
->>>>>>> e9028a7eacd6638d9c7e11df2a4dec03c150288b
-                                    <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
+                                        <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
                                     </div>
+                                    <h2> !Puedes explicar tu codigo aquí! </h2>
+                                    <input class= "input" type="text" name="detail">
                                     
                                 </form>
-<<<<<<< HEAD
-=======
-                            <div class="console">
-                                <h2 class="title t-white">Consola:</h2>
-                                {% if compiledCode %}
-                                <pre >
-                                    {% for line in compiledCode.split('\n') %}
-                                        {{ line }}
-                                    {% endfor %}
-                                </pre>
-                                {% endif %}
->>>>>>> e9028a7eacd6638d9c7e11df2a4dec03c150288b
-                            </div>
+                                        <div>
+                                            <ls>
+                                                    <h1></h1>
+                                            </ls>
+                                        </div>
+                                    <div class="console">
+                                        <h2 class="title t-white">Consola:</h2>
+                                        {% if compiledCode %}
+                                        <pre >
+                                            {% for line in compiledCode.split('\n') %}
+                                                {{ line }}
+                                            {% endfor %}
+                                        </pre>
+                                        {% endif %}
+
+                                    </div>
                 </div>
             </div>
 
@@ -469,5 +456,6 @@ li{
     </div>
   </div>
 </div>
+    </div>
 </body>
 </html>
