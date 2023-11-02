@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --blue: #1F57A2;
+            --white: #FFFFFF;
+            --gray: #CFCDC8;
+            --black: #000000;
+            --gold: #F5C451;
+            --sm: 14px;
+            --md: 16px;
+            --lg: 24px;
+            --g: 36px;
+        }
+        body {
+            background-color: var(--blue);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            display: flex;
+        }
+        .container-down {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: auto;
+}
+        .full-container{
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-bar{
+            width: 100vw;
+            height: 80px;
+            background-color: var(--white);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 95% 5%;
+            grid-template-rows: auto;
+            align-content: center;
+        }
+        .menu_teacher_left {
+            grid-column-start: 1;
+            background-color: var(--white);
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            margin-left: 4px;
+            margin-right: 16px;
+            align-items: stretch;
+
+        }
+
+        .logo-nav {
+            width: 150px;
+            margin: 0 ;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            grid-column-start: 1;
+
+        }
+        .title{
+           font-size: var(--lg);
+           color: var(--blue);
+           margin-bottom: 16px;
+           margin-left: 12px;
+           text-align: left;
+        }
+        .label{
+            margin-left: 16px;
+            color: var(--blue);
+            font-size: var(--sm);
+            font-weight: bold;
+            margin-bottom: 12px;
+            margin-top: 16px;
+        }
+        .input{
+            color: var(--white);
+            background-color: var(--blue);
+            border-radius: 12px;
+            border: none;
+            height: 24px;
+            font-size: var(--md);
+            padding: 8px;
+            margin-left: 16px;
+            margin-right: 16px;
+            outline: none;
+        }
+        .input::placeholder{
+            color: var(--white);
+        }
+        .primary-button {
+            font-size: var(--md);
+            background-color: var(--gold);
+            border-radius: 12px;
+            border: none;
+            height: 40px;
+            color: var(--white);
+            margin-top: 16px;
+            margin-left: 16px;
+            margin-right: 16px;
+            cursor: pointer;
+        }
+
+
+li{
+    list-style: none;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+
+}
+.mini-icon{
+    width: 32px;
+    height: 32px;
+    margin-top: 16px;
+    margin-right: 0px;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+.book{
+    width: 28px;
+    height: 28px;
+    margin-right: 12px;
+    justify-self: center;
+}
+.code{
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    justify-self: center;
+}
+.menu_teacher_right{
+    grid-column-start: 2;
+     display: flex;
+     flex-direction: row;
+    justify-content: center;
+    width: auto;}
+.input{
+            color: var(--blue);
+            background-color: var(--gray);
+            border-radius: 12px;
+            border: none;
+            height: 16px;
+            font-size: var(--md);
+            padding: 8px;
+            margin-left: 16px;
+            margin-right: 16px;
+            outline: none;
+        }
+
+        .primary-button-right {
+            font-size: var(--lg);
+            background-color: var(--white);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            margin-top: 4px;
+            margin-left: 8px;
+            margin-right: 8px;
+            border: none;
+            height: 80px;
+            width: 244px;
+            color: var(--blue);
+            cursor: pointer;
+        }
+        .primary-button-exercise{
+            font-size: var(--g);
+            background-color: var(--gold);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            margin-top: 12px;
+            margin-left: 8px;
+            margin-right: 8px;
+            border: none;
+            height: 128px;
+            width: 760px;
+            color: var(--blue);
+            cursor: pointer;
+        }
+        .primary-button-teacher{
+            font-size: var(--lg);
+            background-color: var(--blue);
+            border-radius: 12px;
+            border: none;
+            height: 32px;
+            color: var(--white);
+            margin-left: 16px;
+            margin-right: 16px;
+            margin-bottom: 16px;
+            margin-top: 8px;
+            cursor: pointer;
+
+        }
+        .form-add {
+        justify-self: flex-end;
+    display: flex;
+    flex-direction: column;
+        }
+        .log_out{
+            width: 48px;
+            height: 48px;
+            grid-column-start: 2;
+            align-self: center;
+        }
+
+    .log_out-button{
+        background: var(--white);
+        border: none;
+        display:flex;
+        justify-content: center;
+    }
+    .out{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 12px;
+
+    }
+    .buttons-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+
+    }
+    .container-little-buttons{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    a{text-decoration: none;
+    color: var(--black);
+    font-size: var(--lg);}
+
+    .menu-exercises{
+        height: auto;
+        width: 760px;
+        margin: 8px 0 0 8px;
+    }
+    .exit{
+        width: 48px;
+        height: 48px;
+        justify-self: center;
+        cursor: pointer;
+    }
+        .menu_teacher_left1 {
+    grid-column-start: 1;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    margin-left: 0px;
+    margin-right: 350px;
+    align-items: stretch;
+    width: 200%;
+    height: 130%;
+}
+        textarea {
+    width: 90%;
+    height: 300px;
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="full-container">
+        <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
+            <form class="out" action="/sign_off">
+            <a class="log_out">
+                <button type="submit" class="log_out-button">
+                    <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="exit">
+                </button>
+
+            </a>
+            </form>
+        </div>
+        <div class="container-down">
+            <div class="menu_teacher_left">
+                <h2 class = "title">Temáticas : </h2>
+                {% for todo in Actividades %}
+                <li>
+                <img src="{{ url_for('static', filename='book.png') }}" class="book">
+                    <span {% if todo[done] %} style="text-decoration: line-through" {% endif %}>{{ todo["task"] }}</span>
+
+                <a  href="{{ url_for('goThemeStudent', Menu=loop.index0, actividad=todo['task'], CourseName=CourseName, email=email) }}">
+                    <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
+                </a>
+                </li>
+                {% endfor %}
+                </ul>
+            </div>
+
+            <div class="menu_teacher_right">
+                <div class="buttons-container">
+                    <div class="container-little-buttons">
+                        <div class="menu-item">
+                            <form action="/HomeMenuStudent">
+                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                                <button  class= "primary-button-right" type="submit">Tematicas</button>
+                            </form>
+                        </div>
+                        <div class="menu-item">
+                            <form action="/RankingViewStudent">
+                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                                <button  class= "primary-button-right" type="submit">Ranking</button>
+                            </form>
+                        </div>
+                        <div class="menu-item">
+                            <form action="/DeliveriesStudent">
+                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                                <button  class= "primary-button-right" type="submit">Entregas</button>
+                            </form>
+                        </div>
+                    </div>
+                        <div class="container-down">
+                            <div class="menu_teacher_left1">
+                                <h2 class="title">{{ exerciseObject[0] }}</h2>
+                                            <p>{{ exerciseObject[3] }}</p>
+                                <!-- Aquí se muestra el nombre y la descripción del ejercicio -->
+                            <div>
+                                <form action="/submitOrExecute" >
+                                    <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                                    <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
+                                    <input type="hidden" name="exerciseName" value="{{ exerciseObject }}">
+                                    <input type="hidden" name="email" value="{{ email }}">
+                                    <textarea rows="10" cols="30" class="input" name="code" placeholder="Escribe tu código aquí" >{{code}}</textarea>
+                                    <button class="primary-button" type="submit" name="action" value="Ejecutar">Ejecutar</button>
+
+                                    <div class="menu_teacher_left">
+                                        <h2 class="title">Resultado:</h2>
+                                            {% if compiledCode %}
+                                            <pre style="text-align: left; white-space: pre-wrap;">
+                                                {% for line in compiledCode.split('\n') %}
+                                                {{ line }}
+                                                {% endfor %}
+                                            </pre>
+                                            {% endif %}
+                                    </div>
+                                    <h2> !Puedes explicar tu codigo aquí! </h2>
+                                    <input class= "input"type="text" name="detail">
+                                    <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
+                                </form>
+                            </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
