@@ -59,8 +59,8 @@
             margin-top: 16px;
         }
         .input{
-            color: var(--white);
-            background-color: var(--blue);
+            color: var(--black);
+            background-color: var(--gray);
             border-radius: 12px;
             border: none;
             height: 24px;
@@ -71,11 +71,11 @@
             outline: none;
         }
         .input::placeholder{
-            color: var(--white);
+            color: var(--black);
         }
         .primary-button {
             font-size: var(--md);
-            background-color: var(--gold);
+            background-color: var(--blue);
             border-radius: 12px;
             border: none;
             height: 40px;
@@ -88,10 +88,10 @@
 
         }
         .register-button{
-            background-color: var(--gold);
+            background-color: var(--blue);
             color: var(--white);
             margin-bottom: 16px;
-
+        }
         .notification{
             color: var(--blue);
             background-color: white;
@@ -127,7 +127,7 @@
             <input type="password" class="input input-password" placeholder="Contraseña" id="password" name="passwordStudent" required>
 
             <label for="password"  class="label">Código del curso:</label>
-            <input type="text" class="codeCourse" placeholder="Codigo del curso dispuesto por tu profesor" id="codeCourse" name="codeCourse" required>
+            <input type="text" class="input codeCourse" placeholder="Codigo del curso dispuesto por tu profesor" id="codeCourse" name="codeCourse" required>
 
             <button type="submit" class="primary-button register-button">Registrarse</button>
         </form>
