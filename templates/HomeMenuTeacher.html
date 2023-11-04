@@ -34,7 +34,8 @@
         }
         .nav-bar{
             width: 100vw;
-            height: 80px;
+            height: auto;
+            margin-top: 10px;
             background-color: var(--white);
             border-radius: 12px;
             margin-bottom: 16px;
@@ -52,13 +53,12 @@
             margin-left: 4px;
             margin-right: 16px;
             align-items: stretch;
+            width: 50%;
 
         }
 
         .logo-nav {
             width: 150px;
-            margin: 0 ;
-            margin-bottom: 12px;
             border-radius: 8px;
             grid-column-start: 1;
 
@@ -79,8 +79,8 @@
             margin-top: 16px;
         }
         .input{
-            color: var(--white);
-            background-color: var(--blue);
+            color: var(--black);
+            background-color: var(--gray);
             border-radius: 12px;
             border: none;
             height: 24px;
@@ -91,7 +91,7 @@
             outline: none;
         }
         .input::placeholder{
-            color: var(--white);
+            color: var(--black);
         }
         .primary-button {
             font-size: var(--md);
@@ -105,6 +105,7 @@
             margin-right: 16px;
             cursor: pointer;
         }
+    
 
 
 li{
@@ -140,7 +141,7 @@ li{
 .menu_teacher_right{
     grid-column-start: 2;
      display: flex;
-     flex-direction: column;
+     flex-direction: row;
     justify-content: center;
     width: auto;}
 .input{
@@ -161,12 +162,11 @@ li{
             background-color: var(--white);
             border-radius: 12px;
             margin-bottom: 12px;
-            margin-top: 12px;
             margin-left: 8px;
             margin-right: 8px;
             border: none;
-            height: 128px;
-            width: 96%;
+            height: 64px;
+            width: 200px;
             color: var(--blue);
             cursor: pointer;
 
@@ -178,17 +178,16 @@ li{
             border-radius: 12px;
             border: none;
             height: 32px;
+            width: 48px;
             color: var(--white);
             margin-left: 16px;
             margin-right: 16px;
             margin-bottom: 16px;
-            margin-top: 8px;
             cursor: pointer;
-
         }
         .form-add {
     display: flex;
-    flex-direction: column;
+    flex-direction:row;
         }
         .log_out{
             width: 48px;
@@ -246,11 +245,35 @@ li{
     font-size: 24px;
     cursor: pointer;
 }
+.notification{
+            color: var(--blue);
+            background-color: white;
+            font-size: var(--lg);
+            display: flex;
+            justify-content: center;
+            border-radius: 16px;
+            margin: 12px 12px 0 4px;
+            justify-self: center;
+
+
+        }
+.gen-code{
+    width: auto;
+    font-size: var(--md);
+
+}
 
     </style>
 </head>
 <body>
+
 <div class="full-container">
+</form>
+<div class="notification">
+{% if idCourse %}
+<p>ID del curso: {{ idCourse }}</p>
+{% endif %}
+</div>
 <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
 
 
@@ -260,17 +283,7 @@ li{
                 <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="exit">
             </button>
         </a>
-        </form>
-
-    <form action="/generateCode">
-    <input type="hidden" name="CourseName" value="{{ CourseName }}">
-    <button type="submit" class="log_out-button">generar código</button>
-</form>
-        <div class="notification">
-        {% if idCourse %}
-        <p>ID del curso: {{ idCourse }}</p>
-        {% endif %}
-    </div>
+    </form>
 
 
 </div>
@@ -298,6 +311,10 @@ li{
 
                <button type="submit" class="primary-button-teacher" >+</button>
            </form>
+           <form action="/generateCode">
+            <input type="hidden" name="CourseName" value="{{ CourseName }}">
+            <button type="submit" class="primary-button-teacher gen-code">Obtener Id del curso</button>
+            </form>
        </div>
        <div class="menu_teacher_right">
            <div class="menu-item">
@@ -313,8 +330,8 @@ li{
                </form>
            </div>
        </div>
+
    </div>
 </div>
-
 </body>
 </html>

@@ -16,6 +16,7 @@
             --sm: 14px;
             --md: 16px;
             --lg: 24px;
+            --g: 36px;
         }
         body {
             background-color: var(--blue);
@@ -25,7 +26,7 @@
         }
         .container-down {
     display: grid;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 20% 80%;
     grid-template-rows: auto;
 }
         .full-container{
@@ -44,16 +45,19 @@
             align-content: center;
         }
         .menu_teacher_left {
-            grid-column-start: 1;
-            background-color: var(--white);
-            display: flex;
-            flex-direction: column;
-            border-radius: 12px;
-            margin-left: 4px;
-            margin-right: 16px;
-            align-items: stretch;
+    grid-column-start: 1;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    margin-left: 0px;
+    max-width: 500px;
+    margin-right: 16px;
+    align-items: stretch;
+    max-height: 500px; /* Cambia este valor según tu preferencia */
+    overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
+}
 
-        }
 
         .logo-nav {
             width: 150px;
@@ -91,7 +95,7 @@
             outline: none;
         }
         .input::placeholder{
-            color: var(--white);
+            color: var(--black);
         }
         .primary-button {
             font-size: var(--md);
@@ -113,6 +117,7 @@ li{
     display: flex;
     align-items: center;
     margin-bottom: 16px;
+
 
 }
 .mini-icon{
@@ -136,13 +141,14 @@ li{
     margin-right: 12px;
     justify-self: center;
 }
-
 .menu_teacher_right{
+    margin-left: 12px;
     grid-column-start: 2;
      display: flex;
      flex-direction: column;
     justify-content: center;
-    width: auto;}
+    width: auto;
+}
 .input{
             color: var(--blue);
             background-color: var(--gray);
@@ -160,17 +166,30 @@ li{
             font-size: var(--lg);
             background-color: var(--white);
             border-radius: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            margin-top: 4px;
+            margin-left: 8px;
+            margin-right: 8px;
+            border: none;
+            height: 80px;
+            width: 244px;
+            color: var(--blue);
+            cursor: pointer;
+            margin-left: 12px;
+        }
+        .primary-button-exercise{
+            font-size: var(--g);
+            background-color: var(--gold);
+            border-radius: 12px;
+            margin-bottom: 8px;
             margin-top: 12px;
             margin-left: 8px;
             margin-right: 8px;
             border: none;
             height: 128px;
-            width: 96%;
+            width: 760px;
             color: var(--blue);
             cursor: pointer;
-
-
         }
         .primary-button-teacher{
             font-size: var(--lg);
@@ -187,6 +206,7 @@ li{
 
         }
         .form-add {
+        justify-self: flex-end;
     display: flex;
     flex-direction: column;
         }
@@ -210,43 +230,104 @@ li{
         margin-right: 12px;
 
     }
+    .buttons-container{
+        margin-left: 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: auto;
+        align-items: flex-start;
+
+
+    }
+    .container-little-buttons{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .gen-code{
+    width: auto;
+    font-size: var(--md);
+}
+
+    a{text-decoration: none;
+    color: var(--black);
+    font-size: var(--lg);}
+
+    .menu-exercises{
+        height: auto;
+        width: 100%;
+        margin:0 0 0 8px;
+    }
     .exit{
         width: 48px;
         height: 48px;
         justify-self: center;
         cursor: pointer;
     }
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+        /* Agrega estilos para la tabla con class "table-ranking" */
+.table-ranking {
+    width: 60%;
+    border-collapse: collapse;
+    background-color: var(--white);
+    border-radius: 24px;
+    margin-top: 8px;
 }
 
-.modal-content {
-    background-color: white;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+.table-ranking th {
+    background-color: var(--blue);
+    color: var(--white);
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
 }
 
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    cursor: pointer;
+
+.table-ranking th, .table-ranking td {
+    border: 1px solid var(--gray);
+    padding: 10px;
 }
 
+
+
+
+.table-ranking tr:nth-child(odd) {
+    background-color: var(--gray);
+}
+
+.table-ranking tr:nth-child(even) {
+    background-color: var(--white);
+}
+
+.table-ranking td {
+    color: var(--black);
+}
+
+
+/* Estilos para las filas impares de la tabla */
+.table-ranking tr:nth-child(odd) td {
+    background-color: var(--gray);
+}
+
+/* Estilos para las filas pares de la tabla */
+.table-ranking tr:nth-child(even) td {
+    background-color: var(--white);
+}
+.buttons-container{
+        margin-left: 0px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: auto;
+        align-items: flex-start;
+    }
+    .title-ranking{
+           font-size: var(--lg);
+           color: var(--white);
+           text-align: left;
+           margin-bottom: 16px;
+        }
     </style>
 </head>
 <body>
@@ -274,17 +355,7 @@ li{
         modal.style.display = "none";
     }
 </script>
-        <div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <p>ID del curso: <span id="courseId"></span></p>
-    </div>
-</div>
 
-    <form action="/generateCode">
-    <input type="hidden" name="CourseName" value="{{ CourseName }}">
-    <button type="button" class="log_out-button" onclick="openModal('{{ idCourse }}')">generar código</button>
-</form>
 
 
 </div>
@@ -312,40 +383,48 @@ li{
 
                <button type="submit" class="primary-button-teacher" >+</button>
            </form>
+           <form action="/generateCode">
+            <input type="hidden" name="CourseName" value="{{ CourseName }}">
+            <button type="submit" class="primary-button-teacher gen-code">Obtener Id del curso</button>
+            </form>
        </div>
        <div class="menu_teacher_right">
-           <div class="menu-item">
-               <form action="/HomeMenuTeacher">
-                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                   <button  class= "primary-button-right" type="submit">Tematicas</button>
-               </form>
-           </div>
-           <div class="menu-item">
-               <form action="/RankingView">
-                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                   <button  class= "primary-button-right" type="submit">Ranking</button>
-               </form>
-           </div>
-           <div class="menu-item">
-               <form action="/QualifyView">
-                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                   <button class= "primary-button-right" type="submit">Calificar</button>
-               </form>
-           </div>
-                      <h1>Ranking de Estudiantes</h1>
-    <table>
-        <tr>
-            <th>Nombre y Apellido</th>
-            <th>    Puntaje</th>
-        </tr>
-        {% for estudiante, puntaje in ranking_students.items() %}
-            <tr>
-                <td>{{ estudiante }}</td>
-                <td>{{ puntaje }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-       </div>
+        <div class="buttons-container">
+            <div class="menu-item">
+                <form action="/HomeMenuTeacher">
+                    <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                    <button  class= "primary-button-right" type="submit">Tematicas</button>
+                </form>
+            </div>
+            <div class="menu-item">
+                <form action="/RankingView">
+                    <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                    <button  class= "primary-button-right" type="submit">Ranking</button>
+                </form>
+            </div>
+        </div>
+           
+
+           <div class="ranking-frame">
+            <h1 class="title-ranking">Ranking de Estudiantes</h1>
+     <table class="table-ranking">
+         <tr>
+             <th>Nombre y Apellido</th>
+             <th>    Puntaje</th>
+         </tr>
+         {% for estudiante, puntaje in ranking_students.items() %}
+             <tr>
+                 <td>{{ estudiante }}</td>
+                 <td>{{ puntaje }}</td>
+             </tr>
+         {% endfor %}
+     </table>
+     </div>
+ </div>
+ </div>
+</div>
+ </body>
+ </html>
    </div>
 </div>
 
