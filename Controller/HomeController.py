@@ -233,7 +233,8 @@ class HomeController:
                                CourseName=CourseName,
                                Actividades=ThemeObject.Themes)
 
-    @app.route("/SelectStudentQualify/<int:Menu>/<string:exercise>/<string:CourseName>/<string:nameActivity>")  # Segundo Sprint
+    @app.route(
+        "/SelectStudentQualify/<int:Menu>/<string:exercise>/<string:CourseName>/<string:nameActivity>")  # Segundo Sprint
     def SelectStudentQualify(Menu, exercise, CourseName, nameActivity):
         print(Menu)
         listOfStudentAndDelivery = ThemeObject.get_student_and_delivery(exercise, CourseName, nameActivity)
@@ -241,10 +242,11 @@ class HomeController:
                                listOfStudentAndDelivery=listOfStudentAndDelivery,
                                Actividades=ThemeObject.Themes, CourseName=CourseName, nameActivity=nameActivity)
 
-    @app.route("/seeDelivery/<int:Menu>/<string:code>/<string:detail>/<string:CourseName>/<string:nameActivity>/<string:email"
-               ">/<string:nameExercise>")
-    def seeDelivery(Menu,code, detail, CourseName, nameActivity, email, nameExercise):
-        print("se:",Menu)
+    @app.route(
+        "/seeDelivery/<int:Menu>/<string:code>/<string:detail>/<string:CourseName>/<string:nameActivity>/<string:email"
+        ">/<string:nameExercise>")
+    def seeDelivery(Menu, code, detail, CourseName, nameActivity, email, nameExercise):
+        print("se:", Menu)
         return render_template("seeDelivery.html", Menu=Menu,
                                Actividades=ThemeObject.Themes,
                                CourseName=CourseName,
@@ -343,9 +345,6 @@ class HomeController:
                                CourseName=CourseName,
                                Actividades=ThemeObject.Themes, email=email)
 
-    @app.route("/DeliveriesStudent")
-    def DeliveriesStudent(self=None):  # ejercicios entregados por el estudiante
-        pass
 
     @app.route("/goThemeStudent/<int:Menu>/<string:actividad>/<string:CourseName>/<string:email>")
     def goThemeStudent(Menu, actividad, CourseName, email):
@@ -359,8 +358,10 @@ class HomeController:
                                CourseName=CourseName,
                                email=email)
 
-    @app.route("/goExercise/<int:Menu>/<string:nameExercise>/<string:CourseName>/<string:nameActivity>/<string:email>")
-    def goExercise(Menu, nameExercise, CourseName, nameActivity, email):
+    @app.route("/deliveriesStudent/<int:Menu>/<string:nameExercise>/<string:CourseName>/<string:nameActivity>/<string"
+               ":email>")
+    def deliveriesStudent(Menu, nameExercise, CourseName, nameActivity, email):
+        exerciseDelivered = DB.exerciseDeliveredDB(nameExercise, CourseName, nameActivity, email)
         ThemeObject.update_themes(CourseName)
         exerciseObject = DB.get_object_exercise_by_nameExercise_CourseName(nameExercise, CourseName, nameActivity)
         return render_template("ExerciseStudent.html",
@@ -368,7 +369,19 @@ class HomeController:
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
                                nameActivity=nameActivity, code="",
-                               email=email)
+                               email=email, exerciseDelivered=exerciseDelivered)
+
+    @app.route("/goExercise/<int:Menu>/<string:nameExercise>/<string:CourseName>/<string:nameActivity>/<string:email>")
+    def goExercise(Menu, nameExercise, CourseName, nameActivity, email):
+        exerciseDelivered = DB.exerciseDeliveredDB(nameExercise, CourseName, nameActivity, email)
+        ThemeObject.update_themes(CourseName)
+        exerciseObject = DB.get_object_exercise_by_nameExercise_CourseName(nameExercise, CourseName, nameActivity)
+        return render_template("ExerciseStudent.html",
+                               Actividades=ThemeObject.Themes,
+                               exerciseObject=exerciseObject,
+                               CourseName=CourseName,
+                               nameActivity=nameActivity, code="",
+                               email=email, exerciseDelivered=exerciseDelivered)
 
     @app.route("/submitOrExecute")
     def submitOrExecute(self=None):
@@ -377,6 +390,7 @@ class HomeController:
         nameActivity = request.args.get("nameActivity")
         CourseName = request.args.get("CourseName")
         email = request.args.get("email")
+        exerciseDelivered = request.args.get("exerciseDelivered")
         detail = request.args.get("detail")
         action = request.args.get("action")
         isEjecutar = action == "Ejecutar"
@@ -385,7 +399,7 @@ class HomeController:
                                     exerciseObject=exerciseObject,
                                     nameActivity=nameActivity,
                                     CourseName=CourseName,
-                                    email=email))
+                                    email=email, exerciseDelivered=exerciseDelivered))
         else:
             return redirect(url_for("submitExercise",
                                     nameActivity=nameActivity,
@@ -401,6 +415,7 @@ class HomeController:
         CourseName = request.args.get("CourseName")
         code = request.args.get("code")
         email = request.args.get("email")
+        exerciseDelivered = request.args.get("exerciseDelivered")
 
         try:
             stdout_backup = sys.stdout
@@ -423,7 +438,7 @@ class HomeController:
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
                                nameActivity=nameActivity,
-                               compiledCode=result, code=code, email=email)
+                               compiledCode=result, code=code, email=email, exerciseDelivered=exerciseDelivered)
 
     @app.route("/submitExercise", methods=["GET", "POST"])
     def submitExercise(self=None):
@@ -447,4 +462,4 @@ class HomeController:
                                Actividades=ThemeObject.Themes,
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
-                               nameActivity=nameActivity, code=code, email=email)
+                               nameActivity=nameActivity, code=code, email=email, exerciseDelivered=True)

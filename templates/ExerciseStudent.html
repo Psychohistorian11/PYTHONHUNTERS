@@ -315,7 +315,6 @@ li{
         margin-bottom: 12px;
 
         }
-        /* Estilos para la consola */
 .console {
     background-color: var(--black);
     color: var(--white);
@@ -358,9 +357,6 @@ li{
         }
 
 
-
-
-
     </style>
 </head>
 <body>
@@ -388,7 +384,6 @@ li{
                 </a>
                 </li>
                 {% endfor %}
-                </ul>
             </div>
 
             <div class="menu_teacher_right">
@@ -421,27 +416,34 @@ li{
                                 <h2 class="title">{{ exerciseObject[0] }}</h2>
                                             <p class="subtitle">{{ exerciseObject[3] }}</p>
 
-                            <div>
-                                <form action="/submitOrExecute" >
+                            <div class="buttons-exe">
+                                <form action="/submitOrExecute">
                                     <input type="hidden" name="CourseName" value="{{ CourseName }}">
                                     <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
                                     <input type="hidden" name="exerciseName" value="{{ exerciseObject }}">
                                     <input type="hidden" name="email" value="{{ email }}">
-                                    <textarea  name="code" placeholder="Escribe tu código aquí" >{{code}}</textarea>
-                                    <div class="buttons-exe">
+                                    <input type="hidden" name="exerciseDelivered" value="{{ exerciseDelivered }}">
+                                        <textarea name="code" placeholder="Escribe tu código aquí">{{ code }}</textarea>
+                                    <div class="button-container">
+                                        {% if exerciseDelivered %}
+                                            <button class="primary-button" type="button" disabled>Ejercicio entregado</button>
+                                        {% else %}
+                                            <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
+                                        {% endif %}
                                         <button class="primary-button" type="submit" name="action" value="Ejecutar">Ejecutar</button>
-                                        <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
                                     </div>
-                                    <h2> !Puedes explicar tu codigo aquí! </h2>
-                                    <input class= "input" type="text" name="detail">
-                                    
+                                    <h2> ¡Puedes explicar tu código aquí! </h2>
+                                    <input class="input" type="text" name="detail">
                                 </form>
-                                        <div>
-                                            <ls>
-                                                    <h1></h1>
-                                            </ls>
-                                        </div>
-                                    <div class="console">
+                            </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+                                  <div class="console">
                                         <h2 class="title t-white">Consola:</h2>
                                         {% if compiledCode %}
                                         <pre >
@@ -452,11 +454,6 @@ li{
                                         {% endif %}
 
                                     </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
   </div>
 </div>
     </div>

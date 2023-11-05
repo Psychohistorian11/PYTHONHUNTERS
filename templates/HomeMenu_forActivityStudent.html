@@ -327,6 +327,10 @@ li{
                                         <a href="{{ url_for('goExercise', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity, email=email) }}">
                                             <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
                                         </a>
+
+                                        <a href="{{ url_for('deliveriesStudent', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity, email=email) }}">
+                                            Ver Entrega
+                                        </a>
                                     </li>
                                 {% endfor %}
                             {% endif %}

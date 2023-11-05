@@ -6,7 +6,6 @@ from Model.Delivery import Delivery
 from Model.Program.Exercise import Exercise
 from Model.Student import Student
 
-
 """config = {'user': 'bit_busters',
           'password': 'password123',
           'host': 'db4free.net',
@@ -30,7 +29,7 @@ class ConnectionDB:
 
     def executeSQL(self, consulta_sql, variables_adicionales=None):
         try:
-            conn = mysql.connector.connect(**config) # Abre la conexión si no está abierta
+            conn = mysql.connector.connect(**config)  # Abre la conexión si no está abierta
 
             if conn.is_connected():
                 cursor = conn.cursor()
@@ -130,12 +129,12 @@ class ConnectionDB:
     def get_themesDB(self, nameCourse):  # Este metodo me entrega todos los temas que se
         # encuentran en la base de datos, necesito solo los nombres
         idCourse = self.get_id_course_by_nameDB(nameCourse)
-        #print("este es el idCourse:",idCourse)
+        # print("este es el idCourse:",idCourse)
         query = """select t.nombre from Tematica t
                   where t.curso_idCurso = %s ;"""
-        result = self.executeSQL(query,     (idCourse,))
+        result = self.executeSQL(query, (idCourse,))
         themes = [name[0] for name in result]
-        #print("lista de temas de db: ", themes)
+        # print("lista de temas de db: ", themes)
         return themes
 
     def get_id_theme_by_nameDB(self, nameTheme, idCourse):
@@ -315,10 +314,10 @@ class ConnectionDB:
         idExercise = self.get_id_exercise_by_nameDB(nameExercise, idTheme, idCourse)
         idStudent = self.get_id_student_by_emailDB(emailStudent)
         variables = (idStudent, idExercise, idCourse, code, detail)
-        #print("mail: ", emailStudent)
-        #print("idStudent: ",idStudent)
-        #print("code: ", code)
-        #print("detail: ", detail)
+        # print("mail: ", emailStudent)
+        # print("idStudent: ",idStudent)
+        # print("code: ", code)
+        # print("detail: ", detail)
         query = """INSERT INTO Entrega VALUES 
                                 (null,%s,%s,%s,%s,%s,null,null);"""
         if detail == "":
@@ -358,13 +357,13 @@ class ConnectionDB:
         listOfStudentAndDelivery = []
         StudentNew = Student("cris", "franco", "cristian@gmail.com", "1234", 0, 1)
         DeliveryNew = Delivery("Sumar Variables", """print(10)""", "profe un grande", "", "")
-        lis = [StudentNew,DeliveryNew]
+        lis = [StudentNew, DeliveryNew]
         listOfStudentAndDelivery.append(lis)
         return listOfStudentAndDelivery
 
     def deliverNoteDB(self, nameActivity, nameExercise, CourseName, email,
-                        detail, code, note, feedback):
+                      detail, code, note, feedback):
         pass
 
-
-
+    def exerciseDeliveredDB(self, nameExercise, CourseName, nameActivity, email):
+        return False
