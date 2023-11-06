@@ -195,7 +195,8 @@ class ConnectionDB:
             lista_ejercicio.append(e)
         return lista_ejercicio
 
-    def get_exercise_studentDB(self, nameTheme, nameCourse):  # Este metodo me entrega un diccionario donde la clave puede
+    def get_exercise_studentDB(self, nameTheme,
+                               nameCourse):  # Este metodo me entrega un diccionario donde la clave puede
         # ser autoincremento y el valor es una lista con los atributos del Ejercicio
         # El parametro IDnameTheme es la clave foranea de la tabla ejercicio para encontrar
         # los ejercicios correspondientes a una actividad
@@ -477,3 +478,23 @@ class ConnectionDB:
             note = result[10]
         NewDelivery = Delivery(result[6], result[7], detail, feedback, note)
         return NewDelivery
+
+    def qualified_exerciseDB(self, nameExercise, CourseName, nameActivity, email):
+        idStudent = self.get_id_student_by_emailDB(email)
+        idCourse = self.get_id_course_by_nameDB(CourseName)
+        idTheme = self.get_id_theme_by_nameDB(nameActivity, idCourse)
+        idExercise = self.get_id_exercise_by_nameDB(nameExercise, idTheme, idCourse)
+        query = """SELECT COUNT(*) FROM Entrega
+        WHERE `estudiante_idEstudiante` = %s
+        AND `ejercicio_idEjercicio` = %s
+        AND `ejercicio_tematica_idTematica` = %s
+        AND `ejercicio_tematica_curso_idCurso` = %s
+        AND nota is not null
+        AND retroalimentacion is not null;"""
+        variables = (idStudent, idExercise, idTheme, idCourse)
+        result = self.executeSQL(query, variables)
+        quantity = 0
+        if result is not None:
+            quantity = result[0][0]
+        exist = quantity >= 1
+        return exist

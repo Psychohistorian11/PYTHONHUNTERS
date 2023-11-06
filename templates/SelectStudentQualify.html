@@ -254,11 +254,29 @@ li{
         justify-self: center;
         cursor: pointer;
     }
+                .notification{
+            color: var(--blue);
+            background-color: white;
+            font-size: var(--lg);
+            display: flex;
+            justify-content: center;
+            border-radius: 16px;
+            margin: 12px 12px 0 4px;
+            justify-self: center;
+
+
+        }
 
     </style>
 </head>
 <body>
+
     <div class="full-container">
+            <div class="notification">
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+    </div>
         <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
             <form class="out" action="/sign_off">
             <a class="log_out">
