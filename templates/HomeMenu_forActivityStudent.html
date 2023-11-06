@@ -44,20 +44,18 @@
             grid-template-rows: auto;
             align-content: center;
         }
-        .menu_teacher_left {
-    grid-column-start: 1;
-    background-color: var(--white);
-    display: flex;
-    flex-direction: column;
-    border-radius: 12px;
-    margin-left: 0px;
-    max-width: 500px;
-    margin-right: 16px;
-    align-items: stretch;
-    width: 250px;
-    max-height: 500px; /* Cambia este valor según tu preferencia */
-    overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
-}
+       .menu_teacher_left {
+            grid-column-start: 1;
+            background-color: var(--white);
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            margin-left: 4px;
+            margin-right: 16px;
+            align-items: stretch;
+            width: 80%;
+
+        }
 
 
         .logo-nav {
@@ -328,7 +326,7 @@ li{
                                             <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
                                         </a>
 
-                                        <a href="{{ url_for('deliveriesStudent', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity, email=email) }}">
+                                        <a href="{{ url_for('deliveryStudent', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity, email=email) }}">
                                             Ver Entrega
                                         </a>
                                     </li>

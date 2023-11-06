@@ -137,9 +137,27 @@ li{
     color: var(--black);
     font-size: var(--lg);}
 
+                .notification{
+            color: var(--blue);
+            background-color: white;
+            font-size: var(--lg);
+            display: flex;
+            justify-content: center;
+            border-radius: 16px;
+            margin: 12px 12px 0 4px;
+            justify-self: center;
+
+
+        }
+
     </style>
 </head>
 <body>
+    <div class="notification">
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+    </div>
     <div class="menu_teacher_left">
         <img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo">
         <h1 class="title">Cursos</h1>
@@ -165,7 +183,7 @@ li{
             </ul>
             <form action="{{ url_for('addCourse', email=email) }}" method="post">
                 <input class="input" placeholder="Ingresar Curso" type="text" name="todo">
-                <button class="primary-button" type="submit">Agregar</button>
+                <button class="primary-button" type="submit"> Agregar </button>
             </form>
     </div>
         

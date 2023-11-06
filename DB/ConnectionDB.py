@@ -1,5 +1,3 @@
-import time
-
 import mysql.connector
 
 from Model.Delivery import Delivery
@@ -18,7 +16,7 @@ config = {'user': 'root',
           'password': 'Palabrasambiguas',
           'database': 'pythonbd',
           'port': 3306,  # Puerto predeterminado de MySQL
-          'raise_on_warnings': True}  # Para que se generen excepciones en caso de advertencia
+          'raise_on_warnings': True}  # Para que se generen excepciones en caso de advertencias
 
 
 class ConnectionDB:
@@ -68,7 +66,7 @@ class ConnectionDB:
         return existence, existence_teacher
 
     def enter_studentDB(self, newStudent):  # Ingresar nuevo estudiante a la  base de datos, no retorna nada
-        query = """INSERT INTO `pythonbd`.`Estudiante`
+        query = """INSERT INTO Estudiante
         (`idEstudiante`,
         `curso_idCurso`,
         `nombre`,
@@ -104,7 +102,7 @@ class ConnectionDB:
 
     def enter_ThemeDB(self, newTheme, nameCourse):  # Ingresar nuevo tema a la base de datos, no retorna nada
         idCourse = self.get_id_course_by_nameDB(nameCourse)
-        query = """INSERT INTO `pythonbd`.`Tematica`
+        query = """INSERT INTO Tematica
                     VALUES
                     (null,%s,%s);
                     """
@@ -121,7 +119,7 @@ class ConnectionDB:
         idCourse = self.get_id_course_by_nameDB(nameCourse)
         idTheme = self.get_id_theme_by_nameDB(theme, idCourse)
 
-        query = """DELETE FROM `pythonbd`.`Tematica`
+        query = """DELETE FROM Tematica
         WHERE `idTematica` = %s AND `curso_idCurso` = %s;"""
         variables = (idTheme, idCourse)
         self.executeSQL(query, variables)
@@ -167,23 +165,25 @@ class ConnectionDB:
         return exist
 
     def enter_exerciseDB(self, newExercise, nameTheme, nameCourse):
+        print("esto:", newExercise.availability)
         idCourse = self.get_id_course_by_nameDB(nameCourse)
         idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
-        query = """INSERT INTO `pythonbd`.`Ejercicio`VALUES (null,%s,%s,%s,%s,%s,%s);"""
+        query = """INSERT INTO Ejercicio VALUES (null,%s,%s,%s,%s,%s,%s);"""
         available = 0
-        if newExercise.availability:
+        if newExercise.availability == "1":
             available = 1
         variables = (idTheme, idCourse, newExercise.nameExercise,
                      newExercise.statement, available, newExercise.difficulty)
         self.executeSQL(query, variables)
 
-    def get_exerciseDB(self, nameTheme, nameCourse):  # Este metodo me entrega un diccionario donde la clave puede
+    def get_exerciseDB(self, nameTheme, nameCourse):  # Este metodo lo puede usar sólo el profesor
         # ser autoincremento y el valor es una lista con los atributos del Ejercicio
         # El parametro IDnameTheme es la clave foranea de la tabla ejercicio para encontrar
         # los ejercicios correspondientes a una actividad
         idCourse = self.get_id_course_by_nameDB(nameCourse)
         idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
-        query = """SELECT e.idEjercicio,e.nombre,e.disponibilidad,e.dificultad,e.enunciado FROM Ejercicio e JOIN Tematica t ON e.tematica_idTematica = t.idTematica WHERE t.idTematica
+        query = """SELECT e.idEjercicio,e.nombre,e.disponibilidad,e.dificultad,e.enunciado FROM Ejercicio e 
+        JOIN Tematica t ON e.tematica_idTematica = t.idTematica WHERE t.idTematica
         = %s and t.curso_idCurso = %s;"""
         lista_resultados = self.executeSQL(query, (idTheme, idCourse))
         lista_ejercicio = []
@@ -194,6 +194,50 @@ class ConnectionDB:
             e = Exercise(ejercicio[1], valor, ejercicio[3], ejercicio[4])
             lista_ejercicio.append(e)
         return lista_ejercicio
+
+    def get_exercise_studentDB(self, nameTheme, nameCourse):  # Este metodo me entrega un diccionario donde la clave puede
+        # ser autoincremento y el valor es una lista con los atributos del Ejercicio
+        # El parametro IDnameTheme es la clave foranea de la tabla ejercicio para encontrar
+        # los ejercicios correspondientes a una actividad
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
+        idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
+        query = """SELECT e.idEjercicio,e.nombre,e.disponibilidad,e.dificultad,e.enunciado FROM Ejercicio e 
+        JOIN Tematica t ON e.tematica_idTematica = t.idTematica WHERE t.idTematica
+        = %s and t.curso_idCurso = %s and e.disponibilidad = 1;"""
+        lista_resultados = self.executeSQL(query, (idTheme, idCourse))
+        lista_ejercicio = []
+        valor = False
+        for ejercicio in lista_resultados:
+            if ejercicio[2] == 1:
+                valor = True
+            e = Exercise(ejercicio[1], valor, ejercicio[3], ejercicio[4])
+            lista_ejercicio.append(e)
+        return lista_ejercicio
+
+    def edit_exerciseDB(self, newExercise, oldNameExercise, nameTheme, nameCourse):
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
+        idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
+        idExercise = self.get_id_exercise_by_nameDB(oldNameExercise, idTheme, idCourse)
+        query = """UPDATE Ejercicio SET nombre = %s, 
+        enunciado = %s, disponibilidad = %s, dificultad = %s
+        WHERE idEjercicio = %s AND tematica_idTematica = %s 
+        AND tematica_curso_idCurso = %s;"""
+        available = 0
+        if newExercise.availability:
+            available = 1
+        variables = (newExercise.nameExercise, newExercise.statement,
+                     available, newExercise.difficulty,
+                     idExercise, idTheme, idCourse)
+        self.executeSQL(query, variables)
+
+    def delete_exerciseDB(self, nameExercise, nameTheme, nameCourse):
+        idCourse = self.get_id_course_by_nameDB(nameCourse)
+        idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
+        idExercise = self.get_id_exercise_by_nameDB(nameExercise, idTheme, idCourse)
+        query = """DELETE FROM Ejercicio
+        WHERE idEjercicio = %s AND tematica_idTematica = %s AND tematica_curso_idCurso = %s;"""
+        variables = (idExercise, idTheme, idCourse)
+        self.executeSQL(query, variables)
 
     def get_id_teacher_by_emailDB(self, teacherEmail):
         query = """SELECT idProfesor from Profesor where correo = %s"""
@@ -313,57 +357,123 @@ class ConnectionDB:
         idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
         idExercise = self.get_id_exercise_by_nameDB(nameExercise, idTheme, idCourse)
         idStudent = self.get_id_student_by_emailDB(emailStudent)
-        variables = (idStudent, idExercise, idCourse, code, detail)
+        variables = (idStudent, idExercise, idTheme, idCourse, code, detail)
         # print("mail: ", emailStudent)
         # print("idStudent: ",idStudent)
         # print("code: ", code)
         # print("detail: ", detail)
-        query = """INSERT INTO Entrega VALUES 
-                                (null,%s,%s,%s,%s,%s,null,null);"""
+        query = """INSERT INTO Entrega VALUES
+        (null,%s,%s,%s,%s,%s,%s,null,null);"""
         if detail == "":
             # No le mando detalle, sino null
-            variables = (idStudent, idExercise, idCourse, code)
-            query = """INSERT INTO Entrega VALUES 
-            (null,%s,%s,%s,%s,null,null,null);"""
+            variables = (idStudent, idExercise, idTheme, idCourse, code)
+            query = """INSERT INTO Entrega VALUES
+            (null,%s,%s,%s,%s,%s,null,null,null);"""
 
-        self.executeSQL(query, variables)
-
-    def edit_exerciseDB(self, newExercise, oldNameExercise, nameTheme, nameCourse):
-        idCourse = self.get_id_course_by_nameDB(nameCourse)
-        idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
-        idExercise = self.get_id_exercise_by_nameDB(oldNameExercise, idTheme, idCourse)
-        query = """UPDATE Ejercicio SET nombre = %s, 
-        enunciado = %s, disponibilidad = %s, dificultad = %s
-        WHERE idEjercicio = %s AND tematica_idTematica = %s 
-        AND tematica_curso_idCurso = %s;"""
-        available = 0
-        if newExercise.availability:
-            available = 1
-        variables = (newExercise.nameExercise, newExercise.statement,
-                     available, newExercise.difficulty,
-                     idExercise, idTheme, idCourse)
-        self.executeSQL(query, variables)
-
-    def delete_exerciseDB(self, nameExercise, nameTheme, nameCourse):
-        idCourse = self.get_id_course_by_nameDB(nameCourse)
-        idTheme = self.get_id_theme_by_nameDB(nameTheme, idCourse)
-        idExercise = self.get_id_exercise_by_nameDB(nameExercise, idTheme, idCourse)
-        query = """DELETE FROM Ejercicio
-        WHERE idEjercicio = %s AND tematica_idTematica = %s AND tematica_curso_idCurso = %s;"""
-        variables = (idExercise, idTheme, idCourse)
         self.executeSQL(query, variables)
 
     def get_student_and_deliveryDB(self, exercise, CourseName, nameActivity):
-        listOfStudentAndDelivery = []
-        StudentNew = Student("cris", "franco", "cristian@gmail.com", "1234", 0, 1)
-        DeliveryNew = Delivery("Sumar Variables", """print(10)""", "profe un grande", "", "")
-        lis = [StudentNew, DeliveryNew]
-        listOfStudentAndDelivery.append(lis)
-        return listOfStudentAndDelivery
+        idCourse = self.get_id_course_by_nameDB(CourseName)
+        idTheme = self.get_id_theme_by_nameDB(nameActivity, idCourse)
+        idExercise = self.get_id_exercise_by_nameDB(exercise, idTheme, idCourse)
+        query = """SELECT e.nombre, e.apellido, e.correo, e.contrasenia,
+        e.puntaje, e.curso_idCurso,
+        ej.nombre, en.respuesta, en.detalles, en.retroalimentacion, en.nota
+        FROM Estudiante e JOIN Entrega en 
+        ON e.idEstudiante = en.estudiante_idEstudiante
+        JOIN Ejercicio ej 
+        ON ej.idEjercicio = en.ejercicio_idEjercicio
+        WHERE en.ejercicio_tematica_curso_idCurso = %s
+        AND en.ejercicio_tematica_idTematica = %s
+        AND en.ejercicio_idEjercicio = %s;"""
+        variables = (idCourse, idTheme, idExercise)
+        result = self.executeSQL(query, variables)
+        list_def = []
+        for row in result:
+            detail = ""
+            if row[8] is not None:
+                detail = row[8]
+            feedback = ""
+            if row[9] is not None:
+                feedback = row[9]
+            note = ""
+            if row[10] is not None:
+                note = row[10]
+            NewStudent = Student(row[0], row[1], row[2], row[3], row[4], row[5])
+            NewDelivery = Delivery(row[6], row[7], detail, feedback, note)
+            list_def.append([NewStudent, NewDelivery])
+        return list_def
 
     def deliverNoteDB(self, nameActivity, nameExercise, CourseName, email,
                       detail, code, note, feedback):
-        pass
+        idCourse = self.get_id_course_by_nameDB(CourseName)
+        idTheme = self.get_id_theme_by_nameDB(nameActivity, idCourse)
+        idExercise = self.get_id_exercise_by_nameDB(nameExercise, idTheme, idCourse)
+        idStudent = self.get_id_student_by_emailDB(email)
+        query = """UPDATE Entrega SET
+        `respuesta` = %s, `detalles` = %s,
+        `retroalimentacion` = %s, `nota` = %s
+        WHERE `estudiante_idEstudiante` = %s  
+        AND `ejercicio_idEjercicio` = %s
+        AND `ejercicio_tematica_idTematica` = %s 
+        AND `ejercicio_tematica_curso_idCurso` = %s;"""
+        if detail == "":
+            detail = None
+        variables = (code, detail, feedback, note,
+                     idStudent, idExercise, idTheme, idCourse)
+        self.executeSQL(query, variables)
+        # Actualizar puntaje estudiante
+        query = """UPDATE Estudiante SET
+        `puntaje` = `puntaje` + %s
+        WHERE `idEstudiante` = %s AND `curso_idCurso` = %s;"""
+        variables = (note, idStudent, idCourse)
+        self.executeSQL(query, variables)
 
     def exerciseDeliveredDB(self, nameExercise, CourseName, nameActivity, email):
-        return False
+        idStudent = self.get_id_student_by_emailDB(email)
+        idCourse = self.get_id_course_by_nameDB(CourseName)
+        idTheme = self.get_id_theme_by_nameDB(nameActivity, idCourse)
+        idExercise = self.get_id_exercise_by_nameDB(nameExercise, idTheme, idCourse)
+        query = """SELECT COUNT(*) FROM Entrega
+        WHERE `estudiante_idEstudiante` = %s
+        AND `ejercicio_idEjercicio` = %s
+        AND `ejercicio_tematica_idTematica` = %s
+        AND `ejercicio_tematica_curso_idCurso` = %s;"""
+        variables = (idStudent, idExercise, idTheme, idCourse)
+        result = self.executeSQL(query, variables)
+        quantity = 0
+        if result is not None:
+            quantity = result[0][0]
+        exist = quantity >= 1
+        return exist
+
+    def get_deliver_studentDB(self, email, CourseName, nameActivity, exercise):
+        idStudent = self.get_id_student_by_emailDB(email)
+        idCourse = self.get_id_course_by_nameDB(CourseName)
+        idTheme = self.get_id_theme_by_nameDB(nameActivity, idCourse)
+        idExercise = self.get_id_exercise_by_nameDB(exercise, idTheme, idCourse)
+        query = """SELECT e.nombre, e.apellido, e.correo, e.contrasenia,
+        e.puntaje, e.curso_idCurso,
+        ej.nombre, en.respuesta, en.detalles, en.retroalimentacion, en.nota
+        FROM Estudiante e JOIN Entrega en 
+        ON e.idEstudiante = en.estudiante_idEstudiante
+        JOIN Ejercicio ej 
+        ON ej.idEjercicio = en.ejercicio_idEjercicio
+        WHERE en.ejercicio_tematica_curso_idCurso = %s
+        AND en.ejercicio_tematica_idTematica = %s
+        AND en.ejercicio_idEjercicio = %s
+        AND e.idEstudiante = %s;"""
+        variables = (idCourse, idTheme, idExercise, idStudent)
+        result = self.executeSQL(query, variables)
+        result = result[0]
+        detail = ""
+        if result[8] is not None:
+            detail = result[8]
+        feedback = ""
+        if result[9] is not None:
+            feedback = result[9]
+        note = ""
+        if result[10] is not None:
+            note = result[10]
+        NewDelivery = Delivery(result[6], result[7], detail, feedback, note)
+        return NewDelivery

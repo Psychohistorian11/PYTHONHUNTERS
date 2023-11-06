@@ -54,14 +54,25 @@ class HomeController:
             statement = request.form["statement"]
 
             newExercise = ThemeObject.create_exercise(nameExercise, availability, difficulty, statement)
-            ThemeObject.enter_exercise(newExercise, nameActivity, nameCourse)
-            listExercisesFromDB = DB.get_exerciseDB(nameActivity, nameCourse)
-            ThemeObject.update_exercise(listExercisesFromDB)
-            return render_template("HomeMenu_forActivityTeacher.html",
-                                   Actividades=ThemeObject.Themes,
-                                   Exercises=ThemeObject.Exercises,
-                                   CourseName=nameCourse,
-                                   nameActivity=nameActivity)
+            existExercise = DB.exist_exerciseDB(newExercise,nameActivity,nameCourse)
+
+            if not existExercise:
+                ThemeObject.enter_exercise(newExercise, nameActivity, nameCourse)
+                listExercisesFromDB = DB.get_exerciseDB(nameActivity, nameCourse)
+                ThemeObject.update_exercise(listExercisesFromDB)
+                return render_template("HomeMenu_forActivityTeacher.html",
+                                       Actividades=ThemeObject.Themes,
+                                       Exercises=ThemeObject.Exercises,
+                                       CourseName=nameCourse,
+                                       nameActivity=nameActivity)
+
+            else:
+                message = "Ejercicio ya existente, intenta otro nombre"
+                return render_template("CreateExercise.html",
+                                       Actividades=ThemeObject.Themes,
+                                       nameActivity=nameActivity,
+                                       CourseName=nameCourse,
+                                       message=message)
 
     @app.route("/LoginEmailandPassword", methods=["POST"])
     def LoginE_and_P(self=None):
@@ -100,9 +111,14 @@ class HomeController:
     @app.route("/addCourse/<string:email>", methods=["POST"])
     def addCourse(email):
         course = request.form["todo"]
-        CourseObject.courses.append({'task': course})
-        CourseObject.enter_course(email, course)
-        return redirect(url_for("SelectCourseView", email=email))
+        existCourse = DB.exist_courseDB(course)
+        if not existCourse:
+            CourseObject.courses.append({'task': course})
+            CourseObject.enter_course(email, course)
+            return redirect(url_for("SelectCourseView", email=email))
+        else:
+            message = "Curso ya Existente, intenta otro nombre"
+            return render_template("SelectCourseView.html", Courses=CourseObject.courses,email=email,message=message)
 
     @app.route("/editCourse/<int:Menu>/<string:CourseName>/<string:email>", methods=["GET", "POST"])
     def editCourse(Menu, CourseName, email):
@@ -143,11 +159,19 @@ class HomeController:
     @app.route("/add/<string:CourseName>", methods=["POST"])
     def add(CourseName):
         todo = request.form["todo"]
-        Actividades.append({"task": todo, "done": False})
-        ThemeObject.enter_theme(todo, CourseName)
-        ThemeObject.update_themes(CourseName)
-        return render_template("HomeMenuTeacher.html",
-                               Actividades=ThemeObject.Themes, CourseName=CourseName)
+        existTheme = DB.exist_themeDB(todo, CourseName)
+        if not existTheme:
+            Actividades.append({"task": todo, "done": False})
+            ThemeObject.enter_theme(todo, CourseName)
+            ThemeObject.update_themes(CourseName)
+            return render_template("HomeMenuTeacher.html",
+                                   Actividades=ThemeObject.Themes, CourseName=CourseName)
+        else:
+            message = "Tematica ya existente, intenta otro nombre"
+            return render_template("HomeMenuTeacher.html",
+                                   Actividades=ThemeObject.Themes,
+                                   CourseName=CourseName,
+                                   message=message)
 
     @app.route("/edit/<int:Menu>/<string:actividad>/<string:CourseName>", methods=["GET", "POST"])
     def edit(Menu, actividad, CourseName):
@@ -222,12 +246,7 @@ class HomeController:
     @app.route("/RankingView")  # Segundo Sprint
     def Ranking(message=None):
         CourseName = request.args.get('CourseName')
-        ranking_students = {
-            "Estudiante 1": 95,
-            "Estudiante 2": 87,
-            "Estudiante 3": 78,
-        }  # se borra cuando este lista la DB
-        # ranking_students = DB.update_ranking()
+        ranking_students = DB.update_ranking(CourseName)
         return render_template("Ranking.html",
                                ranking_students=ranking_students,
                                CourseName=CourseName,
@@ -236,17 +255,22 @@ class HomeController:
     @app.route(
         "/SelectStudentQualify/<int:Menu>/<string:exercise>/<string:CourseName>/<string:nameActivity>")  # Segundo Sprint
     def SelectStudentQualify(Menu, exercise, CourseName, nameActivity):
-        print(Menu)
         listOfStudentAndDelivery = ThemeObject.get_student_and_delivery(exercise, CourseName, nameActivity)
-        return render_template("SelectStudentQualify.html", Menu=Menu,
-                               listOfStudentAndDelivery=listOfStudentAndDelivery,
-                               Actividades=ThemeObject.Themes, CourseName=CourseName, nameActivity=nameActivity)
-
+        if listOfStudentAndDelivery:
+            return render_template("SelectStudentQualify.html", Menu=Menu,
+                                   listOfStudentAndDelivery=listOfStudentAndDelivery,
+                                   Actividades=ThemeObject.Themes, CourseName=CourseName, nameActivity=nameActivity)
+        else:
+            message = "Ningun estudiante ha entregado el ejercicio"
+            return render_template("HomeMenu_forActivityTeacher.html",
+                                   Actividades=ThemeObject.Themes,
+                                   CourseName=CourseName,
+                                   nameActivity=nameActivity,
+                                   Exercises=ThemeObject.Exercises,message=message)
     @app.route(
-        "/seeDelivery/<int:Menu>/<string:code>/<string:detail>/<string:CourseName>/<string:nameActivity>/<string:email"
-        ">/<string:nameExercise>")
+        "/seeDelivery/<int:Menu>/<string:code>/<string:detail>/<string:CourseName>/<string:nameActivity>/<string"
+        ":email>/<string:nameExercise>")
     def seeDelivery(Menu, code, detail, CourseName, nameActivity, email, nameExercise):
-        print("se:", Menu)
         return render_template("seeDelivery.html", Menu=Menu,
                                Actividades=ThemeObject.Themes,
                                CourseName=CourseName,
@@ -277,7 +301,7 @@ class HomeController:
 
         return render_template("seeDelivery.html",
                                Actividades=ThemeObject.Themes,
-                               CourseName=CourseName, code=code, detail=detail, compiledCode=result)
+                               CourseName=CourseName, code=code, detail=detail, compiledCode=result, Menu=0)
 
     @app.route("/deliverNote/<int:Menu>/<string:CourseName>/<string:nameActivity>/<string:nameExercise>/"
                "<string:code>/<string:email>/<string:detail>", methods=["POST"])
@@ -334,21 +358,15 @@ class HomeController:
     def RankingViewStudent(self=None):
         CourseName = request.args.get('CourseName')
         email = request.args.get('email')
-        ranking_students = {
-            "Estudiante 1": 95,
-            "Estudiante 2": 87,
-            "Estudiante 3": 78,
-        }  # esta se borra cuando este lista la DB
-        # ranking_students = DB.update_ranking()
+        ranking_students = DB.update_ranking(CourseName)
         return render_template("RankingStudent.html",
                                ranking_students=ranking_students,
                                CourseName=CourseName,
                                Actividades=ThemeObject.Themes, email=email)
 
-
     @app.route("/goThemeStudent/<int:Menu>/<string:actividad>/<string:CourseName>/<string:email>")
     def goThemeStudent(Menu, actividad, CourseName, email):
-        listExercisesFromDB = DB.get_exerciseDB(actividad, CourseName)
+        listExercisesFromDB = DB.get_exercise_studentDB(actividad, CourseName)
         ThemeObject.update_exercise(listExercisesFromDB)  ### cuando ese lista la DB
         ThemeObject.update_themes(CourseName)
         return render_template("HomeMenu_forActivityStudent.html",
@@ -356,20 +374,21 @@ class HomeController:
                                Exercises=ThemeObject.Exercises,
                                nameActivity=actividad,
                                CourseName=CourseName,
-                               email=email)
+                               email=email, detail="")
 
-    @app.route("/deliveriesStudent/<int:Menu>/<string:nameExercise>/<string:CourseName>/<string:nameActivity>/<string"
+    @app.route("/deliveryStudent/<int:Menu>/<string:nameExercise>/<string:CourseName>/<string:nameActivity>/<string"
                ":email>")
-    def deliveriesStudent(Menu, nameExercise, CourseName, nameActivity, email):
+    def deliveryStudent(Menu, nameExercise, CourseName, nameActivity, email):
         exerciseDelivered = DB.exerciseDeliveredDB(nameExercise, CourseName, nameActivity, email)
         ThemeObject.update_themes(CourseName)
         exerciseObject = DB.get_object_exercise_by_nameExercise_CourseName(nameExercise, CourseName, nameActivity)
-        return render_template("ExerciseStudent.html",
+        delivery = DB.get_deliver_studentDB(email, CourseName, nameActivity, nameExercise)
+        return render_template("deliveryStudent.html",
                                Actividades=ThemeObject.Themes,
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
-                               nameActivity=nameActivity, code="",
-                               email=email, exerciseDelivered=exerciseDelivered)
+                               nameActivity=nameActivity, code=delivery.code,
+                               email=email, exerciseDelivered=exerciseDelivered, delivery=delivery)
 
     @app.route("/goExercise/<int:Menu>/<string:nameExercise>/<string:CourseName>/<string:nameActivity>/<string:email>")
     def goExercise(Menu, nameExercise, CourseName, nameActivity, email):
@@ -380,8 +399,10 @@ class HomeController:
                                Actividades=ThemeObject.Themes,
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
-                               nameActivity=nameActivity, code="",
-                               email=email, exerciseDelivered=exerciseDelivered)
+                               nameActivity=nameActivity,
+                               code="",
+                               email=email,
+                               exerciseDelivered=exerciseDelivered)
 
     @app.route("/submitOrExecute")
     def submitOrExecute(self=None):
@@ -394,18 +415,24 @@ class HomeController:
         detail = request.args.get("detail")
         action = request.args.get("action")
         isEjecutar = action == "Ejecutar"
+
         if isEjecutar:
-            return redirect(url_for("execute", code=code,
+            return redirect(url_for("execute",
+                                    code=code,
+                                    detail=detail,
                                     exerciseObject=exerciseObject,
                                     nameActivity=nameActivity,
                                     CourseName=CourseName,
-                                    email=email, exerciseDelivered=exerciseDelivered))
+                                    email=email,
+                                    exerciseDelivered=exerciseDelivered))
         else:
             return redirect(url_for("submitExercise",
                                     nameActivity=nameActivity,
                                     CourseName=CourseName,
                                     exerciseName=exerciseObject,
-                                    email=email, code=code, detail=detail))
+                                    email=email,
+                                    code=code,
+                                    detail=detail))
 
     @app.route("/execute", methods=["GET", "POST"])
     def execute(self=None):
@@ -415,6 +442,7 @@ class HomeController:
         CourseName = request.args.get("CourseName")
         code = request.args.get("code")
         email = request.args.get("email")
+        detail = request.args.get("detail")
         exerciseDelivered = request.args.get("exerciseDelivered")
 
         try:
@@ -438,7 +466,7 @@ class HomeController:
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
                                nameActivity=nameActivity,
-                               compiledCode=result, code=code, email=email, exerciseDelivered=exerciseDelivered)
+                               compiledCode=result, code=code, email=email, exerciseDelivered=False, detail=detail)
 
     @app.route("/submitExercise", methods=["GET", "POST"])
     def submitExercise(self=None):
@@ -462,4 +490,7 @@ class HomeController:
                                Actividades=ThemeObject.Themes,
                                exerciseObject=exerciseObject,
                                CourseName=CourseName,
-                               nameActivity=nameActivity, code=code, email=email, exerciseDelivered=True)
+                               nameActivity=nameActivity,
+                               code=code,
+                               email=email,
+                               exerciseDelivered=True)

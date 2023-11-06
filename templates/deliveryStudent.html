@@ -44,7 +44,7 @@
             grid-template-rows: auto;
             align-content: center;
         }
-        .menu_teacher_left {
+         .menu_teacher_left {
             grid-column-start: 1;
             background-color: var(--white);
             display: flex;
@@ -53,9 +53,7 @@
             margin-left: 4px;
             margin-right: 16px;
             align-items: stretch;
-            width: 250px;
-            max-height: 500px; /* Cambia este valor según tu preferencia */
-            overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
+            width: 45%;
 
         }
 
@@ -107,7 +105,7 @@
             margin-right: 16px;
             cursor: pointer;
         }
-    
+
 
 
 li{
@@ -206,7 +204,7 @@ li{
             grid-column-start: 2;
             align-self: center;
         }
-    
+
     .log_out-button{
         background: var(--white);
         border: none;
@@ -216,9 +214,9 @@ li{
     .out{
         display:flex;
         justify-content: center;
-        align-items: center; 
+        align-items: center;
         margin-right: 12px;
-        
+
     }
     .exit{
         width: 48px;
@@ -271,7 +269,7 @@ li{
 .gen-code{
     width: auto;
 }
-        
+
 
         textarea {
       width: 90%;
@@ -405,55 +403,38 @@ li{
                         </div>
                     </div>
                         <div class="container-down-buttons">
+
                             <div class="editor-code">
                                 <h2 class="title">{{ exerciseObject[0] }}</h2>
                                             <p class="subtitle">{{ exerciseObject[3] }}</p>
-                                <h2 class="title"> Dificultad </h2>
-                                            <p class="subtitle"> {{exerciseObject[2]}}</p>
 
                             <div class="buttons-exe">
                                 <form action="/submitOrExecute">
-                                    <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                                    <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
-                                    <input type="hidden" name="exerciseName" value="{{ exerciseObject }}">
-                                    <input type="hidden" name="email" value="{{ email }}">
-                                    <input type="hidden" name="exerciseDelivered" value="{{ exerciseDelivered }}">
-                                        <textarea name="code" placeholder="Escribe tu código aquí">{{ code }}</textarea>
-
-                                    <h2> ¡Puedes explicar tu código aquí! </h2>
-                                    <textarea name="detail" required>{{ detail }}</textarea>
-
-
-                                    <div class="button-container">
-                                        {% if exerciseDelivered %}
-                                            <button class="primary-button" type="button" disabled>Ejercicio entregado</button>
-                                        {% else %}
-                                            <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
-                                        {% endif %}
-                                        <button class="primary-button" type="submit" name="action" value="Ejecutar">Ejecutar</button>
+                                        <textarea name="code" >{{ code }}</textarea>
+                                    <h2> Esta fue tu expliación del codigo:  </h2>
+                                    <div style="width: 300px; height: 100px; border: 1px solid #ccc; overflow: auto;">
+                                      {{ delivery.detail }}
+                                    </div>
+                                    <h2> Retroalimentación del profesor:  </h2>
+                                    <div style="width: 300px; height: 100px; border: 1px solid #ccc; overflow: auto;">
+                                      {{ delivery.feedback }}
+                                    </div>
+                                    <h2> Nota:  </h2>
+                                    <div style="width: 300px; height: 100px; border: 1px solid #ccc; overflow: auto;">
+                                      {{ delivery.note }}
                                     </div>
                                 </form>
                             </div>
-
-            </div>
-
+                        </div>
 
         </div>
 
     </div>
-                                  <div class="console">
-                                        <h2 class="title t-white">Consola:</h2>
-                                        {% if compiledCode %}
-                                        <pre >
-                                            {% for line in compiledCode.split('\n') %}
-                                                {{ line }}
-                                            {% endfor %}
-                                        </pre>
-                                        {% endif %}
 
-                                    </div>
   </div>
 </div>
+
     </div>
+
 </body>
 </html>

@@ -274,6 +274,11 @@ li{
 <p>ID del curso: {{ idCourse }}</p>
 {% endif %}
 </div>
+        <div class="notification">
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+    </div>
 <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
 
 

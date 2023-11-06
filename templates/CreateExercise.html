@@ -124,6 +124,11 @@
     </style>
 </head>
 <body>
+        <div class="notification">
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+    </div>
     <div class="create-exercise">
         <div class="form_container">
             <img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo">
@@ -134,8 +139,8 @@
 
             <label class="label" for="availability">Disponibilidad:</label>
             <select class="input" name="availability" id="availability" required>
-                <option value="True">Sí</option>
-                <option value="False">No</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
             </select>
 
             <label class="label" for="difficulty">Dificultad:</label>

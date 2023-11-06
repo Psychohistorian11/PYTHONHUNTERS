@@ -44,7 +44,7 @@
             grid-template-rows: auto;
             align-content: center;
         }
-        .menu_teacher_left {
+       .menu_teacher_left {
             grid-column-start: 1;
             background-color: var(--white);
             display: flex;
@@ -53,6 +53,7 @@
             margin-left: 4px;
             margin-right: 16px;
             align-items: stretch;
+            width: 50%;
 
         }
 
@@ -338,7 +339,7 @@ li{
 
                         <h2>Calificación</h2>
 
-                        <form class="form-add" action="{{ url_for('deliverNote', Menu=Menu, CourseName=CourseName,nameActivity=nameActivity, nameExercise=nameExercise, code=code,email=email,detail=detail) }}" method="post">
+                        <form class="form-add" action="{{ url_for('deliverNote', Menu=0, CourseName=CourseName,nameActivity=nameActivity, nameExercise=nameExercise, code=code,email=email,detail=detail) }}" method="post">
                             <h3>Retroalimentación</h3>
                             <input type="text" name="feedback"  maxlength="60" placeholder="Dale una retroalimentación a tu estudiante!" required>
                             <h3>Nota</h3>
