@@ -59,7 +59,7 @@
             margin-top: 16px;
         }
         .input{
-            color: var(--black);
+            color: var(--black) !important;
             background-color: var(--gray);
             border-radius: 12px;
             height: 36px;
@@ -121,7 +121,7 @@
                 <option value="Muy Difícil">Muy Difícil</option>
             </select>
             <label class="label" for="statement">Descripción:</label>
-            <textarea rows="10" cols="30" class="input input-big" type="text" name="statement" id="statement" placeholder="Ingresa la Descripción" value="{{exercise_['task'][3]}}"></textarea>
+            <textarea rows="10" cols="30" class="input input-big" type="text" name="statement" id="statement" placeholder="Ingresa la Descripción" >{{exercise_['task'][3]}}</textarea>
             <input type="hidden" class="input" name="exercise" value="{{ exercise }}">
             <input type="hidden" class="input" name="nameActivity" value="{{ nameActivity }}">
             <input type="hidden" class="input" name="CourseName" value="{{ CourseName }}">

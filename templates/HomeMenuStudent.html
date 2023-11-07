@@ -18,7 +18,7 @@
             --lg: 24px;
         }
         body {
-            background-color: var(--blue);
+            background-color: var(--blue) ;
             font-family: 'Space Grotesk', sans-serif;
             margin: 0;
             display: flex;
@@ -44,18 +44,19 @@
             grid-template-rows: auto;
             align-content: center;
         }
+
         .menu_teacher_left {
             grid-column-start: 1;
             background-color: var(--white);
             display: flex;
             flex-direction: column;
-            border-radius: 12px;
+            border-radius: 16px;
             margin-left: 4px;
             margin-right: 16px;
             align-items: stretch;
-            width: 100%;
-
+            width: 50%;
         }
+
 
         .logo-nav {
             width: 150px;
@@ -79,7 +80,7 @@
             margin-top: 16px;
         }
         .input{
-            color: var(--black);
+            color: var(--black)!important;
             background-color: var(--gray);
             border-radius: 12px;
             border: none;
@@ -265,21 +266,35 @@ li{
 </head>
 <body>
 <div class="full-container">
+
 <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
 
 
     <form class="out" action="/sign_off">
+
         <a class="log_out">
             <button type="submit" class="log_out-button">
                 <img src="{{ url_for('static', filename='log_out.png') }}"  alt="log_out" class="exit">
+
             </button>
         </a>
         </form>
 
 </div>
+
 <div class="container-down">
     <div class="menu_teacher_left">
-           <h2 class = "title">Temáticas : </h2>
+           <div class="menu-item">
+               <form action="/HomeMenuStudent">
+                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                   <input type="hidden" name="email" value="{{ email }}">
+                   <button  class= "primary-button-right" type="submit"><h3>Tematicas:</h3> </button>
+               </form>
+
+           </div>
+
+
+
                {% for todo in Actividades %}
                <li>
                    <img src="{{ url_for('static', filename='book.png') }}" class="book">
@@ -291,32 +306,17 @@ li{
 
                </li>
                {% endfor %}
-       </div>
-       <div class="menu_teacher_right">
-           <div class="menu-item">
-               <form action="/HomeMenuStudent">
-                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                   <input type="hidden" name="email" value="{{ email }}">
-                   <button  class= "primary-button-right" type="submit">Tematicas</button>
-               </form>
-           </div>
            <div class="menu-item">
                <form action="/RankingViewStudent">
                    <input type="hidden" name="CourseName" value="{{ CourseName }}">
                    <input type="hidden" name="email" value="{{ email }}">
-                   <button  class= "primary-button-right" type="submit">Ranking</button>
+                   <button  class= "primary-button-right" type="submit"><h3>Ranking</h3></button>
                </form>
             </div>
-            <div class="menu-item">
-                   <form action="/DeliveriesStudent">
-                       <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                       <input type="hidden" name="email" value="{{ email }}">
-                       <button  class= "primary-button-right" type="submit">Entregas</button>
-                   </form>
-            </div>
        </div>
+
    </div>
-</div>
+
 </div>
 </body>
 </html>

@@ -53,9 +53,7 @@
             margin-left: 4px;
             margin-right: 16px;
             align-items: stretch;
-            width: auto;
-            max-height: 500px; /* Cambia este valor según tu preferencia */
-            overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
+            width: 50%;
 
         }
 
@@ -81,7 +79,7 @@
             margin-top: 16px;
         }
         .input{
-            color: var(--black);
+            color: var(--black)!important;
             background-color: var(--gray);
             border-radius: 12px;
             border: none;
@@ -286,11 +284,30 @@ li{
             cursor: pointer;
         }
 
+                .notification{
+            color: var(--blue);
+            background-color: white;
+            font-size: var(--lg);
+            display: flex;
+            justify-content: center;
+            border-radius: 16px;
+            margin: 12px 12px 0 4px;
+            justify-self: center;
+
+
+        }
+
     
     </style>
 </head>
 <body>
+
     <div class="full-container">
+        <div class="notification">
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+    </div>
         <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
             <form class="out" action="/sign_off">
             <a class="log_out">
@@ -300,6 +317,7 @@ li{
 
             </a>
             </form>
+
         </div>
         <div class="container-down">
             <div class="menu_teacher_left">
@@ -331,7 +349,7 @@ li{
 
             <div class="menu_teacher_right">
                 
-                    <div class="buttons-container"> 
+                    <div class="buttons-container">
                         <div class="menu-item">
                             <form action="/HomeMenuTeacher">
                                 <input type="hidden" name="CourseName" value="{{ CourseName }}">
@@ -347,16 +365,21 @@ li{
                     </div>
                     
                     
-                    <div class="menu_teacher_left menu-exercises">
+                    <div class="menu_teacher_left">
                         <h2 class = "title">Ejercicios : </h2>
                         <ul>
+                            {% if not Exercises %}
+                                <p>Crear el primer Ejercicio o((>ω< ))o</p>
+                            {% else %}
                             {% for exercise_dict in Exercises %}
                             <li>
                                 <img src="{{ url_for('static', filename='code.png') }}" class="code">
                                     <span>{{ exercise_dict['task'][0] }}</span>
 
 
-                                <a href="{{ url_for('SelectStudentQualify', Menu=loop.index0, exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity )}}">  revisar  </a>
+                                <a href="{{ url_for('SelectStudentQualify', Menu=loop.index0, exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity )}}">
+                                    <img  src="{{ url_for('static', filename='check.png') }}"  class=" mini-icon">
+                                     </a>
 
                                 <a href="{{ url_for('editExercise', Menu=loop.index0,exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity) }}">
                                     <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">
@@ -369,6 +392,7 @@ li{
     
                             </li>
                             {% endfor %}
+                            {% endif %}
                             <div>
                                 <form action="/CreateExerciseView" method="GET">
                                     <input type="hidden" name="nameActivity" value="{{ nameActivity }}">

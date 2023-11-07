@@ -44,19 +44,18 @@
             grid-template-rows: auto;
             align-content: center;
         }
-        .menu_teacher_left {
-    grid-column-start: 1;
-    background-color: var(--white);
-    display: flex;
-    flex-direction: column;
-    border-radius: 12px;
-    margin-left: 0px;
-    max-width: 500px;
-    margin-right: 16px;
-    align-items: stretch;
-    max-height: 500px; /* Cambia este valor según tu preferencia */
-    overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
-}
+       .menu_teacher_left {
+            grid-column-start: 1;
+            background-color: var(--white);
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            margin-left: 4px;
+            margin-right: 16px;
+            align-items: stretch;
+            width: 80%;
+
+        }
 
 
         .logo-nav {
@@ -150,7 +149,7 @@ li{
     width: auto;
 }
 .input{
-            color: var(--blue);
+            color: var(--black) !important;
             background-color: var(--gray);
             border-radius: 12px;
             border: none;
@@ -163,19 +162,19 @@ li{
         }
 
         .primary-button-right {
-            font-size: var(--lg);
+            font-size: 20px;
             background-color: var(--white);
             border-radius: 12px;
-            margin-bottom: 8px;
-            margin-top: 4px;
+            margin-bottom: 12px;
             margin-left: 8px;
             margin-right: 8px;
             border: none;
-            height: 80px;
-            width: 244px;
+            height: 64px;
+            width: 200px;
             color: var(--blue);
             cursor: pointer;
-            margin-left: 12px;
+
+
         }
         .primary-button-exercise{
             font-size: var(--g);
@@ -263,10 +262,27 @@ li{
         cursor: pointer;
     }
 
+                .notification{
+            color: var(--blue);
+            background-color: white;
+            font-size: var(--lg);
+            display: flex;
+            justify-content: center;
+            border-radius: 16px;
+            margin: 12px 12px 0 4px;
+            justify-self: center;
+
+
+        }
     </style>
 </head>
 <body>
     <div class="full-container">
+            <div class="notification">
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+    </div>
         <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
             <form class="out" action="/sign_off">
             <a class="log_out">
@@ -279,7 +295,7 @@ li{
         </div>
         <div class="container-down">
             <div class="menu_teacher_left">
-                <h2 class = "title">Temáticas : </h2>
+                <h2 class = "title">Temáticas </h2>
                 {% for todo in Actividades %}
                 <li>
                 <img src="{{ url_for('static', filename='book.png') }}" class="book">
@@ -295,7 +311,7 @@ li{
 
             <div class="menu_teacher_right">
                 <div class="buttons-container">
-                    <div class="container-little-buttons">
+                    <div class="menu_teacher_right">
                         <div class="menu-item">
                             <form action="/HomeMenuStudent">
                                 <input type="hidden" name="CourseName" value="{{ CourseName }}">
@@ -310,33 +326,32 @@ li{
                                 <button  class= "primary-button-right" type="submit">Ranking</button>
                             </form>
                         </div>
-                        <div class="menu-item">
-                            <form action="/DeliveriesStudent">
-                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                                <input type="hidden" name="email" value="{{ email }}">
-                                <button  class= "primary-button-right" type="submit">Entregas</button>
-                            </form>
-                        </div>
                     </div>
 
 
                     <div class="menu_teacher_left menu-exercises">
-                        <h2 class = "title">Ejercicios : </h2>
                         <ul>
-                            {% for exercise_dict in Exercises %}
-                            <li>
-                                <img src="{{ url_for('static', filename='code.png') }}" class="code">
-                                    <span>{{ exercise_dict['task'][0] }}</span>
+                            {% if not Exercises %}
+                                <p>No hay ejercicios en esta tematica (❁´◡`❁)</p>
+                            {% else %}
+                            <h2 class="title">Ejercicios</h2>
+                                {% for exercise_dict in Exercises %}
+                                    <li>
+                                        <img src="{{ url_for('static', filename='code.png') }}" class="code">
+                                        <span>{{ exercise_dict['task'][0] }}</span>
+                                        <a href="{{ url_for('goExercise', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity, email=email) }}">
+                                            <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
+                                        </a>
 
-                                <a href="{{ url_for('goExercise', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity, email=email) }}">
-                                    <img src="{{ url_for('static', filename='go.png') }}" class="mini-icon go">
-                                 </a>
-
-
-                            </li>
-                            {% endfor %}
+                                        <a href="{{ url_for('deliveryStudent', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity, email=email) }}">
+                                            <img src="{{ url_for('static', filename='see.png') }}" class="mini-icon">
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
                         </ul>
                     </div>
+
 
                 </div>
 

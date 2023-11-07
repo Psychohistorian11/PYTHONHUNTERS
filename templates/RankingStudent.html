@@ -90,7 +90,7 @@
             margin-top: 16px;
         }
         .input{
-            color: var(--white);
+            color: var(--black) !important;
             background-color: var(--blue);
             border-radius: 12px;
             border: none;
@@ -102,7 +102,7 @@
             outline: none;
         }
         .input::placeholder{
-            color: var(--white);
+            color: var(--black);
         }
         .primary-button {
             font-size: var(--md);
@@ -173,16 +173,16 @@ li{
             font-size: var(--lg);
             background-color: var(--white);
             border-radius: 12px;
-            margin-bottom: 8px;
-            margin-top: 4px;
+            margin-bottom: 12px;
             margin-left: 8px;
             margin-right: 8px;
             border: none;
-            height: 80px;
-            width: 244px;
+            height: 64px;
+            width: 200px;
             color: var(--blue);
             cursor: pointer;
-            margin-left: 12px;
+
+
         }
         .primary-button-exercise{
             font-size: var(--g);
@@ -364,13 +364,7 @@ li{
                     <button  class= "primary-button-right" type="submit">Ranking</button>
                 </form>
             </div>
-            <div class="menu-item">
-             <form action="/DeliveriesStudent">
-                 <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                 <input type="hidden" name="email" value="{{ email }}">
-                 <button  class= "primary-button-right" type="submit">Entregas</button>
-             </form>
-            </div>
+            
          </div>
         <div class="ranking-frame">
            <h1 class="title-ranking">Ranking de Estudiantes</h1>

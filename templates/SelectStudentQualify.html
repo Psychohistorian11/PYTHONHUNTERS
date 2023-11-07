@@ -16,7 +16,6 @@
             --sm: 14px;
             --md: 16px;
             --lg: 24px;
-            --g: 36px;
         }
         body {
             background-color: var(--blue);
@@ -35,7 +34,8 @@
         }
         .nav-bar{
             width: 100vw;
-            height: 80px;
+            height: auto;
+            margin-top: 10px;
             background-color: var(--white);
             border-radius: 12px;
             margin-bottom: 16px;
@@ -53,13 +53,12 @@
             margin-left: 4px;
             margin-right: 16px;
             align-items: stretch;
+            width: 50%;
 
         }
 
         .logo-nav {
             width: 150px;
-            margin: 0 ;
-            margin-bottom: 12px;
             border-radius: 8px;
             grid-column-start: 1;
 
@@ -80,8 +79,8 @@
             margin-top: 16px;
         }
         .input{
-            color: var(--white);
-            background-color: var(--blue);
+            color: var(--black)!important;
+            background-color: var(--gray);
             border-radius: 12px;
             border: none;
             height: 24px;
@@ -92,7 +91,7 @@
             outline: none;
         }
         .input::placeholder{
-            color: var(--white);
+            color: var(--black);
         }
         .primary-button {
             font-size: var(--md);
@@ -106,6 +105,7 @@
             margin-right: 16px;
             cursor: pointer;
         }
+    
 
 
 li{
@@ -114,7 +114,6 @@ li{
     display: flex;
     align-items: center;
     margin-bottom: 16px;
-
 
 }
 .mini-icon{
@@ -138,10 +137,11 @@ li{
     margin-right: 12px;
     justify-self: center;
 }
+
 .menu_teacher_right{
     grid-column-start: 2;
      display: flex;
-     flex-direction: row;
+     flex-direction: column;
     justify-content: center;
     width: auto;}
 .input{
@@ -161,16 +161,114 @@ li{
             font-size: var(--lg);
             background-color: var(--white);
             border-radius: 12px;
-            margin-bottom: 8px;
-            margin-top: 4px;
+            margin-bottom: 12px;
             margin-left: 8px;
             margin-right: 8px;
             border: none;
-            height: 80px;
-            width: 244px;
+            height: 64px;
+            width: 200px;
             color: var(--blue);
             cursor: pointer;
+
+
         }
+        .primary-button-teacher{
+            font-size: var(--lg);
+            background-color: var(--blue);
+            border-radius: 12px;
+            border: none;
+            height: 32px;
+            width: 48px;
+            color: var(--white);
+            margin-left: 16px;
+            margin-right: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+        .form-add {
+    display: flex;
+    flex-direction:row;
+        }
+        .log_out{
+            width: 48px;
+            height: 48px;
+            grid-column-start: 2;
+            align-self: center;
+        }
+    
+    .log_out-button{
+        background: var(--white);
+        border: none;
+        display:flex;
+        justify-content: center;
+    }
+    .out{
+        display:flex;
+        justify-content: center;
+        align-items: center; 
+        margin-right: 12px;
+        
+    }
+    .exit{
+        width: 48px;
+        height: 48px;
+        justify-self: center;
+        cursor: pointer;
+    }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background-color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.buttons-container{
+        margin-left: 0px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: auto;
+        align-items: flex-start;
+
+
+    }
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+.notification{
+            color: var(--blue);
+            background-color: white;
+            font-size: var(--lg);
+            display: flex;
+            justify-content: center;
+            border-radius: 16px;
+            margin: 12px 12px 0 4px;
+            justify-self: center;
+
+
+        }
+.gen-code{
+    width: auto;
+}
         .primary-button-exercise{
             font-size: var(--g);
             background-color: var(--gold);
@@ -185,79 +283,35 @@ li{
             color: var(--blue);
             cursor: pointer;
         }
-        .primary-button-teacher{
+
+                .notification{
+            color: var(--blue);
+            background-color: white;
             font-size: var(--lg);
-            background-color: var(--blue);
-            border-radius: 12px;
-            border: none;
-            height: 32px;
-            color: var(--white);
-            margin-left: 16px;
-            margin-right: 16px;
-            margin-bottom: 16px;
-            margin-top: 8px;
-            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            border-radius: 16px;
+            margin: 12px 12px 0 4px;
+            justify-self: center;
+
 
         }
-        .form-add {
-        justify-self: flex-end;
-    display: flex;
-    flex-direction: column;
-        }
-        .log_out{
-            width: 48px;
-            height: 48px;
-            grid-column-start: 2;
-            align-self: center;
+        .container-little-buttons{
+            display: flex;
+            flex-direction: row;
         }
 
-    .log_out-button{
-        background: var(--white);
-        border: none;
-        display:flex;
-        justify-content: center;
-    }
-    .out{
-        display:flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 12px;
-
-    }
-    .buttons-container{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-
-    }
-    .container-little-buttons{
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-    }
-
-    a{text-decoration: none;
-    color: var(--black);
-    font-size: var(--lg);}
-
-    .menu-exercises{
-        height: auto;
-        width: 760px;
-        margin: 8px 0 0 8px;
-    }
-    .exit{
-        width: 48px;
-        height: 48px;
-        justify-self: center;
-        cursor: pointer;
-    }
 
     </style>
 </head>
 <body>
+
     <div class="full-container">
+            <div class="notification">
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+    </div>
         <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
             <form class="out" action="/sign_off">
             <a class="log_out">
@@ -311,6 +365,7 @@ li{
                             </form>
                         </div>
                     </div>
+                </div>
 
                     <div class="menu_teacher_left menu-exercises">
                         <h2 class = "title">Estudiantes que han entregado el ejercicio : </h2>
@@ -320,7 +375,8 @@ li{
                                 <img src="{{ url_for('static', filename='code.png') }}" class="code">
                                     <span>{{ StudentAndDelivery[0].firstName }}</span>
 
-                                <a href="{{ url_for('seeDelivery',Menu=loop.index0, code=StudentAndDelivery[1].code, detail=StudentAndDelivery[1].detail, CourseName=CourseName, nameActivity=nameActivity, email=StudentAndDelivery[0].email, nameExercise=StudentAndDelivery[1].nameExercise)}}"> Ver Entrega </a>
+                                <a href="{{ url_for('seeDelivery',Menu=loop.index0, code=StudentAndDelivery[1].code, detail=StudentAndDelivery[1].detail, CourseName=CourseName, nameActivity=nameActivity,email=StudentAndDelivery[0].email, nameExercise=StudentAndDelivery[1].nameExercise ) }}">
+                                    <img  src="{{ url_for('static', filename='see.png') }}"  class=" mini-icon"></a>
 
                             </li>
                             {% endfor %}
