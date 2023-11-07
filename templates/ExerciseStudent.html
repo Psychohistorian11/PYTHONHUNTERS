@@ -147,7 +147,7 @@ li{
     justify-content: center;
     width: auto;}
 .input{
-            color: var(--blue);
+            color: var(--black)!important;
             background-color: var(--gray);
             border-radius: 12px;
             border: none;
@@ -355,6 +355,9 @@ li{
             max-height: 500px; /* Cambia este valor según tu preferencia */
             overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
         }
+        .send{
+            background-color: var(--gold);
+        }
 
 
     </style>
@@ -426,7 +429,7 @@ li{
 
                                     <div class="button-container">
                                         {% if exerciseDelivered %}
-                                            <button class="primary-button" type="button" disabled>Ejercicio entregado</button>
+                                            <button class="primary-button send" type="button" disabled>Ejercicio entregado</button>
                                         {% else %}
                                             <button class="primary-button" type="submit" name="action" value="EnviarSolucion">Enviar Solución</button>
                                         {% endif %}

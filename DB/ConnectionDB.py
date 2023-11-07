@@ -4,16 +4,10 @@ from Model.Delivery import Delivery
 from Model.Program.Exercise import Exercise
 from Model.Student import Student
 
-"""config = {'user': 'bit_busters',
-          'password': 'password123',
-          'host': 'db4free.net',
-          'database': 'pythonbd',
-          'port': 3306,  # Puerto predeterminado de MySQL
-          'raise_on_warnings': True}  # Para que se generen excepciones en caso de advertencias"""
 
 config = {'user': 'root',
-          'host': '127.0.0.1',
-          'password': 'Palabrasambiguas',
+          'host': 'localhost',
+          'password': 'PythonHunters',
           'database': 'pythonbd',
           'port': 3306,  # Puerto predeterminado de MySQL
           'raise_on_warnings': True}  # Para que se generen excepciones en caso de advertencias

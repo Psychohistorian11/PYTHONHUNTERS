@@ -149,7 +149,7 @@ li{
     width: auto;
 }
 .input{
-            color: var(--blue);
+            color: var(--black) !important;
             background-color: var(--gray);
             border-radius: 12px;
             border: none;
@@ -162,19 +162,19 @@ li{
         }
 
         .primary-button-right {
-            font-size: var(--lg);
+            font-size: 20px;
             background-color: var(--white);
             border-radius: 12px;
-            margin-bottom: 8px;
-            margin-top: 4px;
+            margin-bottom: 12px;
             margin-left: 8px;
             margin-right: 8px;
             border: none;
-            height: 80px;
-            width: 244px;
+            height: 64px;
+            width: 200px;
             color: var(--blue);
             cursor: pointer;
-            margin-left: 12px;
+
+
         }
         .primary-button-exercise{
             font-size: var(--g);
@@ -344,7 +344,7 @@ li{
                                         </a>
 
                                         <a href="{{ url_for('deliveryStudent', Menu=loop.index0, nameExercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity, email=email) }}">
-                                            Ver Entrega
+                                            <img src="{{ url_for('static', filename='see.png') }}" class="mini-icon">
                                         </a>
                                     </li>
                                 {% endfor %}

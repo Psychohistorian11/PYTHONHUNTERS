@@ -16,7 +16,6 @@
             --sm: 14px;
             --md: 16px;
             --lg: 24px;
-            --g: 36px;
         }
         body {
             background-color: var(--blue);
@@ -26,7 +25,7 @@
         }
         .container-down {
     display: grid;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 30% 60%;
     grid-template-rows: auto;
 }
         .full-container{
@@ -35,7 +34,8 @@
         }
         .nav-bar{
             width: 100vw;
-            height: 80px;
+            height: auto;
+            margin-top: 10px;
             background-color: var(--white);
             border-radius: 12px;
             margin-bottom: 16px;
@@ -44,7 +44,7 @@
             grid-template-rows: auto;
             align-content: center;
         }
-       .menu_teacher_left {
+        .menu_teacher_left {
             grid-column-start: 1;
             background-color: var(--white);
             display: flex;
@@ -54,13 +54,13 @@
             margin-right: 16px;
             align-items: stretch;
             width: 50%;
+            max-height: 400px; /* Cambia este valor según tu preferencia */
+            overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
 
         }
 
         .logo-nav {
             width: 150px;
-            margin: 0 ;
-            margin-bottom: 12px;
             border-radius: 8px;
             grid-column-start: 1;
 
@@ -81,8 +81,8 @@
             margin-top: 16px;
         }
         .input{
-            color: var(--white);
-            background-color: var(--blue);
+            color: var(--black) !important;
+            background-color: var(--gray);
             border-radius: 12px;
             border: none;
             height: 24px;
@@ -93,7 +93,7 @@
             outline: none;
         }
         .input::placeholder{
-            color: var(--white);
+            color: var(--black);
         }
         .primary-button {
             font-size: var(--md);
@@ -107,6 +107,7 @@
             margin-right: 16px;
             cursor: pointer;
         }
+    
 
 
 li{
@@ -115,7 +116,6 @@ li{
     display: flex;
     align-items: center;
     margin-bottom: 16px;
-
 
 }
 .mini-icon{
@@ -139,10 +139,11 @@ li{
     margin-right: 12px;
     justify-self: center;
 }
+
 .menu_teacher_right{
     grid-column-start: 2;
      display: flex;
-     flex-direction: row;
+     flex-direction: column;
     justify-content: center;
     width: auto;}
 .input{
@@ -162,16 +163,114 @@ li{
             font-size: var(--lg);
             background-color: var(--white);
             border-radius: 12px;
-            margin-bottom: 8px;
-            margin-top: 4px;
+            margin-bottom: 12px;
             margin-left: 8px;
             margin-right: 8px;
             border: none;
-            height: 80px;
-            width: 244px;
+            height: 64px;
+            width: 200px;
             color: var(--blue);
             cursor: pointer;
+
+
         }
+        .primary-button-teacher{
+            font-size: var(--lg);
+            background-color: var(--blue);
+            border-radius: 12px;
+            border: none;
+            height: 32px;
+            width: 48px;
+            color: var(--white);
+            margin-left: 16px;
+            margin-right: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+        .form-add {
+    display: flex;
+    flex-direction:row;
+        }
+        .log_out{
+            width: 48px;
+            height: 48px;
+            grid-column-start: 2;
+            align-self: center;
+        }
+    
+    .log_out-button{
+        background: var(--white);
+        border: none;
+        display:flex;
+        justify-content: center;
+    }
+    .out{
+        display:flex;
+        justify-content: center;
+        align-items: center; 
+        margin-right: 12px;
+        
+    }
+    .exit{
+        width: 48px;
+        height: 48px;
+        justify-self: center;
+        cursor: pointer;
+    }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background-color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.buttons-container{
+        margin-left: 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: auto;
+        align-items: flex-start;
+
+
+    }
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+.notification{
+            color: var(--blue);
+            background-color: white;
+            font-size: var(--lg);
+            display: flex;
+            justify-content: center;
+            border-radius: 16px;
+            margin: 12px 12px 0 4px;
+            justify-self: center;
+
+
+        }
+.gen-code{
+    width: auto;
+}
         .primary-button-exercise{
             font-size: var(--g);
             background-color: var(--gold);
@@ -186,74 +285,78 @@ li{
             color: var(--blue);
             cursor: pointer;
         }
-        .primary-button-teacher{
+
+                .notification{
+            color: var(--blue);
+            background-color: white;
             font-size: var(--lg);
-            background-color: var(--blue);
-            border-radius: 12px;
-            border: none;
-            height: 32px;
-            color: var(--white);
-            margin-left: 16px;
-            margin-right: 16px;
-            margin-bottom: 16px;
-            margin-top: 8px;
-            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            border-radius: 16px;
+            margin: 12px 12px 0 4px;
+            justify-self: center;
+
 
         }
-        .form-add {
-        justify-self: flex-end;
+        textarea {
+      width: 90%;
+      height: 600px;
+      resize: none;
+      border: none;
+      border-radius: 16px;
+      background-color:var(--gray);
+      font-size: var(--md);
+      color:var(--black);
+      padding: 10px;
+      line-height: 1.5;
+      margin: 12px;
+      max-height: 600px; /* Cambia este valor según tu preferencia */
+      overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
+    }
+    textarea::placeholder{
+        color: var(--black);
+    }
+    .container-down-buttons{
+            background-color: var(--white);
+            padding: 16px;
+            border-radius: 32px;
+            max-height: 600px; /* Cambia este valor según tu preferencia */
+            overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
+        }
+    .notes{
+        background-color: var(--white);
+            padding: 16px;
+            border-radius: 32px;
+            max-height: 200px; /* Cambia este valor según tu preferencia */
+            overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
+    }
+    .send{
+        width: auto;
+        font-size: var(--md);
+    }
+    .console {
+    background-color: var(--black);
+    color: var(--white);
     display: flex;
     flex-direction: column;
-        }
-        .log_out{
-            width: 48px;
-            height: 48px;
-            grid-column-start: 2;
-            align-self: center;
-        }
-
-    .log_out-button{
-        background: var(--white);
-        border: none;
-        display:flex;
-        justify-content: center;
-    }
-    .out{
-        display:flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 12px;
-
-    }
-    .buttons-container{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-
-    }
-    .container-little-buttons{
+    border-radius: 12px;
+    margin-left: 4px;
+    margin-right: 16px;
+    justify-content: start;
+    width: 100%;
+    height: auto;
+}
+.container-little-buttons{
+    margin-left: 0px;
         display: flex;
         flex-direction: row;
-        justify-content: center;
         align-items: center;
-    }
+        width: auto;
+        align-items: flex-start;
 
-    a{text-decoration: none;
-    color: var(--black);
-    font-size: var(--lg);}
+}
 
-    .menu-exercises{
-        height: auto;
-        width: 760px;
-        margin: 8px 0 0 8px;
-    }
-    .exit{
-        width: 48px;
-        height: 48px;
-        justify-self: center;
-        cursor: pointer;
-    }
+
 
     </style>
 </head>
@@ -313,10 +416,10 @@ li{
                         </div>
                     </div>
 
-                    <div class="menu_teacher_left menu-exercises">
+                    <div class="container-down-buttons">
                             <h2>Codigo </h2>
                         <form action="/executeTeacher">
-                            <textarea rows="10" cols="30" class="input" name="code"  >{{code}}</textarea>
+                            <textarea rows="10" cols="30" name="code"  >{{code}}</textarea>
 
                             <input type="hidden" name="CourseName" value="{{ CourseName }}">
                             <input type="hidden" name="code" value="{{ code }}">
@@ -324,11 +427,11 @@ li{
                             <input type="hidden" name="email" value="{{ email }}">
                             <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
                             <input type="hidden" name="nameExercise" value="{{ nameExercise }}">
-                            <button  class= "primary-button-right" type="submit">Ejecutar Codigo</button>
+                            <button  class= "primary-button-teacher send" type="submit">Ejecutar Codigo</button>
                             <div class="menu_teacher_left">
-                                        <h2 class="title">Resultado:</h2>
+                                        <h2 clas>Resultado:</h2>
                                             {% if compiledCode %}
-                                            <pre style="text-align: left; white-space: pre-wrap;">
+                                            <pre class= "console"style="text-align: left; white-space: pre-wrap;">
                                                 {% for line in compiledCode.split('\n') %}
                                                 {{ line }}
                                                 {% endfor %}
@@ -336,18 +439,18 @@ li{
                                             {% endif %}
                         </div>
                             <h2>Detalles del Estudiante</h2>
-                            <textarea rows="10" cols="30" class="input" name="detail">{{detail}}</textarea>
+                            <textarea rows="10" cols="30" name="detail">{{detail}}</textarea>
                         </form>
 
 
                         <h2>Calificación</h2>
 
-                        <form class="form-add" action="{{ url_for('deliverNote', Menu=0, CourseName=CourseName,nameActivity=nameActivity, nameExercise=nameExercise, code=code,email=email,detail=detail) }}" method="post">
+                        <form class="notes" action="{{ url_for('deliverNote', Menu=0, CourseName=CourseName,nameActivity=nameActivity, nameExercise=nameExercise, code=code,email=email,detail=detail) }}" method="post">
                             <h3>Retroalimentación</h3>
-                            <input type="text" name="feedback"  maxlength="60" placeholder="Dale una retroalimentación a tu estudiante!" required>
+                            <input class="input" type="text" name="feedback"  maxlength="60" placeholder="Dale una retroalimentación a tu estudiante!" required>
                             <h3>Nota</h3>
-                            <input type="text" name="note"  maxlength="20" placeholder="nota" required>
-                            <button type="submit" > Enviar Calificación </button>
+                            <input class="input"  name="note"  maxlength="20" placeholder="nota" required>
+                            <button type="submit"  class="primary-button-teacher send"> Enviar Calificación </button>
                         </form>
                     </div>
                 </div>

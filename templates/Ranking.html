@@ -150,7 +150,7 @@ li{
     width: auto;
 }
 .input{
-            color: var(--blue);
+            color: var(--black) !important;
             background-color: var(--gray);
             border-radius: 12px;
             border: none;
@@ -166,16 +166,16 @@ li{
             font-size: var(--lg);
             background-color: var(--white);
             border-radius: 12px;
-            margin-bottom: 8px;
-            margin-top: 4px;
+            margin-bottom: 12px;
             margin-left: 8px;
             margin-right: 8px;
             border: none;
-            height: 80px;
-            width: 244px;
+            height: 64px;
+            width: 200px;
             color: var(--blue);
             cursor: pointer;
-            margin-left: 12px;
+
+
         }
         .primary-button-exercise{
             font-size: var(--g);
@@ -197,13 +197,12 @@ li{
             border-radius: 12px;
             border: none;
             height: 32px;
+            width: 48px;
             color: var(--white);
             margin-left: 16px;
             margin-right: 16px;
             margin-bottom: 16px;
-            margin-top: 8px;
             cursor: pointer;
-
         }
         .form-add {
         justify-self: flex-end;
@@ -328,6 +327,10 @@ li{
            text-align: left;
            margin-bottom: 16px;
         }
+    .add-container{
+        display: flex !important;
+        flex-direction: row !important;
+    }
     </style>
 </head>
 <body>
@@ -378,7 +381,7 @@ li{
                    </a>
                </li>
                {% endfor %}
-           <form class="form-add" action="{{ url_for('add', CourseName=CourseName) }}" method="post">
+           <form class="add-container" action="{{ url_for('add', CourseName=CourseName) }}" method="post">
                <input type="text" name="todo" class="input input-add-list" maxlength="30" placeholder="Añadir Temática" required>
 
                <button type="submit" class="primary-button-teacher" >+</button>

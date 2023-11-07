@@ -79,7 +79,7 @@
             margin-top: 16px;
         }
         .input{
-            color: var(--black);
+            color: var(--black)!important;
             background-color: var(--gray);
             border-radius: 12px;
             border: none;
@@ -377,7 +377,9 @@ li{
                                     <span>{{ exercise_dict['task'][0] }}</span>
 
 
-                                <a href="{{ url_for('SelectStudentQualify', Menu=loop.index0, exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity )}}">  Calificar  </a>
+                                <a href="{{ url_for('SelectStudentQualify', Menu=loop.index0, exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity )}}">
+                                    <img  src="{{ url_for('static', filename='check.png') }}"  class=" mini-icon">
+                                     </a>
 
                                 <a href="{{ url_for('editExercise', Menu=loop.index0,exercise=exercise_dict['task'][0], CourseName=CourseName, nameActivity=nameActivity) }}">
                                     <img  src="{{ url_for('static', filename='edit.png') }}"  class=" mini-icon pencil">

@@ -145,7 +145,7 @@ li{
     justify-content: center;
     width: auto;}
 .input{
-            color: var(--blue);
+            color: var(--black)!important;
             background-color: var(--gray);
             border-radius: 12px;
             border: none;
@@ -411,16 +411,16 @@ li{
                             <div class="buttons-exe">
                                 <form action="/submitOrExecute">
                                         <textarea name="code" >{{ code }}</textarea>
-                                    <h2> Esta fue tu expliación del codigo:  </h2>
-                                    <div style="width: 300px; height: 100px; border: 1px solid #ccc; overflow: auto;">
+                                    <h2> Esta fue tu explicación del codigo:  </h2>
+                                    <div style="width: 300px; height: 60px; border: 1px solid #ccc; overflow: auto; border-radius: 16px; padding: 4px;">
                                       {{ delivery.detail }}
                                     </div>
                                     <h2> Retroalimentación del profesor:  </h2>
-                                    <div style="width: 300px; height: 100px; border: 1px solid #ccc; overflow: auto;">
+                                    <div style="width: 300px; height: 60px; border: 1px solid #ccc; overflow: auto; border-radius: 16px; padding: 4px;">
                                       {{ delivery.feedback }}
                                     </div>
                                     <h2> Nota:  </h2>
-                                    <div style="width: 300px; height: 100px; border: 1px solid #ccc; overflow: auto;">
+                                    <div style="width: 300px; height: 60px; border: 1px solid #ccc; overflow: auto; border-radius: 16px; padding: 4px;">
                                       {{ delivery.note }}
                                     </div>
                                 </form>
