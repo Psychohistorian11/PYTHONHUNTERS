@@ -90,7 +90,7 @@ class HomeController:
                                        Actividades=ThemeObject.Themes,
                                        CourseName=CourseName, email=email)
             else:
-                message = "Usuario no existe"
+                message = "Usuario no Encontrado"
                 return render_template("Index.html", message=message)
 
     @app.route("/SelectCourseView")

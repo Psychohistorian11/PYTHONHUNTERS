@@ -7,7 +7,7 @@ from Model.Student import Student
 
 config = {'user': 'root',
           'host': 'localhost',
-          'password': 'PythonHunters',
+          'password': 'Palabrasambiguas',
           'database': 'pythonbd',
           'port': 3306,  # Puerto predeterminado de MySQL
           'raise_on_warnings': True}  # Para que se generen excepciones en caso de advertencias
