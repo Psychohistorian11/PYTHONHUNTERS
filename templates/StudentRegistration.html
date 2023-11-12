@@ -105,11 +105,16 @@
     </style>
 </head>
 <body>
-    <div class="notification">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         {% if messageCourse %}
-        <p>{{ messageCourse }}</p>
+            {% if messageCourse.strip() %}
+                <script>
+                    Swal.fire({
+                        title: "{{ messageCourse }}"
+                    });
+                </script>
+            {% endif %}
         {% endif %}
-    </div>
     <div class = "register">
         <div class = "form_container"> 
             <h1 class="title">Registro</h1>

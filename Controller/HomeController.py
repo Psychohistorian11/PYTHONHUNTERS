@@ -154,7 +154,7 @@ class HomeController:
         CourseName = request.args.get('CourseName')
         idCourse = DB.get_id_course_by_nameDB(CourseName)
         return render_template("HomeMenuTeacher.html",
-                               Actividades=ThemeObject.Themes, CourseName=CourseName, idCourse=idCourse)
+                               Actividades=ThemeObject.Themes, CourseName=CourseName, idCourse=str(idCourse))
 
     @app.route("/add/<string:CourseName>", methods=["POST"])
     def add(CourseName):

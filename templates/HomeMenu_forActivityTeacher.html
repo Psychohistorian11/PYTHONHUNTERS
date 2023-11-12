@@ -303,11 +303,16 @@ li{
 <body>
 
     <div class="full-container">
-        <div class="notification">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         {% if message %}
-        <p>{{ message }}</p>
+            {% if message.strip() %}
+                <script>
+                    Swal.fire({
+                        title: "{{ message }}"
+                    });
+                </script>
+            {% endif %}
         {% endif %}
-    </div>
         <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
             <form class="out" action="/sign_off">
             <a class="log_out">

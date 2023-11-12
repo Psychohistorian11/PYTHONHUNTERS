@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
         :root{
             --blue: #1F57A2;
@@ -96,28 +97,20 @@
             color: var(--blue);
             margin-bottom: 8px;
         }
-
-        .notification{
-            color: var(--blue);
-            background-color: white;
-            font-size: var(--lg);
-            display: flex;
-            justify-content: center;
-            border-radius: 16px;
-            margin: 12px 12px 0 4px;
-            justify-self: center;
-
-
-        }
-
     </style>
 </head>
 <body>
-    <div class="notification">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         {% if message %}
-        <p>{{ message }}</p>
+            {% if message.strip() %}
+                <script>
+                    Swal.fire({
+                        title: "{{ message }}"
+                    });
+                </script>
+            {% endif %}
         {% endif %}
-    </div>
+
     <div class="login">
         <div class="form_container">
             <img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo">

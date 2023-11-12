@@ -268,17 +268,27 @@ li{
 <body>
 
 <div class="full-container">
-</form>
-<div class="notification">
-{% if idCourse %}
-<p>ID del curso: {{ idCourse }}</p>
-{% endif %}
-</div>
-        <div class="notification">
-        {% if message %}
-        <p>{{ message }}</p>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        {% if idCourse %}
+            {% if idCourse.strip() %}
+                <script>
+                        Swal.fire({
+                            title: "ID del curso: {{ idCourse }}"
+                        });
+                </script>
+            {% endif %}
         {% endif %}
-    </div>
+
+        {% if message %}
+            {% if message.strip() %}
+                <script>
+                    Swal.fire({
+                        title: "{{ message }}"
+                    });
+                </script>
+            {% endif %}
+        {% endif %}
 <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
 
 
