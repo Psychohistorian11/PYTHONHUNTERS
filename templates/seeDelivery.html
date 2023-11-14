@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root{
+         :root{
             --blue: #1F57A2;
             --white: #FFFFFF;
             --gray: #CFCDC8;
@@ -25,9 +25,10 @@
         }
         .container-down {
     display: grid;
-    grid-template-columns: 30% 60%;
+    grid-template-columns: 40% 60%;
     grid-template-rows: auto;
-}
+        }
+
         .full-container{
             display: flex;
             flex-direction: column;
@@ -40,24 +41,23 @@
             border-radius: 12px;
             margin-bottom: 16px;
             display: grid;
-            grid-template-columns: 95% 5%;
+            grid-template-columns: 30% 30% 30% 10%;
             grid-template-rows: auto;
             align-content: center;
         }
         .menu_teacher_left {
-            grid-column-start: 1;
-            background-color: var(--white);
-            display: flex;
-            flex-direction: column;
-            border-radius: 12px;
-            margin-left: 4px;
-            margin-right: 16px;
-            align-items: stretch;
-            width: 50%;
-            max-height: 400px; /* Cambia este valor según tu preferencia */
-            overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
-
-        }
+    grid-column-start: 1;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    margin-left: 0px;
+    max-width: 500px;
+    margin-right: 16px;
+    align-items: stretch;
+    max-height: 500px; /* Cambia este valor según tu preferencia */
+    overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
+}
 
         .logo-nav {
             width: 150px;
@@ -71,6 +71,7 @@
            margin-bottom: 16px;
            margin-left: 12px;
            text-align: left;
+           font-weight: unset;
         }
         .label{
             margin-left: 16px;
@@ -97,7 +98,7 @@
         }
         .primary-button {
             font-size: var(--md);
-            background-color: var(--gold);
+            background-color: var(--blue);
             border-radius: 12px;
             border: none;
             height: 40px;
@@ -107,7 +108,7 @@
             margin-right: 16px;
             cursor: pointer;
         }
-    
+
 
 
 li{
@@ -141,13 +142,14 @@ li{
 }
 
 .menu_teacher_right{
+    margin-left: 12px;
     grid-column-start: 2;
      display: flex;
      flex-direction: column;
     justify-content: center;
     width: auto;}
 .input{
-            color: var(--blue);
+            color: var(--black)!important;
             background-color: var(--gray);
             border-radius: 12px;
             border: none;
@@ -158,12 +160,19 @@ li{
             margin-right: 16px;
             outline: none;
         }
+.container-little-buttons{
+    grid-column-start: 3;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: auto;
 
-        .primary-button-right {
+}
+.primary-button-right {
             font-size: var(--lg);
             background-color: var(--white);
             border-radius: 12px;
-            margin-bottom: 12px;
             margin-left: 8px;
             margin-right: 8px;
             border: none;
@@ -197,7 +206,7 @@ li{
             grid-column-start: 2;
             align-self: center;
         }
-    
+
     .log_out-button{
         background: var(--white);
         border: none;
@@ -205,12 +214,15 @@ li{
         justify-content: center;
     }
     .out{
+        grid-column-start: 4;
         display:flex;
         justify-content: center;
         align-items: center; 
         margin-right: 12px;
+        margin-right: 4px;
         
     }
+
     .exit{
         width: 48px;
         height: 48px;
@@ -239,16 +251,7 @@ li{
     text-align: center;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
-.buttons-container{
-        margin-left: 0px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: auto;
-        align-items: flex-start;
 
-
-    }
 .close {
     position: absolute;
     top: 10px;
@@ -268,36 +271,8 @@ li{
 
 
         }
-.gen-code{
-    width: auto;
-}
-        .primary-button-exercise{
-            font-size: var(--g);
-            background-color: var(--gold);
-            border-radius: 12px;
-            margin-bottom: 8px;
-            margin-top: 12px;
-            margin-left: 8px;
-            margin-right: 8px;
-            border: none;
-            height: 128px;
-            width: 760px;
-            color: var(--blue);
-            cursor: pointer;
-        }
-
-                .notification{
-            color: var(--blue);
-            background-color: white;
-            font-size: var(--lg);
-            display: flex;
-            justify-content: center;
-            border-radius: 16px;
-            margin: 12px 12px 0 4px;
-            justify-self: center;
 
 
-        }
         textarea {
       width: 90%;
       height: 600px;
@@ -316,53 +291,94 @@ li{
     textarea::placeholder{
         color: var(--black);
     }
-    .container-down-buttons{
-            background-color: var(--white);
-            padding: 16px;
-            border-radius: 32px;
-            max-height: 600px; /* Cambia este valor según tu preferencia */
-            overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
+
+
+
+        .subtitle{
+           font-size: var(--md);
+           color: var(--black);
+           margin-bottom: 16px;
+           margin-left: 12px;
+           text-align: left;
         }
-    .notes{
-        background-color: var(--white);
-            padding: 16px;
-            border-radius: 32px;
-            max-height: 200px; /* Cambia este valor según tu preferencia */
-            overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
-    }
-    .send{
-        width: auto;
-        font-size: var(--md);
-    }
-    .console {
-    background-color: var(--black);
-    color: var(--white);
-    display: flex;
-    flex-direction: column;
-    border-radius: 12px;
-    margin-left: 4px;
-    margin-right: 16px;
-    justify-content: start;
-    width: 100%;
-    height: auto;
-}
-.container-little-buttons{
-    margin-left: 0px;
+        .buttons-exe{
+        margin-left: 0px;
         display: flex;
         flex-direction: row;
         align-items: center;
         width: auto;
         align-items: flex-start;
+        margin-bottom: 12px;
 
+        }
+.console {
+    background-color: var(--blue);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    padding: 16px;
+    justify-content: start;
+    width: auto;
+    height: auto;
 }
 
 
+        .container-down-buttons{
+            background-color: var(--white);
+            max-height: 100vh;
+            overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
+            padding: 16px;
+            margin-bottom: 32px;
+            border-radius: 16px;
+        }
+        .t-white{
+            color: var(--white);
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+        .editor-code{
+            background-color: var(--white);
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            margin-left: 4px;
+            margin-right: 16px;
+            align-items: stretch;
+            width: 100%;
+            max-height: 500px; /* Cambia este valor según tu preferencia */
+            overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
+            
+        }
+        .gen-code {width: auto;
+font-size: var(--md);}
+.custom-ok-button {
+        background-color: var(--blue);
+        color: var(--white);
+        font-family: 'Space Grotesk', sans-serif; /* Add your preferred font-family */
+        font-size: var(--lg);
+        border-radius: 12px;
+    }
 
     </style>
 </head>
 <body>
     <div class="full-container">
         <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
+            <div class="container-little-buttons">
+                <div class="menu-item">
+                    <form action="/HomeMenuTeacher">
+                        <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                        <button  class= "primary-button-right" type="submit">Tematicas</button>
+                    </form>
+                </div>
+                <div class="menu-item">
+                    <form action="/RankingView">
+                        <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                        <button  class= "primary-button-right" type="submit">Ranking</button>
+                    </form>
+                </div>
+            </div>
             <form class="out" action="/sign_off">
             <a class="log_out">
                 <button type="submit" class="log_out-button">
@@ -400,22 +416,6 @@ li{
             </div>
 
             <div class="menu_teacher_right">
-                <div class="buttons-container">
-                    <div class="container-little-buttons">
-                        <div class="menu-item">
-                            <form action="/HomeMenuTeacher">
-                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                                <button  class= "primary-button-right" type="submit">Tematicas</button>
-                            </form>
-                        </div>
-                        <div class="menu-item">
-                            <form action="/RankingView">
-                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                                <button  class= "primary-button-right" type="submit">Ranking</button>
-                            </form>
-                        </div>
-                    </div>
-
                     <div class="container-down-buttons">
                             <h2>Codigo </h2>
                         <form action="/executeTeacher">
@@ -427,15 +427,15 @@ li{
                             <input type="hidden" name="email" value="{{ email }}">
                             <input type="hidden" name="nameActivity" value="{{ nameActivity }}">
                             <input type="hidden" name="nameExercise" value="{{ nameExercise }}">
-                            <button  class= "primary-button-teacher send" type="submit">Ejecutar Codigo</button>
+                            <button  class= "primary-button-teacher gen-code" type="submit">Ejecutar Codigo</button>
                             <div class="menu_teacher_left">
-                                        <h2 clas>Resultado:</h2>
+                                        <h2 >Resultado:</h2>
                                             {% if compiledCode %}
-                                            <pre class= "console"style="text-align: left; white-space: pre-wrap;">
+                                            <div class= "console">
                                                 {% for line in compiledCode.split('\n') %}
                                                 {{ line }}
                                                 {% endfor %}
-                                            </pre>
+                                            </div>
                                             {% endif %}
                         </div>
                             <h2>Detalles del Estudiante</h2>
@@ -450,7 +450,7 @@ li{
                             <input class="input" type="text" name="feedback"  maxlength="60" placeholder="Dale una retroalimentación a tu estudiante!" required>
                             <h3>Nota</h3>
                             <input class="input"  name="note"  maxlength="20" placeholder="nota" required>
-                            <button type="submit"  class="primary-button-teacher send"> Enviar Calificación </button>
+                            <button type="submit"  class="primary-button-teacher gen-code"> Enviar Calificación </button>
                         </form>
                     </div>
                 </div>

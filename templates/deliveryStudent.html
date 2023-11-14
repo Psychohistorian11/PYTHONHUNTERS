@@ -32,18 +32,6 @@
             display: flex;
             flex-direction: column;
         }
-        .nav-bar{
-            width: 100vw;
-            height: auto;
-            margin-top: 10px;
-            background-color: var(--white);
-            border-radius: 12px;
-            margin-bottom: 16px;
-            display: grid;
-            grid-template-columns: 95% 5%;
-            grid-template-rows: auto;
-            align-content: center;
-        }
          .menu_teacher_left {
             grid-column-start: 1;
             background-color: var(--white);
@@ -69,6 +57,7 @@
            margin-bottom: 16px;
            margin-left: 12px;
            text-align: left;
+           font-weight: unset;
         }
         .label{
             margin-left: 16px;
@@ -139,11 +128,12 @@ li{
 }
 
 .menu_teacher_right{
+
     grid-column-start: 2;
      display: flex;
      flex-direction: row;
     justify-content: center;
-    width: auto;}
+   }
 .input{
             color: var(--black)!important;
             background-color: var(--gray);
@@ -166,21 +156,6 @@ li{
 
 }
 
-        .primary-button-right {
-            font-size: 20px;
-            background-color: var(--white);
-            border-radius: 12px;
-            margin-bottom: 12px;
-            margin-left: 8px;
-            margin-right: 8px;
-            border: none;
-            height: 64px;
-            width: 200px;
-            color: var(--blue);
-            cursor: pointer;
-
-
-        }
         .primary-button-teacher{
             font-size: var(--lg);
             background-color: var(--blue);
@@ -211,13 +186,7 @@ li{
         display:flex;
         justify-content: center;
     }
-    .out{
-        display:flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 12px;
 
-    }
     .exit{
         width: 48px;
         height: 48px;
@@ -272,7 +241,7 @@ li{
 
 
         textarea {
-      width: 90%;
+      width: 200%;
       height: 600px;
       resize: none;
       border: none;
@@ -307,8 +276,7 @@ li{
         margin-left: 0px;
         display: flex;
         flex-direction: row;
-        align-items: center;
-        width: auto;
+        width: 100%;
         align-items: flex-start;
         margin-bottom: 12px;
 
@@ -335,6 +303,8 @@ li{
             background-color: var(--white);
             padding: 16px;
             border-radius: 16px;
+            width: 100%;
+            margin-right:32px;
         }
         .t-white{
             color: var(--white);
@@ -353,13 +323,78 @@ li{
             max-height: 500px; /* Cambia este valor según tu preferencia */
             overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
         }
+        .nav-bar{
+            width: 100vw;
+            height: auto;
+            margin-top: 10px;
+            background-color: var(--white);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 30% 30% 30% 10%;
+            grid-template-rows: auto;
+            align-content: center;
+        }
+
+    .out{
+        grid-column-start: 4;
+        display:flex;
+        justify-content: center;
+        align-items: center; 
+        margin-right: 12px;
+        margin-right: 4px;
+        
+    }
+
+.primary-button-right {
+            font-size: var(--lg);
+            background-color: var(--white);
+            border-radius: 12px;
+            margin-left: 8px;
+            margin-right: 8px;
+            border: none;
+            height: 64px;
+            width: 200px;
+            color: var(--blue);
+            cursor: pointer;
 
 
+        }
+        .buttons-container{
+        grid-column-start: 3;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: auto;
+        }
+        .custom-ok-button {
+        background-color: var(--blue);
+        color: var(--white);
+        font-family: 'Space Grotesk', sans-serif; /* Add your preferred font-family */
+        font-size: var(--lg);
+    }
     </style>
 </head>
 <body>
     <div class="full-container">
         <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
+            <div class="buttons-container">
+                <div class="menu-item">
+                    <form action="/HomeMenuStudent">
+                        <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                        <input type="hidden" name="email" value="{{ email }}">
+                        <button  class= "primary-button-right" type="submit">Tematicas</button>
+                    </form>
+                </div>
+                <div class="menu-item">
+                    <form action="/RankingViewStudent">
+                        <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                        <input type="hidden" name="email" value="{{ email }}">
+                        <button  class= "primary-button-right" type="submit">Ranking</button>
+                    </form>
+                </div>
+            </div>
             <form class="out" action="/sign_off">
             <a class="log_out">
                 <button type="submit" class="log_out-button">
@@ -385,23 +420,6 @@ li{
             </div>
 
             <div class="menu_teacher_right">
-                <div class="buttons-container">
-                    <div class="container-little-buttons">
-                        <div class="menu-item">
-                            <form action="/HomeMenuStudent">
-                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                                <input type="hidden" name="email" value="{{ email }}">
-                                <button  class= "primary-button-right" type="submit">Tematicas</button>
-                            </form>
-                        </div>
-                        <div class="menu-item">
-                            <form action="/RankingViewStudent">
-                                <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                                <input type="hidden" name="email" value="{{ email }}">
-                                <button  class= "primary-button-right" type="submit">Ranking</button>
-                            </form>
-                        </div>
-                    </div>
                         <div class="container-down-buttons">
 
                             <div class="editor-code">
@@ -412,15 +430,15 @@ li{
                                 <form action="/submitOrExecute">
                                         <textarea name="code" >{{ code }}</textarea>
                                     <h2> Esta fue tu explicación del codigo:  </h2>
-                                    <div style="width: 300px; height: 60px; border: 1px solid #ccc; overflow: auto; border-radius: 16px; padding: 4px;">
+                                    <div style="width: 200%; height: 60px; border: 1px solid #ccc; overflow: auto; border-radius: 16px; padding: 4px;">
                                       {{ delivery.detail }}
                                     </div>
                                     <h2> Retroalimentación del profesor:  </h2>
-                                    <div style="width: 300px; height: 60px; border: 1px solid #ccc; overflow: auto; border-radius: 16px; padding: 4px;">
+                                    <div style="width: 200%; height: 60px; border: 1px solid #ccc; overflow: auto; border-radius: 16px; padding: 4px;">
                                       {{ delivery.feedback }}
                                     </div>
                                     <h2> Nota:  </h2>
-                                    <div style="width: 300px; height: 60px; border: 1px solid #ccc; overflow: auto; border-radius: 16px; padding: 4px;">
+                                    <div style="width: 200%; height: 60px; border: 1px solid #ccc; overflow: auto; border-radius: 16px; padding: 4px;">
                                       {{ delivery.note }}
                                     </div>
                                 </form>

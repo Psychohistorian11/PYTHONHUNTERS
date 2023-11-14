@@ -32,29 +32,19 @@
             display: flex;
             flex-direction: column;
         }
-        .nav-bar{
-            width: 100vw;
-            height: auto;
-            margin-top: 10px;
-            background-color: var(--white);
-            border-radius: 12px;
-            margin-bottom: 16px;
-            display: grid;
-            grid-template-columns: 95% 5%;
-            grid-template-rows: auto;
-            align-content: center;
-        }
 
         .menu_teacher_left {
             grid-column-start: 1;
-            background-color: var(--white);
-            display: flex;
-            flex-direction: column;
-            border-radius: 16px;
-            margin-left: 4px;
-            margin-right: 16px;
-            align-items: stretch;
-            width: 50%;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    margin-left: 0px;
+    max-width: 500px;
+    margin-right: 16px;
+    align-items: stretch;
+    max-height: 500px; /* Cambia este valor según tu preferencia */
+    overflow-y: auto; /* Agrega una barra de desplazamiento si es necesario */
         }
 
 
@@ -70,6 +60,7 @@
            margin-bottom: 16px;
            margin-left: 12px;
            text-align: left;
+           font-weight: unset;
         }
         .label{
             margin-left: 16px;
@@ -158,21 +149,7 @@ li{
             outline: none;
         }
 
-        .primary-button-right {
-            font-size: 20px;
-            background-color: var(--white);
-            border-radius: 12px;
-            margin-bottom: 12px;
-            margin-left: 8px;
-            margin-right: 8px;
-            border: none;
-            height: 64px;
-            width: 200px;
-            color: var(--blue);
-            cursor: pointer;
 
-
-        }
         .primary-button-teacher{
             font-size: var(--lg);
             background-color: var(--blue);
@@ -203,13 +180,7 @@ li{
         display:flex;
         justify-content: center;
     }
-    .out{
-        display:flex;
-        justify-content: center;
-        align-items: center; 
-        margin-right: 12px;
-        
-    }
+
     .exit{
         width: 48px;
         height: 48px;
@@ -258,16 +229,102 @@ li{
 
 
         }
-.gen-code{
-    width: auto;
-}
+        .nav-bar{
+            width: 100vw;
+            height: auto;
+            margin-top: 10px;
+            background-color: var(--white);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 30% 30% 30% 10%;
+            grid-template-rows: auto;
+            align-content: center;
+        }
 
+    .out{
+        grid-column-start: 4;
+        display:flex;
+        justify-content: center;
+        align-items: center; 
+        margin-right: 12px;
+        margin-right: 4px;
+        
+    }
+
+.primary-button-right {
+    font-size: var(--lg);
+            background-color: var(--white);
+            border-radius: 12px;
+            margin-left: 8px;
+            margin-right: 8px;
+            border: none;
+            height: 64px;
+            width: 200px;
+            color: var(--blue);
+            cursor: pointer;
+    
+
+
+        }
+        .buttons-container{
+        grid-column-start: 3;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: auto;
+        }
+        .custom-ok-button {
+        background-color: var(--blue);
+        color: var(--white);
+        border-radius: 12px;
+        font-family: 'Space Grotesk', sans-serif; /* Add your preferred font-family */
+        font-size: var(--lg);
+    }
     </style>
 </head>
 <body>
+    <<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        {% if message %}
+            {% if message.strip() %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        Swal.fire({
+                            title: "{{ message }}",
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'custom-ok-button'
+                            }
+                        });
+                    });
+                </script>
+            {% endif %}
+        {% endif %}
 <div class="full-container">
 
 <div class="nav-bar"><img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo-nav">
+        <div class="buttons-container">
+                <div class="menu-item">
+                    <form action="/HomeMenuStudent">
+                        <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                        <input type="hidden" name="email" value="{{ email }}">
+                        <button  class= "primary-button-right" type="submit">Tematicas</button>
+                    </form>
+                </div>
+            <div class="menu-item">
+            <form action="/RankingViewStudent">
+                <input type="hidden" name="CourseName" value="{{ CourseName }}">
+                <input type="hidden" name="email" value="{{ email }}">
+                <button class="primary-button-right">Ranking</button>
+            </form>
+            </div>
+        </div>
+        
+
+   
 
 
     <form class="out" action="/sign_off">
@@ -288,7 +345,8 @@ li{
                <form action="/HomeMenuStudent">
                    <input type="hidden" name="CourseName" value="{{ CourseName }}">
                    <input type="hidden" name="email" value="{{ email }}">
-                   <button  class= "primary-button-right" type="submit"><h3>Tematicas:</h3> </button>
+                   <button  class= "primary-button-right" type="submit">
+                    <h2 class = "title">Temáticas : </h2> </button>
                </form>
 
            </div>
@@ -306,13 +364,7 @@ li{
 
                </li>
                {% endfor %}
-           <div class="menu-item">
-               <form action="/RankingViewStudent">
-                   <input type="hidden" name="CourseName" value="{{ CourseName }}">
-                   <input type="hidden" name="email" value="{{ email }}">
-                   <button  class= "primary-button-right" type="submit"><h3>Ranking</h3></button>
-               </form>
-            </div>
+           
        </div>
 
    </div>

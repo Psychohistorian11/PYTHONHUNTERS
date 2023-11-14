@@ -49,6 +49,7 @@
            color: var(--blue);
            margin-bottom: 12px;
            text-align: center;
+           font-weight: unset;
         }
         .form{
             display: flex;
@@ -121,19 +122,34 @@
             display: grid;
             place-items: center;
         }
+        .custom-ok-button {
+        background-color: var(--blue);
+        color: var(--white);
+        font-family: 'Space Grotesk', sans-serif; /* Add your preferred font-family */
+        font-size: var(--lg);
+        border-radius: 12px;
+    }
     </style>
 </head>
 <body>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        {% if message %}
-            {% if message.strip() %}
-                <script>
+    <<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if message %}
+        {% if message.strip() %}
+            <script>
+                document.addEventListener('DOMContentLoaded', (event) => {
                     Swal.fire({
-                        title: "{{ message }}"
+                        title: "{{ message }}",
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK',
+                        buttonsStyling: false,
+                        customClass: {
+                            confirmButton: 'custom-ok-button'
+                        }
                     });
-                </script>
-            {% endif %}
+                });
+            </script>
         {% endif %}
+    {% endif %}
     <div class="create-exercise">
         <div class="form_container">
             <img src="{{ url_for('static', filename='Banner.jpg') }}"  alt="logo" class="logo">
